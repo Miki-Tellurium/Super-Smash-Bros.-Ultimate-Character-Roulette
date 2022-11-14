@@ -1,4 +1,5 @@
 /* Super Smash Bros. Ultimate Character Roulette by Miki_Tellurium
+ * v1.0.0
  *
  * I made this simple program to complete my World of Light Challenge
  * and keep track of what character I already used.
@@ -7,6 +8,12 @@
  * move the .properties file.
  * This code is probably not so good and a bit chaotic, but feel free
  * to use the program or modify if you want to.
+ *
+ * TO-DO:
+ * -Implement text search
+ * -Custom background
+ * -Custom tooltip
+ * -Character series icon
  */
 
 package com.mikitellurium.smashcharacterreoulette;
@@ -29,9 +36,11 @@ import java.util.Random;
 public class SmashRoulette implements ActionListener, MouseListener {
 
     JFrame mainFrame = new JFrame("Super Smash Bros. Ultimate Characters Roulette");
+    JPanel mainPanel = new JPanel();
     JFrame checkFrame = new JFrame("Characters Checklist");
-    JPanel panel = new JPanel();
-    GridLayout gridLayout = new GridLayout(11,10,0,0);
+    JPanel searchPanel = new JPanel();
+    JPanel checkBoxPanel = new JPanel();
+    GridLayout checkBoxLayout = new GridLayout(12,9,0,0);
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     final int width = (int) screenSize.getWidth();
 
@@ -39,7 +48,8 @@ public class SmashRoulette implements ActionListener, MouseListener {
 
     JButton rollButton = new JButton("Random");
     JButton refreshButton = new JButton();
-    JButton checkList = new JButton("<html><center>"+"Characters"+"<br>"+"Checklist"+"</center></html>");
+    JButton checkListButton = new JButton("<html><center>"+"Characters"+"<br>"+"Checklist"+"</center></html>");
+    JLabel textFieldHint = new JLabel("?");
 
     ImageIcon logo = new ImageIcon(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/smash logo.png")));
     ImageIcon refreshIcon = new ImageIcon(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/refresh button.png")));
@@ -53,6 +63,8 @@ public class SmashRoulette implements ActionListener, MouseListener {
     JLabel render = new JLabel();
     Font font = character.getFont();
 
+    HintTextField search = new HintTextField("Search");
+
     String charProp = "characters.properties";
     Properties prop = new Properties();
 
@@ -64,18 +76,8 @@ public class SmashRoulette implements ActionListener, MouseListener {
         mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
 
-        panel.setBackground(Color.WHITE);
-        panel.setLayout(null);
-
-        checkFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        checkFrame.setIconImage(logo.getImage());
-        checkFrame.setSize(1100,250);
-        checkFrame.setResizable(false);
-        checkFrame.setLocation(width / 2 - checkFrame.getWidth() / 2, mainFrame.getY());
-        checkFrame.setAlwaysOnTop(true);
-        checkFrame.setLayout(gridLayout);
-        makeCheckBoxes();
-        checkBoxInit();
+        mainPanel.setBackground(Color.WHITE);
+        mainPanel.setLayout(null);
 
         rollButton.setOpaque(true);
         rollButton.setSize(100, 30);
@@ -94,31 +96,67 @@ public class SmashRoulette implements ActionListener, MouseListener {
         refreshButton.setLocation(rollButton.getX() + rollButton.getWidth() + 5, rollButton.getY());
         refreshButton.setIcon(resizeIcon(refreshIcon, refreshButton.getWidth() - offset, refreshButton.getHeight() - offset));
 
-        checkList.setSize(75, 35);
-        checkList.setBorder(new RoundedBorder(5));
-        checkList.setFocusPainted(false);
-        checkList.setBackground(notHover);
-        checkList.setLocation(mainFrame.getWidth() - checkList.getWidth() - 20, mainFrame.getHeight() - checkList.getHeight() * 2 - 8);
-        checkList.setFont(new Font(font.getName(), Font.BOLD, 11));
-        checkList.addActionListener(this);
-        checkList.addMouseListener(this);
+        checkListButton.setSize(75, 35);
+        checkListButton.setBorder(new RoundedBorder(5));
+        checkListButton.setFocusPainted(false);
+        checkListButton.setBackground(notHover);
+        checkListButton.setLocation(mainFrame.getWidth() - checkListButton.getWidth() - 20, mainFrame.getHeight() - checkListButton.getHeight() * 2 - 8);
+        checkListButton.setFont(new Font(font.getName(), Font.BOLD, 11));
+        checkListButton.addActionListener(this);
+        checkListButton.addMouseListener(this);
 
         credit.setSize(credit.getPreferredSize());
         credit.setFont(new Font(font.getName(), Font.BOLD, 12));
         credit.setLocation(mainFrame.getWidth() - credit.getWidth() - 20, 1);
 
-        panel.add(rollButton);
-        panel.add(refreshButton);
-        panel.add(checkList);
-        panel.add(credit);
-        mainFrame.add(panel);
+        mainPanel.add(rollButton);
+        mainPanel.add(refreshButton);
+        mainPanel.add(checkListButton);
+        mainPanel.add(credit);
+        mainFrame.add(mainPanel);
         mainFrame.setVisible(true);
+
+        checkFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        checkFrame.setIconImage(logo.getImage());
+        checkFrame.setSize(1100,275);
+        checkFrame.setResizable(false);
+        checkFrame.setLocation(width / 2 - checkFrame.getWidth() / 2, mainFrame.getY());
+        checkFrame.setAlwaysOnTop(true);
+        checkFrame.setLayout(null);
+
+        search.setSize(120,25);
+        search.setLocation(2,0);
+        textFieldHint.setSize(search.getHeight(), search.getHeight());
+        textFieldHint.setLocation(search.getX() + search.getWidth() + 2, searchPanel.getY());
+        textFieldHint.setBorder(new RoundedBorder(7));
+        textFieldHint.setFont(new Font(font.getName(), Font.BOLD, 16));
+        textFieldHint.setVerticalTextPosition(JLabel.CENTER);
+        textFieldHint.setHorizontalTextPosition(JLabel.CENTER);
+        textFieldHint.setToolTipText("Search a character to highlight it on the list");
+
+        checkBoxPanel.setLayout(checkBoxLayout);
+        checkBoxPanel.setSize(checkFrame.getWidth(), checkFrame.getHeight() - searchPanel.getHeight() - 45);
+        checkBoxPanel.setLocation(0, search.getY() + search.getHeight());
+
+        checkFrame.add(search);
+        checkFrame.add(textFieldHint);
+        checkFrame.add(checkBoxPanel);
+        makeCheckBoxes();
+        checkBoxInit();
     }
 
     /* Generate a random int and return the string corresponding the character name */
     public String getCharacterName() {
-        int random = new Random().nextInt(86);
+        int random;
+        do {
+            random = new Random().nextInt(86);
+        } while (isCharacterSelected(random));
         return CharacterList.getCharacter(random);
+    }
+
+    /* Check if the checkbox is already selected */
+    public boolean isCharacterSelected(int i){
+        return boxes.get(i).isSelected();
     }
 
     /* Return the corresponding character render */
@@ -141,7 +179,7 @@ public class SmashRoulette implements ActionListener, MouseListener {
             JCheckBox checkBox = new JCheckBox(CharacterList.getCharacter(character));
             checkBox.addActionListener(this);
             boxes.add(checkBox);
-            checkFrame.add(checkBox);
+            checkBoxPanel.add(checkBox);
         }
     }
 
@@ -179,13 +217,13 @@ public class SmashRoulette implements ActionListener, MouseListener {
             rollButton.removeMouseListener(this);
             rollButton.setEnabled(false);
             rollButton.setBackground(new Color(225, 225, 225));
-            panel.add(character);
+            mainPanel.add(character);
             character.setText(getCharacterName());
             character.setFont(new Font(font.getName(), Font.BOLD, 32));
             character.setForeground(new Color(0, 0, 0));
             character.setSize(character.getPreferredSize());
             character.setLocation(mainFrame.getWidth() / 2 - character.getWidth() / 2, rollButton.getY() + rollButton.getHeight() + 20);
-            panel.add(render);
+            mainPanel.add(render);
             try {
                 render.setIcon(getCharacterRender(character.getText()));
                 render.setSize(300, 300);
@@ -205,7 +243,7 @@ public class SmashRoulette implements ActionListener, MouseListener {
             refreshButton.removeActionListener(this);
             refreshButton.removeMouseListener(this);
             refreshButton.setEnabled(false);
-        } else if (e.getSource() == checkList) {
+        } else if (e.getSource() == checkListButton) {
             checkFrame.setVisible(true);
         } else if (e.getSource() instanceof JCheckBox box) {
             try {
@@ -239,8 +277,8 @@ public class SmashRoulette implements ActionListener, MouseListener {
             rollButton.setBackground(hover);
         } else if (e.getSource() == refreshButton) {
             refreshButton.setIcon(resizeIcon(hoveringRefreshIcon, refreshButton.getWidth() - offset, refreshButton.getHeight() - offset));
-        } else if (e.getSource() == checkList) {
-            checkList.setBackground(hover);
+        } else if (e.getSource() == checkListButton) {
+            checkListButton.setBackground(hover);
         }
     }
 
@@ -250,8 +288,8 @@ public class SmashRoulette implements ActionListener, MouseListener {
             rollButton.setBackground(notHover);
         } else if (e.getSource() == refreshButton) {
             refreshButton.setIcon(resizeIcon(refreshIcon, refreshButton.getWidth() - offset, refreshButton.getHeight() - offset));
-        } else if (e.getSource() == checkList) {
-            checkList.setBackground(notHover);
+        } else if (e.getSource() == checkListButton) {
+            checkListButton.setBackground(notHover);
         }
     }
 }
