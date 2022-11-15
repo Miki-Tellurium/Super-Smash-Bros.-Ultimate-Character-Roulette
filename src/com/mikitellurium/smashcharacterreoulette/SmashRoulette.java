@@ -10,7 +10,8 @@
  * to use the program or modify if you want to.
  *
  * TO-DO:
- * -Implement text search
+ * -Implement text search : done
+ * -Implement individual character highlight when searching
  * -Custom background
  * -Custom tooltip
  * -Character series icon
@@ -22,10 +23,7 @@ package com.mikitellurium.smashcharacterreoulette;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
@@ -33,14 +31,13 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Random;
 
-public class SmashRoulette implements ActionListener, MouseListener {
+public class SmashRoulette implements ActionListener, MouseListener, KeyListener {
 
     JFrame mainFrame = new JFrame("Super Smash Bros. Ultimate Characters Roulette");
     JPanel mainPanel = new JPanel();
     JFrame checkFrame = new JFrame("Characters Checklist");
-    JPanel searchPanel = new JPanel();
     JPanel checkBoxPanel = new JPanel();
-    GridLayout checkBoxLayout = new GridLayout(12,9,0,0);
+    GridLayout checkBoxLayout = new GridLayout(11, 9, 0, 0);
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     final int width = (int) screenSize.getWidth();
 
@@ -48,7 +45,7 @@ public class SmashRoulette implements ActionListener, MouseListener {
 
     JButton rollButton = new JButton("Random");
     JButton refreshButton = new JButton();
-    JButton checkListButton = new JButton("<html><center>"+"Characters"+"<br>"+"Checklist"+"</center></html>");
+    JButton checkListButton = new JButton("<html><center>" + "Characters" + "<br>" + "Checklist" + "</center></html>");
     JLabel textFieldHint = new JLabel("?");
 
     ImageIcon logo = new ImageIcon(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/smash logo.png")));
@@ -63,7 +60,7 @@ public class SmashRoulette implements ActionListener, MouseListener {
     JLabel render = new JLabel();
     Font font = character.getFont();
 
-    HintTextField search = new HintTextField("Search");
+    HintTextField searchField = new HintTextField("Search");
 
     String charProp = "characters.properties";
     Properties prop = new Properties();
@@ -118,16 +115,18 @@ public class SmashRoulette implements ActionListener, MouseListener {
 
         checkFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         checkFrame.setIconImage(logo.getImage());
-        checkFrame.setSize(1100,275);
+        checkFrame.setSize(1100, 250);
         checkFrame.setResizable(false);
         checkFrame.setLocation(width / 2 - checkFrame.getWidth() / 2, mainFrame.getY());
         checkFrame.setAlwaysOnTop(true);
         checkFrame.setLayout(null);
 
-        search.setSize(120,25);
-        search.setLocation(2,0);
-        textFieldHint.setSize(search.getHeight(), search.getHeight());
-        textFieldHint.setLocation(search.getX() + search.getWidth() + 2, searchPanel.getY());
+        searchField.setSize(120, 25);
+        searchField.setLocation(2, 0);
+        searchField.addKeyListener(this);
+        //searchField.getDocument().addDocumentListener(this);
+        textFieldHint.setSize(searchField.getHeight(), searchField.getHeight());
+        textFieldHint.setLocation(searchField.getX() + searchField.getWidth() + 2, searchField.getY());
         textFieldHint.setBorder(new RoundedBorder(7));
         textFieldHint.setFont(new Font(font.getName(), Font.BOLD, 16));
         textFieldHint.setVerticalTextPosition(JLabel.CENTER);
@@ -135,10 +134,10 @@ public class SmashRoulette implements ActionListener, MouseListener {
         textFieldHint.setToolTipText("Search a character to highlight it on the list");
 
         checkBoxPanel.setLayout(checkBoxLayout);
-        checkBoxPanel.setSize(checkFrame.getWidth(), checkFrame.getHeight() - searchPanel.getHeight() - 45);
-        checkBoxPanel.setLocation(0, search.getY() + search.getHeight());
+        checkBoxPanel.setSize(checkFrame.getWidth(), checkFrame.getHeight() - searchField.getHeight() - 40);
+        checkBoxPanel.setLocation(0, searchField.getY() + searchField.getHeight());
 
-        checkFrame.add(search);
+        checkFrame.add(searchField);
         checkFrame.add(textFieldHint);
         checkFrame.add(checkBoxPanel);
         makeCheckBoxes();
@@ -155,7 +154,7 @@ public class SmashRoulette implements ActionListener, MouseListener {
     }
 
     /* Check if the checkbox is already selected */
-    public boolean isCharacterSelected(int i){
+    public boolean isCharacterSelected(int i) {
         return boxes.get(i).isSelected();
     }
 
@@ -209,6 +208,33 @@ public class SmashRoulette implements ActionListener, MouseListener {
             prop.setProperty(box.getText(), String.valueOf(box.isSelected()));
         }
         prop.store(outputProp, "This file register the checkboxes state");
+    }
+
+    /* Check if String text contain String substring */
+    public static boolean textContains(String text, String substring) {
+        if (text == null) {
+            return false;
+        }
+        if (substring == null | Objects.equals(substring, "")) {
+            return false;
+        }
+        char[] fullString = text.toCharArray();
+        char[] sub = substring.toCharArray();
+        int counter = 0;
+        if (sub.length == 0) {
+            return true;
+        }
+        for (char c : fullString) {
+            if (c == sub[counter]) {
+                counter++;
+            } else {
+                counter = 0;
+            }
+            if (counter == sub.length) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -292,4 +318,27 @@ public class SmashRoulette implements ActionListener, MouseListener {
             checkListButton.setBackground(notHover);
         }
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        String name = searchField.getText();
+        for (JCheckBox box : boxes) {
+            if (textContains(box.getText(), name)) {
+                box.setForeground(Color.RED);
+            } else {
+                box.setForeground(Color.BLACK);
+            }
+        }
+    }
 }
+
+
