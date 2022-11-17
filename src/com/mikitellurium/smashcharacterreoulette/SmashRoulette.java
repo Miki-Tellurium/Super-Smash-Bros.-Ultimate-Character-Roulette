@@ -10,11 +10,10 @@
  * to use the program or modify if you want to.
  *
  * TO-DO:
- * -Implement text search : done
- * -Implement individual character highlight when searching
+ * -Implement text search: done
  * -Custom background
  * -Custom tooltip
- * -Character series icon
+ * -Character series icon: done
  */
 
 package com.mikitellurium.smashcharacterreoulette;
@@ -58,6 +57,7 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
     JLabel character = new JLabel();
     JLabel credit = new JLabel("by Miki_Tellurium");
     JLabel render = new JLabel();
+    JLabel symbol = new JLabel();
     Font font = character.getFont();
 
     HintTextField searchField = new HintTextField("Search");
@@ -124,7 +124,6 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
         searchField.setSize(120, 25);
         searchField.setLocation(2, 0);
         searchField.addKeyListener(this);
-        //searchField.getDocument().addDocumentListener(this);
         textFieldHint.setSize(searchField.getHeight(), searchField.getHeight());
         textFieldHint.setLocation(searchField.getX() + searchField.getWidth() + 2, searchField.getY());
         textFieldHint.setBorder(new RoundedBorder(7));
@@ -250,10 +249,14 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
             character.setSize(character.getPreferredSize());
             character.setLocation(mainFrame.getWidth() / 2 - character.getWidth() / 2, rollButton.getY() + rollButton.getHeight() + 20);
             mainPanel.add(render);
+            mainPanel.add(symbol);
             try {
-                render.setIcon(getCharacterRender(character.getText()));
                 render.setSize(300, 300);
                 render.setLocation(-30, -10);
+                render.setIcon(getCharacterRender(character.getText()));
+                symbol.setSize(170, 170);
+                symbol.setLocation(rollButton.getX() + rollButton.getWidth() + 20, 25);
+                symbol.setIcon(resizeIcon(CharacterList.getSeriesSymbol(character.getText()), symbol.getWidth(), symbol.getHeight()));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

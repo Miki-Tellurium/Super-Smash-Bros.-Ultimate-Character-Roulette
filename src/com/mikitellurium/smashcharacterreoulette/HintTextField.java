@@ -4,9 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class HintTextField extends JTextField {
+    private final String _hint;
+
     public HintTextField(String hint) {
         _hint = hint;
     }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -23,5 +26,4 @@ public class HintTextField extends JTextField {
             g.drawString(_hint, ins.left, h / 2 + fm.getAscent() / 2 - 2);
         }
     }
-    private final String _hint;
 }
