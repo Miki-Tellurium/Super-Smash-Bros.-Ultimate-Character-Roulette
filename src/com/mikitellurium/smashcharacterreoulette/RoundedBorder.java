@@ -17,13 +17,11 @@ public class RoundedBorder extends AbstractBorder {
      private boolean left = true;
      RenderingHints hints;
 
-     RoundedBorder(
-             Color color) {
+     RoundedBorder(Color color) {
          this(color, 4, 8, 7);
      }
 
-     RoundedBorder(
-             Color color, int thickness, int radii, int pointerSize) {
+     RoundedBorder(Color color, int thickness, int radii, int pointerSize) {
          this.thickness = thickness;
          this.radius = radii;
          this.pointerSize = pointerSize;
@@ -41,8 +39,7 @@ public class RoundedBorder extends AbstractBorder {
          insets = new Insets(pad, pad, bottomPad, pad);
      }
 
-     RoundedBorder(
-             Color color, int thickness, int radii, int pointerSize, boolean left) {
+     RoundedBorder(Color color, int thickness, int radii, int pointerSize, boolean left) {
          this(color, thickness, radii, pointerSize);
          this.left = left;
      }
@@ -58,11 +55,7 @@ public class RoundedBorder extends AbstractBorder {
      }
 
      @Override
-     public void paintBorder(
-             Component c,
-             Graphics g,
-             int x, int y,
-             int width, int height) {
+     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
 
          Graphics2D g2 = (Graphics2D) g;
 

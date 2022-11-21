@@ -10,10 +10,9 @@
  * to use the program or modify if you want to.
  *
  * TO-DO:
- * -Implement text search: done
- * -Custom background
- * -Custom tooltip: done
- * -Character series icon: done
+ * -Gradient tooltip
+ * -Checkframe background
+ * -Fix buttons corners
  */
 
 package com.mikitellurium.smashcharacterreoulette;
@@ -33,7 +32,6 @@ import java.util.Random;
 public class SmashRoulette implements ActionListener, MouseListener, KeyListener {
 
     JFrame mainFrame = new JFrame("Super Smash Bros. Ultimate Characters Roulette");
-    JPanel mainPanel = new JPanel();
     JFrame checkFrame = new JFrame("Characters Checklist");
     JPanel checkBoxPanel = new JPanel();
     GridLayout checkBoxLayout = new GridLayout(11, 9, 0, 0);
@@ -70,6 +68,7 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
     final Color hoverTop = new Color(150, 255, 255);
     final int offset = refreshButton.getInsets().left - 14;  //This variable is chosen arbitrarily to make the refreshButton icon match
 
+    JLabel background = new JLabel();
     JLabel character = new JLabel();
     JLabel credit = new JLabel("by Miki_Tellurium");
     JLabel render = new JLabel();
@@ -82,15 +81,14 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
     final Properties prop = new Properties();
 
     public SmashRoulette() throws IOException {
-        mainFrame.getContentPane();
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setIconImage(logo.getImage());
         mainFrame.setSize(500, 300);
         mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
 
-        mainPanel.setBackground(Color.WHITE);
-        mainPanel.setLayout(null);
+        background.setIcon(new ImageIcon(ImageIO.read(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/background.jpg")))
+                .getScaledInstance(mainFrame.getWidth(), mainFrame.getHeight(), Image.SCALE_SMOOTH)));
 
         rollButton.setSize(100, 30);
         rollButton.setBorder(new RoundedBorder(Color.BLACK, 1,10,0));
@@ -102,7 +100,6 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
         rollButton.addActionListener(this);
         rollButton.addMouseListener(this);
 
-        refreshButton.setOpaque(true);
         refreshButton.setSize(rollButton.getHeight(), rollButton.getHeight());
         refreshButton.setBorder(new RoundedBorder(Color.BLACK, 1,10,0));
         refreshButton.setFocusPainted(false);
@@ -124,11 +121,11 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
         credit.setFont(new Font(font.getName(), Font.BOLD, 12));
         credit.setLocation(mainFrame.getWidth() - credit.getWidth() - 20, 1);
 
-        mainPanel.add(rollButton);
-        mainPanel.add(refreshButton);
-        mainPanel.add(checkListButton);
-        mainPanel.add(credit);
-        mainFrame.add(mainPanel);
+        mainFrame.setContentPane(background);
+        background.add(rollButton);
+        background.add(refreshButton);
+        background.add(checkListButton);
+        background.add(credit);
         mainFrame.setVisible(true);
 
         checkFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -141,9 +138,12 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
         ToolTipManager.sharedInstance().setInitialDelay(0);
         ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
 
+        searchField.setOpaque(true);
         searchField.setSize(120, 25);
         searchField.setLocation(2, 0);
         searchField.addKeyListener(this);
+
+        textFieldHint.setOpaque(true);
         textFieldHint.setSize(searchField.getHeight(), searchField.getHeight());
         textFieldHint.setLocation(searchField.getX() + searchField.getWidth() + 2, searchField.getY());
         textFieldHint.setBorder(new RoundedBorder(Color.BLACK, 1,7,0));
@@ -262,14 +262,14 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
             rollButton.removeMouseListener(this);
             rollButton.setEnabled(false);
             rollButton.setBackgroundGradient(notHoverDown, notHoverTop);
-            mainPanel.add(character);
+            background.add(character);
             character.setText(getCharacterName());
             character.setFont(new Font(font.getName(), Font.BOLD, 32));
             character.setForeground(new Color(0, 0, 0));
             character.setSize(character.getPreferredSize());
             character.setLocation(mainFrame.getWidth() / 2 - character.getWidth() / 2, rollButton.getY() + rollButton.getHeight() + 20);
-            mainPanel.add(render);
-            mainPanel.add(symbol);
+            background.add(render);
+            background.add(symbol);
             try {
                 render.setSize(300, 300);
                 render.setLocation(-30, -10);
