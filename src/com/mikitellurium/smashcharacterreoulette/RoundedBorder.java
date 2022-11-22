@@ -7,6 +7,7 @@ import java.awt.geom.RoundRectangle2D;
 
 public class RoundedBorder extends AbstractBorder {
      private Color color;
+     private Color bg;
      private int thickness = 4;
      private int radius = 8;
      private int pointerSize = 7;
@@ -39,9 +40,9 @@ public class RoundedBorder extends AbstractBorder {
          insets = new Insets(pad, pad, bottomPad, pad);
      }
 
-     RoundedBorder(Color color, int thickness, int radii, int pointerSize, boolean left) {
+     RoundedBorder(Color color, int thickness, int radii, int pointerSize, Color bg) {
          this(color, thickness, radii, pointerSize);
-         this.left = left;
+         this.bg = bg;
      }
 
      @Override
@@ -108,7 +109,9 @@ public class RoundedBorder extends AbstractBorder {
          // of the text bubble.
          Component parent  = c.getParent();
          if (parent!=null) {
-             Color bg = parent.getBackground();
+             if (bg == null) {
+                 Color bg = parent.getBackground();
+             }
              Rectangle rect = new Rectangle(0,0,width, height);
              Area borderRegion = new Area(rect);
              borderRegion.subtract(area);

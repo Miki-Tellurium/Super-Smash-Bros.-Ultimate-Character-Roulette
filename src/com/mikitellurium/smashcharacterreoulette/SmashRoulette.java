@@ -11,7 +11,6 @@
  *
  * TO-DO:
  * -Gradient tooltip
- * -Checkframe background
  * -Fix buttons corners
  */
 
@@ -49,7 +48,7 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
             JToolTip tip = super.createToolTip();
             tip.setBackground(new Color(220, 255, 255));
             tip.setFont(new Font(font.getName(), Font.BOLD, 12));
-            tip.setBorder(new RoundedBorder(Color.BLACK, 1,7,0));
+            tip.setBorder(new RoundedBorder(Color.BLACK, 1,7,0, checkFrame.getBackground()));
             return tip;
         }
 
@@ -68,7 +67,8 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
     final Color hoverTop = new Color(150, 255, 255);
     final int offset = refreshButton.getInsets().left - 14;  //This variable is chosen arbitrarily to make the refreshButton icon match
 
-    JLabel background = new JLabel();
+    JLabel mainBackground = new JLabel();
+    JLabel checkBackground = new JLabel();
     JLabel character = new JLabel();
     JLabel credit = new JLabel("by Miki_Tellurium");
     JLabel render = new JLabel();
@@ -87,11 +87,11 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
         mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
 
-        background.setIcon(new ImageIcon(ImageIO.read(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/background.jpg")))
+        mainBackground.setIcon(new ImageIcon(ImageIO.read(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/background.jpg")))
                 .getScaledInstance(mainFrame.getWidth(), mainFrame.getHeight(), Image.SCALE_SMOOTH)));
 
         rollButton.setSize(100, 30);
-        rollButton.setBorder(new RoundedBorder(Color.BLACK, 1,10,0));
+        rollButton.setBorder(new RoundedBorder(Color.BLACK, 1,10,0, new Color(250, 250, 250)));
         rollButton.setFocusPainted(false);
         rollButton.setBackgroundGradient(notHoverDown, notHoverTop);
         rollButton.setLocation(mainFrame.getWidth() / 2 - rollButton.getWidth() / 2, 40);
@@ -101,14 +101,14 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
         rollButton.addMouseListener(this);
 
         refreshButton.setSize(rollButton.getHeight(), rollButton.getHeight());
-        refreshButton.setBorder(new RoundedBorder(Color.BLACK, 1,10,0));
+        refreshButton.setBorder(new RoundedBorder(Color.BLACK, 1,10,0, new Color(250, 250, 250)));
         refreshButton.setFocusPainted(false);
         refreshButton.setLocation(rollButton.getX() + rollButton.getWidth() + 5, rollButton.getY());
         refreshButton.setIcon(resizeIcon(refreshIcon, refreshButton.getWidth() - offset, refreshButton.getHeight() - offset));
         refreshButton.setEnabled(false);
 
         checkListButton.setSize(80, 35);
-        checkListButton.setBorder(new RoundedBorder(Color.BLACK, 1,10,0));
+        checkListButton.setBorder(new RoundedBorder(Color.BLACK, 1,10,0, new Color(125, 125, 125)));
         checkListButton.setFocusPainted(false);
         checkListButton.setBackgroundGradient(notHoverDown, notHoverTop);
         checkListButton.setLocation(mainFrame.getWidth() - checkListButton.getWidth() - 20, mainFrame.getHeight() - checkListButton.getHeight() * 2 - 8);
@@ -121,11 +121,11 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
         credit.setFont(new Font(font.getName(), Font.BOLD, 12));
         credit.setLocation(mainFrame.getWidth() - credit.getWidth() - 20, 1);
 
-        mainFrame.setContentPane(background);
-        background.add(rollButton);
-        background.add(refreshButton);
-        background.add(checkListButton);
-        background.add(credit);
+        mainFrame.setContentPane(mainBackground);
+        mainBackground.add(rollButton);
+        mainBackground.add(refreshButton);
+        mainBackground.add(checkListButton);
+        mainBackground.add(credit);
         mainFrame.setVisible(true);
 
         checkFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -138,7 +138,9 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
         ToolTipManager.sharedInstance().setInitialDelay(0);
         ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
 
-        searchField.setOpaque(true);
+        checkBackground.setIcon(new ImageIcon(ImageIO.read(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/mural.jpg")))
+                .getScaledInstance(checkFrame.getWidth(), checkFrame.getHeight(), Image.SCALE_SMOOTH)));
+
         searchField.setSize(120, 25);
         searchField.setLocation(2, 0);
         searchField.addKeyListener(this);
@@ -146,19 +148,21 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
         textFieldHint.setOpaque(true);
         textFieldHint.setSize(searchField.getHeight(), searchField.getHeight());
         textFieldHint.setLocation(searchField.getX() + searchField.getWidth() + 2, searchField.getY());
-        textFieldHint.setBorder(new RoundedBorder(Color.BLACK, 1,7,0));
+        textFieldHint.setBorder(new RoundedBorder(Color.BLACK, 1,7,0, checkFrame.getBackground()));
         textFieldHint.setFont(new Font(font.getName(), Font.BOLD, 16));
         textFieldHint.setVerticalTextPosition(JLabel.CENTER);
         textFieldHint.setHorizontalTextPosition(JLabel.CENTER);
         textFieldHint.setToolTipText("Search a character to highlight it on the list");
 
+        checkBoxPanel.setOpaque(false);
         checkBoxPanel.setLayout(checkBoxLayout);
         checkBoxPanel.setSize(checkFrame.getWidth(), checkFrame.getHeight() - searchField.getHeight() - 40);
         checkBoxPanel.setLocation(0, searchField.getY() + searchField.getHeight());
 
-        checkFrame.add(searchField);
-        checkFrame.add(textFieldHint);
-        checkFrame.add(checkBoxPanel);
+        checkFrame.setContentPane(checkBackground);
+        checkBackground.add(searchField);
+        checkBackground.add(textFieldHint);
+        checkBackground.add(checkBoxPanel);
         makeCheckBoxes();
         checkBoxInit();
     }
@@ -166,6 +170,11 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
     /* Generate a random int and return the string corresponding the character name */
     public String getCharacterName() {
         int random;
+
+        if (areAllBoxChecked()) {
+            return "All characters done!";
+        }
+
         do {
             random = new Random().nextInt(86);
         } while (isCharacterSelected(random));
@@ -175,6 +184,15 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
     /* Check if the checkbox is already selected */
     public boolean isCharacterSelected(int i) {
         return boxes.get(i).isSelected();
+    }
+
+    public boolean areAllBoxChecked() {
+        for (JCheckBox box : boxes) {
+            if (!box.isSelected()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /* Return the corresponding character render */
@@ -195,6 +213,8 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
     public void makeCheckBoxes() {
         for (int character = 0; character < 86; character++) {
             JCheckBox checkBox = new JCheckBox(CharacterList.getCharacter(character));
+            checkBox.setOpaque(false);
+            checkBox.setForeground(Color.BLACK);
             checkBox.addActionListener(this);
             boxes.add(checkBox);
             checkBoxPanel.add(checkBox);
@@ -262,23 +282,29 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
             rollButton.removeMouseListener(this);
             rollButton.setEnabled(false);
             rollButton.setBackgroundGradient(notHoverDown, notHoverTop);
-            background.add(character);
+            mainBackground.add(character);
             character.setText(getCharacterName());
             character.setFont(new Font(font.getName(), Font.BOLD, 32));
             character.setForeground(new Color(0, 0, 0));
             character.setSize(character.getPreferredSize());
             character.setLocation(mainFrame.getWidth() / 2 - character.getWidth() / 2, rollButton.getY() + rollButton.getHeight() + 20);
-            background.add(render);
-            background.add(symbol);
-            try {
-                render.setSize(300, 300);
-                render.setLocation(-30, -10);
-                render.setIcon(getCharacterRender(character.getText()));
-                symbol.setSize(170, 170);
-                symbol.setLocation(rollButton.getX() + rollButton.getWidth() + 20, 25);
-                symbol.setIcon(resizeIcon(CharacterList.getSeriesSymbol(character.getText()), symbol.getWidth(), symbol.getHeight()));
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if (!Objects.equals(character.getText(), "All characters done!")) {
+                mainBackground.add(render);
+                mainBackground.add(symbol);
+                try {
+                    render.setSize(300, 300);
+                    render.setLocation(-30, -10);
+                    render.setIcon(getCharacterRender(character.getText()));
+                    symbol.setSize(170, 170);
+                    symbol.setLocation(rollButton.getX() + rollButton.getWidth() + 20, 25);
+                    symbol.setIcon(resizeIcon(CharacterList.getSeriesSymbol(character.getText()), symbol.getWidth(), symbol.getHeight()));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                mainBackground.remove(render);
+                mainBackground.remove(symbol);
+                mainBackground.repaint();
             }
             refreshButton.addActionListener(this);
             refreshButton.addMouseListener(this);
@@ -344,7 +370,6 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
 
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 
     @Override
@@ -356,7 +381,7 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
         String name = searchField.getText();
         for (JCheckBox box : boxes) {
             if (textContains(box.getText(), name)) {
-                box.setForeground(Color.RED);
+                box.setForeground(new Color(255, 0, 75));
             } else {
                 box.setForeground(Color.BLACK);
             }
