@@ -9,9 +9,7 @@
  * This code is probably not so good and a bit chaotic, but feel free
  * to use the program or modify if you want to.
  *
- * TO-DO:
- * -Gradient tooltip
- * -Fix buttons corners
+ * TODO: Migrate from Swing to JavaFX
  */
 
 package com.mikitellurium.smashcharacterreoulette;
