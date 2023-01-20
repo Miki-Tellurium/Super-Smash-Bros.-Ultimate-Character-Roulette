@@ -57,7 +57,7 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
         };
 
     final ImageIcon logo = new ImageIcon(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/smash logo.png")));
-    final ImageIcon refreshIcon = new ImageIcon(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/refresh button.png")));
+    final ImageIcon refreshIcon = new ImageIcon(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/base refresh button.png")));
     final ImageIcon hoveringRefreshIcon = new ImageIcon(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/hover refresh button.png")));
     final Color notHoverDown = new Color(255, 255, 255);
     final Color notHoverTop = new Color(200, 255, 255);
@@ -85,7 +85,7 @@ public class SmashRoulette implements ActionListener, MouseListener, KeyListener
         mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
 
-        mainBackground.setIcon(new ImageIcon(ImageIO.read(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/background.jpg")))
+        mainBackground.setIcon(new ImageIcon(ImageIO.read(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/main background.jpg")))
                 .getScaledInstance(mainFrame.getWidth(), mainFrame.getHeight(), Image.SCALE_SMOOTH)));
 
         rollButton.setSize(100, 30);
