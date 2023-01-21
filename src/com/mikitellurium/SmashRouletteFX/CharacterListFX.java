@@ -1,6 +1,7 @@
 package com.mikitellurium.SmashRouletteFX;
 
 import com.mikitellurium.smashcharacterreoulette.SmashRoulette;
+import javafx.scene.image.Image;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -187,20 +188,23 @@ public class CharacterListFX {
         seriesSymbols.put("Mii Swordfighter", "SmashBrosSymbol");
         seriesSymbols.put("Mii Gunner", "SmashBrosSymbol");
     }
-    //Generate a random integer and return the name of the corresponding character
+    /* Return the character name corresponding to the provided integer */
+    public static String getCharacterName(int a) {
+        return characters[a];
+    }
+    /* Generate a random integer and return the name of the corresponding character */
     public static String rollRandomCharacter() {
         int random;
         random = new Random().nextInt(86);
-        return getCharacter(random);
+        return getCharacterName(random);
     }
-    //Return the character name corresponding to the provided integer
-    public static String getCharacter(int a) {
-        return characters[a];
+    /* Return an Image object representing the render of the character provided */
+    public static Image getCharacterRender(String name) {
+        return new Image("/resources/renders/" + name + ".png");
     }
-
-    //Return the series symbol corresponding the provided character name
-    public static ImageIcon getSeriesSymbol(String name) {
+    /* Return an Image object representing the series symbol corresponding the provided character name */
+    public static Image getSeriesSymbol(String name) {
         String symbol = seriesSymbols.get(name);
-        return new ImageIcon(Objects.requireNonNull(SmashRoulette.class.getResource("/resources/symbols/" + symbol + ".png")));
+        return new Image("/resources/symbols/" + symbol + ".png");
     }
 }
