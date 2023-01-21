@@ -7,6 +7,7 @@ package com.mikitellurium.SmashRouletteFX;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -40,6 +41,10 @@ public class MainWindow {
 
     //Display the name of the character
     Text characterName = new Text();
+    //Display the render of the character
+    ImageView characterRender = new ImageView();
+    //Display the series symbol
+    ImageView seriesSymbol = new ImageView();
 
     public MainWindow(Stage mainStage) {
         //Main window
@@ -89,12 +94,29 @@ public class MainWindow {
         credit.setLayoutX(mainStage.getWidth() -  credit.getText().length()*7);  //multiplying by 7 moves the text right enough
         credit.setLayoutY(12);
 
+        characterName.setFont(Font.font("Arial", FontWeight.BOLD, 32));
+        characterName.setLayoutY(randomButton.getLayoutY() + randomButton.getPrefHeight()*2.5);
+
+        characterRender.preserveRatioProperty();
+        characterRender.setViewOrder(1.0);
+        characterRender.setFitWidth(300);
+        characterRender.setFitHeight(300);
+        characterRender.setLayoutX(-30);
+        characterRender.setLayoutY(-5);
+
+        seriesSymbol.setViewOrder(1.0);
+        seriesSymbol.setFitWidth(170);
+        seriesSymbol.setFitHeight(170);
+        seriesSymbol.setLayoutX(randomButton.getLayoutX() + randomButton.getPrefWidth() + 20);
+        seriesSymbol.setLayoutY(25);
+
         rootPane.setBackground(mainStageBackground);
         rootPane.getChildren().addAll(randomButton, refreshButton, characterListButton, credit);
         mainScene.getStylesheets().add("/resources/buttonStyle.css");
         mainStage.setScene(mainScene);
         mainStage.show();
     }
+
     //Functionality of the random button
     private void randomButtonAction() {
         randomButton.setDisable(true);
@@ -103,31 +125,29 @@ public class MainWindow {
     }
     //Functionality of the refresh button
     private void refreshButtonAction() {
-        rootPane.getChildren().remove(characterName);
+        rootPane.getChildren().removeAll(characterName, characterRender, seriesSymbol);
         randomButton.setDisable(false);
         refreshButton.setDisable(true);
     }
-
+    //Display the character name, render and series symbol on the screen
     private void displayCharacter(String name) {
         characterName.setText(name);
-        characterName.setFont(Font.font("Arial", FontWeight.BOLD, 32));
         characterName.setLayoutX(250 - characterName.getLayoutBounds().getWidth()/2);
-        characterName.setLayoutY(randomButton.getLayoutY() + randomButton.getPrefHeight()*2.5);
-        rootPane.getChildren().add(characterName);
+        characterRender.setImage(CharacterListFX.getCharacterRender(name));
+        seriesSymbol.setImage(CharacterListFX.getSeriesSymbol(name));
+        rootPane.getChildren().addAll(characterName, characterRender, seriesSymbol);
     }
 
+    //Change button look based on mouse pointer position
     private void changeButtonColorWhenEnter(Button button) {
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #7DFFFF)");
     }
-
     private void changeButtonColorWhenExit(Button button) {
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
     }
-
     private void changeIconWhenEnter(Button button) {
         button.setBackground(hoverRefreshIcon);
     }
-
     private void changeIconWhenExit(Button button) {
         button.setBackground(baseRefreshIcon);
     }
