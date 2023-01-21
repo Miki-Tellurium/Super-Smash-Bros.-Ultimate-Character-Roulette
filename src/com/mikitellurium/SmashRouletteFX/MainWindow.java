@@ -88,6 +88,7 @@ public class MainWindow {
         characterListButton.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
         characterListButton.setOnMouseEntered(e -> changeButtonColorWhenEnter(characterListButton));
         characterListButton.setOnMouseExited(e -> changeButtonColorWhenExit(characterListButton));
+        characterListButton.setOnAction(e -> new ChecklistWindow(mainStage));
 
         credit.setText("by Miki_Tellurium");
         credit.setFont(Font.font("Arial", FontWeight.BOLD, 12));
@@ -97,7 +98,6 @@ public class MainWindow {
         characterName.setFont(Font.font("Arial", FontWeight.BOLD, 32));
         characterName.setLayoutY(randomButton.getLayoutY() + randomButton.getPrefHeight()*2.5);
 
-        characterRender.preserveRatioProperty();
         characterRender.setViewOrder(1.0);
         characterRender.setFitWidth(300);
         characterRender.setFitHeight(300);
@@ -117,19 +117,20 @@ public class MainWindow {
         mainStage.show();
     }
 
-    //Functionality of the random button
+    /* Functionality of the random button */
     private void randomButtonAction() {
         randomButton.setDisable(true);
         refreshButton.setDisable(false);
+        //displayCharacter("Bayonetta");
         displayCharacter(CharacterListFX.rollRandomCharacter());
     }
-    //Functionality of the refresh button
+    /* Functionality of the refresh button */
     private void refreshButtonAction() {
         rootPane.getChildren().removeAll(characterName, characterRender, seriesSymbol);
         randomButton.setDisable(false);
         refreshButton.setDisable(true);
     }
-    //Display the character name, render and series symbol on the screen
+    /* Display the character name, render and series symbol on the screen */
     private void displayCharacter(String name) {
         characterName.setText(name);
         characterName.setLayoutX(250 - characterName.getLayoutBounds().getWidth()/2);
@@ -138,7 +139,7 @@ public class MainWindow {
         rootPane.getChildren().addAll(characterName, characterRender, seriesSymbol);
     }
 
-    //Change button look based on mouse pointer position
+    //Change button look when mouse pointer enter/exit buttons
     private void changeButtonColorWhenEnter(Button button) {
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #7DFFFF)");
     }
