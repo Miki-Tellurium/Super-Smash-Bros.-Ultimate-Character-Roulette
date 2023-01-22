@@ -35,7 +35,7 @@ public class ChecklistWindow {
     Button hint = new Button();
     Tooltip hintTooltip = new Tooltip();
 
-    private ArrayList<CheckBox> boxes = new ArrayList<>();
+    protected ArrayList<CheckBox> boxes = new ArrayList<>();
     final private String charactersProperties = "characters.properties";
     final Properties properties = new Properties();
 
