@@ -1,5 +1,7 @@
 package com.mikitellurium.SmashRouletteFX;
 
+import javafx.beans.value.ChangeListener;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,10 +15,12 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Properties;
 
 public class ChecklistWindow {
@@ -32,27 +36,39 @@ public class ChecklistWindow {
     final Background background = new Background(backgroundImage);
 
     TextField searchField = new TextField();
+    ChangeListener searchFieldListener = (observableValue, o, t1) -> {
+        //Highlight the characters corresponding with the typed text
+        String name = searchField.getText();
+        for (CheckBox box : boxes) {
+            if (textContains(box.getText(), name)) {
+                box.setTextFill(Color.rgb(255, 0, 75));
+            } else {
+                box.setTextFill(Color.BLACK);
+            }
+        }
+    };
     Button hint = new Button();
     Tooltip hintTooltip = new Tooltip();
 
-    protected ArrayList<CheckBox> boxes = new ArrayList<>();
+    static ArrayList<CheckBox> boxes = new ArrayList<>();
     final private String charactersProperties = "characters.properties";
     final Properties properties = new Properties();
 
-    public  ChecklistWindow(Stage mainStage) throws IOException {
+    public ChecklistWindow(Stage mainStage) throws IOException {
         stage.initOwner(mainStage);
         stage.setTitle("Characters Checklist");
         stage.getIcons().add(new Image("/resources/smash logo.png"));
         stage.setResizable(false);
         stage.setWidth(1000);
         stage.setHeight(260);
-        stage.setX(screenSize.getWidth()/2 - stage.getWidth()/2);
-        stage.setY(screenSize.getHeight()/2 - stage.getHeight()/2);
+        stage.setX(screenSize.getWidth() / 2 - stage.getWidth() / 2);
+        stage.setY(screenSize.getHeight() / 2 - stage.getHeight() / 2);
 
         searchField.setPromptText("Search...");
         searchField.setPrefSize(120, 10);
         searchField.setLayoutX(5);
         searchField.setLayoutY(0);
+        searchField.textProperty().addListener(searchFieldListener);
 
         hint.setText("?");
         hint.setFont(Font.font("Arial", FontWeight.BOLD, 16));
@@ -87,7 +103,6 @@ public class ChecklistWindow {
 
         scene.getStylesheets().add("/resources/style.css");
         stage.setScene(scene);
-        stage.show();
     }
     /* Make the check-boxes and add them to an array */
     private void makeCheckBoxes() {
@@ -98,6 +113,7 @@ public class ChecklistWindow {
             GridPane.setConstraints(checkBox, column, row);
             checkBox.setFont(Font.font(FontUIResource.DIALOG, FontWeight.EXTRA_BOLD, 12));
             checkBox.setTextFill(Color.BLACK);
+            checkBox.setOnAction(this::fireCheckbox);
             checkBoxesPane.getChildren().add(checkBox);
             boxes.add(checkBox);
             if (column < 7) {
@@ -119,18 +135,74 @@ public class ChecklistWindow {
     }
     /* Read the properties file to set the state of all checkboxes */
     private void readCheckBoxState(ArrayList<CheckBox> arrayList) throws IOException {
-        InputStream inputProp = new FileInputStream(charactersProperties);
-        properties.load(inputProp);
+        InputStream inputProperties = new FileInputStream(charactersProperties);
+        properties.load(inputProperties);
         for (CheckBox box : arrayList) {
             box.setSelected(Boolean.parseBoolean(properties.getProperty(box.getText())));
         }
     }
     /* Generate a new properties file to save character progress */
     private void saveCheckBoxState(ArrayList<CheckBox> arrayList) throws IOException {
-        OutputStream outputProp = new FileOutputStream(charactersProperties);
+        OutputStream outputProperties = new FileOutputStream(charactersProperties);
         for (CheckBox box : arrayList) {
             properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
         }
-        properties.store(outputProp, "This file register the checkboxes state");
+        properties.store(outputProperties, "This file register the checkboxes state");
+    }
+    /* Return true if the specified box is checked */
+    public static boolean isBoxSelected(int box) {
+        return boxes.get(box).isSelected();
+    }
+    /* Return true if all check-boxes are checked */
+    public static boolean areAllBoxChecked() {
+        for (CheckBox box : boxes) {
+            if (!box.isSelected()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    /* Check if String text contain String substring */
+    private boolean textContains(String stringToCheck, String substring) {
+        if (stringToCheck == null) {
+            return false;
+        }
+        if (substring == null | Objects.equals(substring, "")) {
+            return false;
+        }
+        char[] fullString = stringToCheck.toLowerCase().toCharArray();
+        char[] sub = substring.toLowerCase().toCharArray();
+        int counter = 0;
+        if (sub.length == 0) {
+            return true;
+        }
+        for (char c : fullString) {
+            if (c == sub[counter]) {
+                counter++;
+            } else {
+                counter = 0;
+            }
+            if (counter == sub.length) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /* Show this window on the screen */
+    public void show() {
+        stage.show();
+    }
+    /* Update the checkbox state in the characters.properties file */
+    private void fireCheckbox(ActionEvent e) {
+        if (e.getSource() instanceof CheckBox box) {
+            try {
+                OutputStream outputProperties = new FileOutputStream(charactersProperties);
+                System.out.println("True");
+                properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
+                properties.store(outputProperties, "This file register the checkboxes state");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 }
