@@ -13,7 +13,11 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Properties;
 
 public class ChecklistWindow {
 
@@ -31,13 +35,17 @@ public class ChecklistWindow {
     Button hint = new Button();
     Tooltip hintTooltip = new Tooltip();
 
-    public  ChecklistWindow(Stage mainStage) {
+    private ArrayList<CheckBox> boxes = new ArrayList<>();
+    final private String charactersProperties = "characters.properties";
+    final Properties properties = new Properties();
+
+    public  ChecklistWindow(Stage mainStage) throws IOException {
         stage.initOwner(mainStage);
         stage.setTitle("Characters Checklist");
         stage.getIcons().add(new Image("/resources/smash logo.png"));
         stage.setResizable(false);
         stage.setWidth(1000);
-        stage.setHeight(270);
+        stage.setHeight(260);
         stage.setX(screenSize.getWidth()/2 - stage.getWidth()/2);
         stage.setY(screenSize.getHeight()/2 - stage.getHeight()/2);
 
@@ -70,26 +78,28 @@ public class ChecklistWindow {
         checkBoxesPane.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         checkBoxesPane.setLayoutX(0);
         checkBoxesPane.setLayoutY(25);
-        checkBoxesPane.setPadding(new Insets(5));
+        checkBoxesPane.setPadding(new Insets(7));
         checkBoxesPane.setVgap(2);
-        checkBoxesPane.setHgap(12);
+        checkBoxesPane.setHgap(15);
         makeCheckBoxes();
+        initializeCheckBoxes();
         mainPane.getChildren().add(checkBoxesPane);
 
-        scene.getStylesheets().add("/resources/buttonStyle.css");
+        scene.getStylesheets().add("/resources/style.css");
         stage.setScene(scene);
         stage.show();
     }
-
+    /* Make the check-boxes and add them to an array */
     private void makeCheckBoxes() {
         int column = 0;
         int row = 0;
         for (int character = 0; character < 86; character++) {
             CheckBox checkBox = new CheckBox(CharacterListFX.getCharacterName(character));
             GridPane.setConstraints(checkBox, column, row);
-            checkBox.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 12));
+            checkBox.setFont(Font.font(FontUIResource.DIALOG, FontWeight.EXTRA_BOLD, 12));
             checkBox.setTextFill(Color.BLACK);
             checkBoxesPane.getChildren().add(checkBox);
+            boxes.add(checkBox);
             if (column < 7) {
                 column++;
             } else {
@@ -97,5 +107,30 @@ public class ChecklistWindow {
                 row++;
             }
         }
+    }
+    /* Check if the properties file already exist */
+    private void initializeCheckBoxes() throws IOException {
+        File file = new File(charactersProperties);
+        if (file.exists()) {
+            readCheckBoxState(boxes);
+        } else {
+            saveCheckBoxState(boxes);
+        }
+    }
+    /* Read the properties file to set the state of all checkboxes */
+    private void readCheckBoxState(ArrayList<CheckBox> arrayList) throws IOException {
+        InputStream inputProp = new FileInputStream(charactersProperties);
+        properties.load(inputProp);
+        for (CheckBox box : arrayList) {
+            box.setSelected(Boolean.parseBoolean(properties.getProperty(box.getText())));
+        }
+    }
+    /* Generate a new properties file to save character progress */
+    private void saveCheckBoxState(ArrayList<CheckBox> arrayList) throws IOException {
+        OutputStream outputProp = new FileOutputStream(charactersProperties);
+        for (CheckBox box : arrayList) {
+            properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
+        }
+        properties.store(outputProp, "This file register the checkboxes state");
     }
 }
