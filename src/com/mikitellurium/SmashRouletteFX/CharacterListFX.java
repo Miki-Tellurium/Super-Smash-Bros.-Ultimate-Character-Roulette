@@ -192,7 +192,9 @@ public class CharacterListFX {
     /* Generate a random integer and return the name of the corresponding character */
     public static String rollRandomCharacter() {
         int random;
-        random = new Random().nextInt(86);
+        do {
+            random = new Random().nextInt(86);
+        } while (ChecklistWindow.isBoxSelected(random));
         return getCharacterName(random);
     }
     /* Return an Image object representing the render of the character provided */
