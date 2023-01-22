@@ -12,10 +12,10 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.io.*;
@@ -49,6 +49,7 @@ public class ChecklistWindow {
     };
     Button hint = new Button();
     Tooltip hintTooltip = new Tooltip();
+    Text currentStatus = new Text();
 
     static ArrayList<CheckBox> boxes = new ArrayList<>();
     final private String charactersProperties = "characters.properties";
@@ -87,8 +88,9 @@ public class ChecklistWindow {
         hintTooltip.setY(100);
         hint.setTooltip(hintTooltip);
 
-        mainPane.setBackground(background);
-        mainPane.getChildren().addAll(searchField, hint);
+        currentStatus.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        currentStatus.setLayoutX(200);
+        currentStatus.setLayoutY(22);
 
         checkBoxesPane.setPrefSize(stage.getWidth(), stage.getHeight() - 25);
         checkBoxesPane.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
@@ -99,7 +101,10 @@ public class ChecklistWindow {
         checkBoxesPane.setHgap(15);
         makeCheckBoxes();
         initializeCheckBoxes();
+        currentStatus.setText(updateCurrentStatusText(getBoxesChecked(boxes)));
         mainPane.getChildren().add(checkBoxesPane);
+        mainPane.getChildren().addAll(searchField, hint, currentStatus);
+        mainPane.setBackground(background);
 
         scene.getStylesheets().add("/resources/style.css");
         stage.setScene(scene);
@@ -150,7 +155,7 @@ public class ChecklistWindow {
         properties.store(outputProperties, "This file register the checkboxes state");
     }
     /* Return true if the specified box is checked */
-    public static boolean isBoxSelected(int box) {
+    public static boolean isBoxChecked(int box) {
         return boxes.get(box).isSelected();
     }
     /* Return true if all check-boxes are checked */
@@ -161,6 +166,16 @@ public class ChecklistWindow {
             }
         }
         return true;
+    }
+    /* Returns how many box are checked */
+    private int getBoxesChecked(ArrayList<CheckBox> arrayList) {
+        int numberOfBoxes = 0;
+        for (CheckBox box : arrayList) {
+            if (box.isSelected()) {
+                numberOfBoxes++;
+            }
+        }
+        return numberOfBoxes;
     }
     /* Check if String text contain String substring */
     private boolean textContains(String stringToCheck, String substring) {
@@ -188,6 +203,23 @@ public class ChecklistWindow {
         }
         return false;
     }
+    /* Return a string that states the current number of characters selected */
+    private String updateCurrentStatusText(int numberOfBox) {
+        String text;
+        if (numberOfBox == 0) {
+            text = "No character selected";
+            return text;
+        } else if(numberOfBox == 1) {
+            text = " character selected";
+            return numberOfBox + text;
+        } else if (numberOfBox == 86) {
+            text = "Every character selected";
+            return text;
+        } else {
+            text = " characters selected";
+            return numberOfBox + text;
+        }
+    }
     /* Show this window on the screen */
     public void show() {
         stage.show();
@@ -204,5 +236,7 @@ public class ChecklistWindow {
                 throw new RuntimeException(ex);
             }
         }
+        //Updates the current number of characters selected
+        currentStatus.setText(updateCurrentStatusText(getBoxesChecked(boxes)));
     }
 }
