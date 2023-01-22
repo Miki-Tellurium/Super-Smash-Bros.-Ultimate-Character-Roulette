@@ -1,12 +1,9 @@
 package com.mikitellurium.SmashRouletteFX;
 
-import com.mikitellurium.smashcharacterreoulette.SmashRoulette;
 import javafx.scene.image.Image;
 
-import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Random;
 
 public class CharacterListFX {
