@@ -1,18 +1,15 @@
 package com.mikitellurium.SmashRouletteFX;
 
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -24,7 +21,7 @@ public class ChecklistWindow {
 
     Stage stage = new Stage();
     GridPane checkBoxesPane = new GridPane();
-    Pane mainPane = new Pane(checkBoxesPane);
+    Pane mainPane = new Pane();
     Scene scene = new Scene(mainPane);
 
     final BackgroundImage backgroundImage = new BackgroundImage(new Image("/resources/mural.jpg", 1100, 250, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1100, 250, false, false, false, false));
@@ -39,8 +36,8 @@ public class ChecklistWindow {
         stage.setTitle("Characters Checklist");
         stage.getIcons().add(new Image("/resources/smash logo.png"));
         stage.setResizable(false);
-        stage.setWidth(1100);
-        stage.setHeight(250);
+        stage.setWidth(1000);
+        stage.setHeight(270);
         stage.setX(screenSize.getWidth()/2 - stage.getWidth()/2);
         stage.setY(screenSize.getHeight()/2 - stage.getHeight()/2);
 
@@ -56,7 +53,7 @@ public class ChecklistWindow {
         hint.setLayoutX(searchField.getLayoutX() + searchField.getPrefWidth() + 5);
         hint.setLayoutY(0);
         hint.getStyleClass().add("hint");
-        hintTooltip.setText("Search a character to highlight it on the list");
+        hintTooltip.setText("Type a character name to highlight it on the list");
         hintTooltip.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         hintTooltip.setStyle("-fx-background-color: linear-gradient(to left, #24CFFE, #007BFD); -fx-text-fill: black;");
         hintTooltip.setMaxHeight(10);
@@ -66,12 +63,39 @@ public class ChecklistWindow {
         hintTooltip.setY(100);
         hint.setTooltip(hintTooltip);
 
-
         mainPane.setBackground(background);
         mainPane.getChildren().addAll(searchField, hint);
+
+        checkBoxesPane.setPrefSize(stage.getWidth(), stage.getHeight() - 25);
+        checkBoxesPane.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        checkBoxesPane.setLayoutX(0);
+        checkBoxesPane.setLayoutY(25);
+        checkBoxesPane.setPadding(new Insets(5));
+        checkBoxesPane.setVgap(2);
+        checkBoxesPane.setHgap(12);
+        makeCheckBoxes();
+        mainPane.getChildren().add(checkBoxesPane);
 
         scene.getStylesheets().add("/resources/buttonStyle.css");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void makeCheckBoxes() {
+        int column = 0;
+        int row = 0;
+        for (int character = 0; character < 86; character++) {
+            CheckBox checkBox = new CheckBox(CharacterListFX.getCharacterName(character));
+            GridPane.setConstraints(checkBox, column, row);
+            checkBox.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 12));
+            checkBox.setTextFill(Color.BLACK);
+            checkBoxesPane.getChildren().add(checkBox);
+            if (column < 7) {
+                column++;
+            } else {
+                column = 0;
+                row++;
+            }
+        }
     }
 }
