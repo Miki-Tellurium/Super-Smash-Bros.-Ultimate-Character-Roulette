@@ -31,8 +31,12 @@
 	-fx-border-radius:2px; 
 
 }
-.check-box:selected .mark {
-	-fx-background-color: #100080;
+.check-box:selected > .box > .mark {
+	-fx-background-insets: 0px, 0px, 1px, 0px;
+	-fx-background-color: #000126;
+}
+.check-box:hover > .box{ 
+	-fx-background-color: linear-gradient(to top, #ACFEFE, #DBFEFE);
 }
 .check-box:selected .box {
 	-fx-background-color: white;
