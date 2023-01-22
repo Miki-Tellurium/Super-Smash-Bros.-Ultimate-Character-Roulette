@@ -16,6 +16,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class MainWindow {
 
@@ -46,7 +47,7 @@ public class MainWindow {
     //Display the series symbol
     ImageView seriesSymbol = new ImageView();
 
-    public MainWindow(Stage mainStage) {
+    public MainWindow(Stage mainStage) throws IOException {
         //Main window
         mainStage.setTitle("Super Smash Bros. Ultimate Characters Roulette");
         mainStage.getIcons().add(new Image("/resources/smash logo.png"));
@@ -88,7 +89,8 @@ public class MainWindow {
         characterListButton.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
         characterListButton.setOnMouseEntered(e -> changeButtonColorWhenEnter(characterListButton));
         characterListButton.setOnMouseExited(e -> changeButtonColorWhenExit(characterListButton));
-        characterListButton.setOnAction(e -> new ChecklistWindow(mainStage));
+        ChecklistWindow cheklistWindow = new ChecklistWindow(mainStage);
+        characterListButton.setOnAction(e -> cheklistWindow.show());
 
         credit.setText("by Miki_Tellurium");
         credit.setFont(Font.font("Arial", FontWeight.BOLD, 12));
@@ -112,16 +114,14 @@ public class MainWindow {
 
         rootPane.setBackground(mainStageBackground);
         rootPane.getChildren().addAll(randomButton, refreshButton, characterListButton, credit);
-        mainScene.getStylesheets().add("/resources/buttonStyle.css");
+        mainScene.getStylesheets().add("/resources/style.css");
         mainStage.setScene(mainScene);
         mainStage.show();
     }
-
     /* Functionality of the random button */
     private void randomButtonAction() {
         randomButton.setDisable(true);
         refreshButton.setDisable(false);
-        //displayCharacter("Bayonetta");
         displayCharacter(CharacterListFX.rollRandomCharacter());
     }
     /* Functionality of the refresh button */
@@ -132,13 +132,18 @@ public class MainWindow {
     }
     /* Display the character name, render and series symbol on the screen */
     private void displayCharacter(String name) {
-        characterName.setText(name);
-        characterName.setLayoutX(250 - characterName.getLayoutBounds().getWidth()/2);
-        characterRender.setImage(CharacterListFX.getCharacterRender(name));
-        seriesSymbol.setImage(CharacterListFX.getSeriesSymbol(name));
-        rootPane.getChildren().addAll(characterName, characterRender, seriesSymbol);
+        if (!ChecklistWindow.areAllBoxChecked()) {
+            characterName.setText(name);
+            characterName.setLayoutX(250 - characterName.getLayoutBounds().getWidth() / 2);
+            characterRender.setImage(CharacterListFX.getCharacterRender(name));
+            seriesSymbol.setImage(CharacterListFX.getSeriesSymbol(name));
+            rootPane.getChildren().addAll(characterName, characterRender, seriesSymbol);
+        } else {
+            characterName.setText("All characters done!");
+            characterName.setLayoutX(250 - characterName.getLayoutBounds().getWidth() / 2);
+            rootPane.getChildren().add(characterName);
+        }
     }
-
     //Change button look when mouse pointer enter/exit buttons
     private void changeButtonColorWhenEnter(Button button) {
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #7DFFFF)");
