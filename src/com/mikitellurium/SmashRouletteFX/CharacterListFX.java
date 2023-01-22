@@ -194,7 +194,7 @@ public class CharacterListFX {
         int random;
         do {
             random = new Random().nextInt(86);
-        } while (ChecklistWindow.isBoxSelected(random));
+        } while (ChecklistWindow.isBoxChecked(random));
         return getCharacterName(random);
     }
     /* Return an Image object representing the render of the character provided */
