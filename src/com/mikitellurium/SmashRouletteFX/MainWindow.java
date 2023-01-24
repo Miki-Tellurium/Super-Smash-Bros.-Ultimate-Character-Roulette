@@ -130,7 +130,7 @@ public class MainWindow {
         randomButton.setDisable(false);
         refreshButton.setDisable(true);
     }
-    /* Display the character name, render and series symbol on the screen */
+    /* Displays the character name, render and series symbol on the screen */
     private void displayCharacter(String name) {
         if (!ChecklistWindow.areAllBoxChecked()) {
             characterName.setText(name);
@@ -144,7 +144,7 @@ public class MainWindow {
             rootPane.getChildren().add(characterName);
         }
     }
-    //Change button look when mouse pointer enter/exit buttons
+    //Changes button look when mouse pointer enter/exit buttons
     private void changeButtonColorWhenEnter(Button button) {
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #7DFFFF)");
     }

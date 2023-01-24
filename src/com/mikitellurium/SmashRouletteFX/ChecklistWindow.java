@@ -51,7 +51,7 @@ public class ChecklistWindow {
     Tooltip hintTooltip = new Tooltip();
     Text currentStatus = new Text();
 
-    static ArrayList<CheckBox> boxes = new ArrayList<>();
+    private static final ArrayList<CheckBox> boxes = new ArrayList<>();
     final private String charactersProperties = "characters.properties";
     final Properties properties = new Properties();
 
@@ -129,36 +129,18 @@ public class ChecklistWindow {
             }
         }
     }
-    /* Check if the properties file already exist */
-    private void initializeCheckBoxes() throws IOException {
-        File file = new File(charactersProperties);
-        if (file.exists()) {
-            readCheckBoxState(boxes);
-        } else {
-            saveCheckBoxState(boxes);
-        }
+
+    /* Show this window on the screen */
+    public void show() {
+        stage.show();
     }
-    /* Read the properties file to set the state of all checkboxes */
-    private void readCheckBoxState(ArrayList<CheckBox> arrayList) throws IOException {
-        InputStream inputProperties = new FileInputStream(charactersProperties);
-        properties.load(inputProperties);
-        for (CheckBox box : arrayList) {
-            box.setSelected(Boolean.parseBoolean(properties.getProperty(box.getText())));
-        }
-    }
-    /* Generate a new properties file to save character progress */
-    private void saveCheckBoxState(ArrayList<CheckBox> arrayList) throws IOException {
-        OutputStream outputProperties = new FileOutputStream(charactersProperties);
-        for (CheckBox box : arrayList) {
-            properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
-        }
-        properties.store(outputProperties, "This file register the checkboxes state");
-    }
-    /* Return true if the specified box is checked */
+
+    /* Returns true if the specified box is checked */
     public static boolean isBoxChecked(int box) {
         return boxes.get(box).isSelected();
     }
-    /* Return true if all check-boxes are checked */
+
+    /* Returns true if all check-boxes are checked */
     public static boolean areAllBoxChecked() {
         for (CheckBox box : boxes) {
             if (!box.isSelected()) {
@@ -167,6 +149,35 @@ public class ChecklistWindow {
         }
         return true;
     }
+
+    /* Checks if the properties file already exist */
+    private void initializeCheckBoxes() throws IOException {
+        File file = new File(charactersProperties);
+        if (file.exists()) {
+            readCheckBoxState(boxes);
+        } else {
+            saveCheckBoxState(boxes);
+        }
+    }
+
+    /* Reads the properties file to set the state of all checkboxes */
+    private void readCheckBoxState(ArrayList<CheckBox> arrayList) throws IOException {
+        InputStream inputProperties = new FileInputStream(charactersProperties);
+        properties.load(inputProperties);
+        for (CheckBox box : arrayList) {
+            box.setSelected(Boolean.parseBoolean(properties.getProperty(box.getText())));
+        }
+    }
+
+    /* Generates a new properties file to save character progress */
+    private void saveCheckBoxState(ArrayList<CheckBox> arrayList) throws IOException {
+        OutputStream outputProperties = new FileOutputStream(charactersProperties);
+        for (CheckBox box : arrayList) {
+            properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
+        }
+        properties.store(outputProperties, "This file register the checkboxes state");
+    }
+
     /* Returns how many box are checked */
     private int getBoxesChecked(ArrayList<CheckBox> arrayList) {
         int numberOfBoxes = 0;
@@ -177,15 +188,16 @@ public class ChecklistWindow {
         }
         return numberOfBoxes;
     }
-    /* Check if String text contain String substring */
-    private boolean textContains(String stringToCheck, String substring) {
-        if (stringToCheck == null) {
+
+    /* Returns true if substring is contained in string */
+    private boolean textContains(String string, String substring) {
+        if (string == null) {
             return false;
         }
         if (substring == null | Objects.equals(substring, "")) {
             return false;
         }
-        char[] fullString = stringToCheck.toLowerCase().toCharArray();
+        char[] fullString = string.toLowerCase().toCharArray();
         char[] sub = substring.toLowerCase().toCharArray();
         int counter = 0;
         if (sub.length == 0) {
@@ -203,7 +215,8 @@ public class ChecklistWindow {
         }
         return false;
     }
-    /* Return a string that states the current number of characters selected */
+
+    /* Returns a string that states the current number of characters selected */
     private String updateCurrentStatusText(int numberOfBox) {
         String text;
         if (numberOfBox == 0) {
@@ -220,11 +233,8 @@ public class ChecklistWindow {
             return numberOfBox + text;
         }
     }
-    /* Show this window on the screen */
-    public void show() {
-        stage.show();
-    }
-    /* Update the checkbox state in the characters.properties file */
+
+    /* Updates the checkbox state in the characters.properties file */
     private void fireCheckbox(ActionEvent e) {
         if (e.getSource() instanceof CheckBox box) {
             try {

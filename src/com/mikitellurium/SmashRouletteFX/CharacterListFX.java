@@ -185,11 +185,13 @@ public class CharacterListFX {
         seriesSymbols.put("Mii Swordfighter", "SmashBrosSymbol");
         seriesSymbols.put("Mii Gunner", "SmashBrosSymbol");
     }
-    /* Return the character name corresponding to the provided integer */
+
+    /* Returns the character name corresponding to the provided integer */
     public static String getCharacterName(int a) {
         return characters[a];
     }
-    /* Generate a random integer and return the name of the corresponding character */
+
+    /* Generates a random integer and returns the name of the corresponding character */
     public static String rollRandomCharacter() {
         int random;
         do {
@@ -197,11 +199,13 @@ public class CharacterListFX {
         } while (ChecklistWindow.isBoxChecked(random));
         return getCharacterName(random);
     }
-    /* Return an Image object representing the render of the character provided */
+
+    /* Returns an Image object representing the render of the character provided */
     public static Image getCharacterRender(String name) {
         return new Image("/resources/renders/" + name + ".png");
     }
-    /* Return an Image object representing the series symbol corresponding the provided character name */
+
+    /* Returns an Image object representing the series symbol corresponding the provided character name */
     public static Image getSeriesSymbol(String name) {
         String symbol = seriesSymbols.get(name);
         return new Image("/resources/symbols/" + symbol + ".png");
