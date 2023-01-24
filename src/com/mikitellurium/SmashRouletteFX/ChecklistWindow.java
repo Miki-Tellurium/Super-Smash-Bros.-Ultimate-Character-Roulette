@@ -59,21 +59,21 @@ public class ChecklistWindow {
     };
     Button hint = new Button();
     Tooltip hintTooltip = new Tooltip();
-    Text currentStatus = new Text();
+    static Text currentStatus = new Text();
 
     private static final ArrayList<CheckBox> boxes = new ArrayList<>();
-    final private String charactersProperties = "characters.properties";
-    final Properties properties = new Properties();
+    static final private String charactersProperties = "characters.properties";
+    final static Properties properties = new Properties();
 
-    public ChecklistWindow(Stage mainStage) throws IOException {
-        stage.initOwner(mainStage);
+    public ChecklistWindow(Stage parentStage) throws IOException {
+        stage.initOwner(parentStage);
         stage.setTitle("Characters Checklist");
         stage.getIcons().add(new Image("/resources/smash logo.png"));
         stage.setResizable(false);
         stage.setWidth(1000);
         stage.setHeight(280);
         stage.setX(screenSize.getWidth() / 2 - stage.getWidth() / 2);
-        stage.setY(screenSize.getHeight() / 2 - stage.getHeight() / 2);
+        stage.setY(screenSize.getHeight() / 2 - stage.getHeight() / 2 - 50);
 
         searchField.setPromptText("Search...");
         searchField.setPrefSize(120, 10);
@@ -100,6 +100,8 @@ public class ChecklistWindow {
         currentStatus.setLayoutX(245);
         currentStatus.setLayoutY(47);
 
+        checkAllBoxes.setOnAction(e -> showWarningMessage("CheckAll"));
+        uncheckAllBoxes.setOnAction(e -> showWarningMessage("UncheckAll"));
         options.getItems().addAll(checkAllBoxes, uncheckAllBoxes, higlightColorOptions);
         menuBar.getMenus().add(options);
         menuBar.setUseSystemMenuBar(true);
@@ -197,7 +199,7 @@ public class ChecklistWindow {
 
     /* Returns how many box are checked */
     @SuppressWarnings("SameParameterValue")
-    private int getBoxesChecked(ArrayList<CheckBox> arrayList) {
+    private static int getBoxesChecked(ArrayList<CheckBox> arrayList) {
         int numberOfBoxes = 0;
         for (CheckBox box : arrayList) {
             if (box.isSelected()) {
@@ -205,6 +207,12 @@ public class ChecklistWindow {
             }
         }
         return numberOfBoxes;
+    }
+
+    /* Show a warning window */
+    private void showWarningMessage(String warningMessage) {
+        WarningWindow warning = new WarningWindow(warningMessage);
+        warning.show();
     }
 
     /* Returns true if substring is contained in string */
@@ -235,7 +243,7 @@ public class ChecklistWindow {
     }
 
     /* Returns a string that states the current number of characters selected */
-    private String updateCurrentStatusText(int numberOfBox) {
+    private static String updateCurrentStatusText(int numberOfBox) {
         String text;
         if (numberOfBox == 0) {
             text = "No character selected";
@@ -252,12 +260,39 @@ public class ChecklistWindow {
         }
     }
 
+    public static void checkAll() {
+        for (CheckBox box : boxes) {
+            box.setSelected(true);
+            try {
+                OutputStream outputProperties = new FileOutputStream(charactersProperties);
+                properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
+                properties.store(outputProperties, "This file register the checkboxes state");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        currentStatus.setText(updateCurrentStatusText(getBoxesChecked(boxes)));
+    }
+
+    public static void uncheckAll() {
+        for (CheckBox box : boxes) {
+            box.setSelected(false);
+            try {
+                OutputStream outputProperties = new FileOutputStream(charactersProperties);
+                properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
+                properties.store(outputProperties, "This file register the checkboxes state");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        currentStatus.setText(updateCurrentStatusText(getBoxesChecked(boxes)));
+    }
+
     /* Updates the checkbox state in the characters.properties file */
     private void fireCheckbox(ActionEvent e) {
         if (e.getSource() instanceof CheckBox box) {
             try {
                 OutputStream outputProperties = new FileOutputStream(charactersProperties);
-                System.out.println("True");
                 properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
                 properties.store(outputProperties, "This file register the checkboxes state");
             } catch (IOException ex) {
