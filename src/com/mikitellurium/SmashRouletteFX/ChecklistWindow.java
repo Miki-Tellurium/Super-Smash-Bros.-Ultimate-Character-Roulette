@@ -6,6 +6,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -35,6 +38,12 @@ public class ChecklistWindow {
     final BackgroundImage backgroundImage = new BackgroundImage(new Image("/resources/mural.jpg", 1100, 250, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1100, 250, false, false, false, false));
     final Background background = new Background(backgroundImage);
 
+    MenuItem checkAllBoxes = new MenuItem("Check All");
+    MenuItem uncheckAllBoxes = new MenuItem("Uncheck All");
+    MenuItem higlightColorOptions = new MenuItem("Higlight Color");
+    Menu options = new Menu("Options");
+    MenuBar menuBar = new MenuBar();
+
     TextField searchField = new TextField();
     ChangeListener searchFieldListener = (observableValue, o, t1) -> {
         //Highlight the characters corresponding with the typed text
@@ -61,14 +70,14 @@ public class ChecklistWindow {
         stage.getIcons().add(new Image("/resources/smash logo.png"));
         stage.setResizable(false);
         stage.setWidth(1000);
-        stage.setHeight(260);
+        stage.setHeight(280);
         stage.setX(screenSize.getWidth() / 2 - stage.getWidth() / 2);
         stage.setY(screenSize.getHeight() / 2 - stage.getHeight() / 2);
 
         searchField.setPromptText("Search...");
         searchField.setPrefSize(120, 10);
         searchField.setLayoutX(5);
-        searchField.setLayoutY(0);
+        searchField.setLayoutY(25);
         searchField.textProperty().addListener(searchFieldListener);
 
         hint.setText("?");
@@ -76,7 +85,7 @@ public class ChecklistWindow {
         hint.setPrefSize(10, 10);
         hint.setPadding(new Insets(2, 7, 1, 7));
         hint.setLayoutX(searchField.getLayoutX() + searchField.getPrefWidth() + 5);
-        hint.setLayoutY(0);
+        hint.setLayoutY(25);
         hint.getStyleClass().add("hint");
         hintTooltip.setText("Type a character name to highlight it on the list");
         hintTooltip.setFont(Font.font("Arial", FontWeight.BOLD, 12));
@@ -84,26 +93,31 @@ public class ChecklistWindow {
         hintTooltip.setMaxHeight(10);
         hintTooltip.setShowDelay(Duration.ZERO);
         hintTooltip.setHideDelay(Duration.ZERO);
-        hintTooltip.setX(100);
-        hintTooltip.setY(100);
         hint.setTooltip(hintTooltip);
 
         currentStatus.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        currentStatus.setLayoutX(200);
-        currentStatus.setLayoutY(22);
+        currentStatus.setLayoutX(245);
+        currentStatus.setLayoutY(47);
+
+        options.getItems().addAll(checkAllBoxes, uncheckAllBoxes, higlightColorOptions);
+        menuBar.getMenus().add(options);
+        menuBar.setUseSystemMenuBar(true);
+        menuBar.setPrefSize(stage.getWidth(), 20);
+        menuBar.setLayoutX(0);
+        menuBar.setLayoutY(0);
 
         checkBoxesPane.setPrefSize(stage.getWidth(), stage.getHeight() - 25);
         checkBoxesPane.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         checkBoxesPane.setLayoutX(0);
-        checkBoxesPane.setLayoutY(25);
-        checkBoxesPane.setPadding(new Insets(7));
+        checkBoxesPane.setLayoutY(50);
+        checkBoxesPane.setPadding(new Insets(4));
         checkBoxesPane.setVgap(2);
         checkBoxesPane.setHgap(15);
         makeCheckBoxes();
         initializeCheckBoxes();
         currentStatus.setText(updateCurrentStatusText(getBoxesChecked(boxes)));
         mainPane.getChildren().add(checkBoxesPane);
-        mainPane.getChildren().addAll(searchField, hint, currentStatus);
+        mainPane.getChildren().addAll(menuBar, searchField, hint, currentStatus);
         mainPane.setBackground(background);
 
         scene.getStylesheets().add("/resources/style.css");
