@@ -45,6 +45,7 @@ public class ChecklistWindow {
     MenuBar menuBar = new MenuBar();
 
     TextField searchField = new TextField();
+    @SuppressWarnings("rawtypes")
     ChangeListener searchFieldListener = (observableValue, o, t1) -> {
         //Highlight the characters corresponding with the typed text
         String name = searchField.getText();
@@ -175,6 +176,7 @@ public class ChecklistWindow {
     }
 
     /* Reads the properties file to set the state of all checkboxes */
+    @SuppressWarnings("SameParameterValue")
     private void readCheckBoxState(ArrayList<CheckBox> arrayList) throws IOException {
         InputStream inputProperties = new FileInputStream(charactersProperties);
         properties.load(inputProperties);
@@ -184,6 +186,7 @@ public class ChecklistWindow {
     }
 
     /* Generates a new properties file to save character progress */
+    @SuppressWarnings("SameParameterValue")
     private void saveCheckBoxState(ArrayList<CheckBox> arrayList) throws IOException {
         OutputStream outputProperties = new FileOutputStream(charactersProperties);
         for (CheckBox box : arrayList) {
@@ -193,6 +196,7 @@ public class ChecklistWindow {
     }
 
     /* Returns how many box are checked */
+    @SuppressWarnings("SameParameterValue")
     private int getBoxesChecked(ArrayList<CheckBox> arrayList) {
         int numberOfBoxes = 0;
         for (CheckBox box : arrayList) {
