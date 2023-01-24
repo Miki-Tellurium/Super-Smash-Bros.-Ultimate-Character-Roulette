@@ -134,7 +134,7 @@ public class MainWindow {
     private void displayCharacter(String name) {
         if (!ChecklistWindow.areAllBoxChecked()) {
             characterName.setText(name);
-            characterName.setLayoutX(250 - characterName.getLayoutBounds().getWidth() / 2);
+            characterName.setLayoutX(250 - characterName.getLayoutBounds().getCenterX());
             characterRender.setImage(CharacterListFX.getCharacterRender(name));
             seriesSymbol.setImage(CharacterListFX.getSeriesSymbol(name));
             rootPane.getChildren().addAll(characterName, characterRender, seriesSymbol);
