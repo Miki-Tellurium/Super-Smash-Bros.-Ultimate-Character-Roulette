@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.util.Objects;
 
 public class WarningWindow {
@@ -29,6 +30,10 @@ public class WarningWindow {
         stage.setResizable(false);
         stage.setWidth(300);
         stage.setHeight(150);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        stage.setX(screenSize.getWidth()/2 - stage.getWidth()/2);
+        stage.setY(screenSize.getHeight()/2 - stage.getHeight()/2);
+
 
         warningText.setText(getWarningText(warningMessage));
         warningText.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
