@@ -23,7 +23,6 @@ public class MainWindow {
     Pane rootPane = new Pane();
     Scene mainScene = new Scene(rootPane);
 
-    final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     final BackgroundImage baseRefreshImage = new BackgroundImage(new Image("/resources/base refresh icon.png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(28, 28, false, false, false, false));
     final Background baseRefreshIcon = new Background(baseRefreshImage);
     final BackgroundImage hoverRefreshImage = new BackgroundImage(new Image("/resources/hover refresh icon.png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(28, 28, false, false, false, false));
@@ -55,6 +54,7 @@ public class MainWindow {
         mainStage.setWidth(500);
         mainStage.setHeight(300);
         //The window always appear at the center of the screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         mainStage.setX(screenSize.getWidth()/2 - mainStage.getWidth()/2);
         mainStage.setY(screenSize.getHeight()/2 - mainStage.getHeight()/2);
 
