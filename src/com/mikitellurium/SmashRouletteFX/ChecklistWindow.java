@@ -40,7 +40,7 @@ public class ChecklistWindow {
 
     MenuItem checkAllBoxes = new MenuItem("Check All");
     MenuItem uncheckAllBoxes = new MenuItem("Uncheck All");
-    MenuItem higlightColorOptions = new MenuItem("Higlight Color");
+    MenuItem higlightColorSetting = new MenuItem("Higlight Color");
     Menu options = new Menu("Options");
     MenuBar menuBar = new MenuBar();
 
@@ -65,6 +65,7 @@ public class ChecklistWindow {
     static final private String charactersProperties = "characters.properties";
     final static Properties properties = new Properties();
 
+    @SuppressWarnings("unchecked")
     public ChecklistWindow(Stage parentStage) throws IOException {
         stage.initOwner(parentStage);
         stage.setTitle("Characters Checklist");
@@ -102,7 +103,8 @@ public class ChecklistWindow {
 
         checkAllBoxes.setOnAction(e -> showWarningMessage("CheckAll"));
         uncheckAllBoxes.setOnAction(e -> showWarningMessage("UncheckAll"));
-        options.getItems().addAll(checkAllBoxes, uncheckAllBoxes, higlightColorOptions);
+        higlightColorSetting.setOnAction(e -> new RgbSettingsWindow().show());
+        options.getItems().addAll(checkAllBoxes, uncheckAllBoxes, higlightColorSetting);
         menuBar.getMenus().add(options);
         menuBar.setUseSystemMenuBar(true);
         menuBar.setPrefSize(stage.getWidth(), 20);
