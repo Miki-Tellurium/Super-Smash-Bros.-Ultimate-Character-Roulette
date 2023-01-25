@@ -79,7 +79,7 @@ public class WarningWindow {
         } else if (Objects.equals(warning, "UncheckAll")) {
             return "Are you sure you want to\n uncheck all characters?";
         }
-        return null; //This method should never return null
+        return null; // This method should never return null
     }
 
     /* Returns the text that should be displayed on the confirm button */
@@ -89,6 +89,6 @@ public class WarningWindow {
         } else if (Objects.equals(warning, "UncheckAll")) {
             return "Uncheck";
         }
-        return null; //This method should never return null
+        return null; // This method should never return null
     }
 }
