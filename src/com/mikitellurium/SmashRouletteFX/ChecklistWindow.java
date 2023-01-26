@@ -40,18 +40,19 @@ public class ChecklistWindow {
 
     MenuItem checkAllBoxes = new MenuItem("Check All");
     MenuItem uncheckAllBoxes = new MenuItem("Uncheck All");
-    MenuItem higlightColorSetting = new MenuItem("Higlight Color");
+    MenuItem higlightColorSetting = new MenuItem("Highlight Color");
     Menu options = new Menu("Options");
     MenuBar menuBar = new MenuBar();
 
     TextField searchField = new TextField();
+    Color highlightColor = Color.rgb(255, 0, 75);
     @SuppressWarnings("rawtypes")
     ChangeListener searchFieldListener = (observableValue, o, t1) -> {
         //Highlight the characters corresponding with the typed text
         String name = searchField.getText();
         for (CheckBox box : boxes) {
             if (textContains(box.getText(), name)) {
-                box.setTextFill(Color.rgb(255, 0, 75));
+                box.setTextFill(highlightColor);
             } else {
                 box.setTextFill(Color.BLACK);
             }
@@ -62,7 +63,7 @@ public class ChecklistWindow {
     static Text currentStatus = new Text();
 
     private static final ArrayList<CheckBox> boxes = new ArrayList<>();
-    static final private String charactersProperties = "characters.properties";
+    static final private String charactersProperties = "SmashRoulette.properties";
     final static Properties properties = new Properties();
 
     @SuppressWarnings("unchecked")
@@ -103,7 +104,13 @@ public class ChecklistWindow {
 
         checkAllBoxes.setOnAction(e -> showWarningMessage("CheckAll"));
         uncheckAllBoxes.setOnAction(e -> showWarningMessage("UncheckAll"));
-        higlightColorSetting.setOnAction(e -> new RgbSettingsWindow().show());
+        higlightColorSetting.setOnAction(e -> {
+            try {
+                new RgbSettingsWindow().show();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         options.getItems().addAll(checkAllBoxes, uncheckAllBoxes, higlightColorSetting);
         menuBar.getMenus().add(options);
         menuBar.setUseSystemMenuBar(true);
