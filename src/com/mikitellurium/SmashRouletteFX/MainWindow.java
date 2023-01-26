@@ -27,7 +27,7 @@ public class MainWindow {
     final Background baseRefreshIcon = new Background(baseRefreshImage);
     final BackgroundImage hoverRefreshImage = new BackgroundImage(new Image("/resources/hover refresh icon.png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(28, 28, false, false, false, false));
     final Background hoverRefreshIcon = new Background(hoverRefreshImage);
-    final BackgroundImage backgroundImage = new BackgroundImage(new Image("/resources/main background.jpg", 500, 300, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+    final BackgroundImage backgroundImage = new BackgroundImage(new Image("/resources/background.jpg", 500, 300, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
     final Background mainStageBackground = new Background(backgroundImage);
 
     //This button roll a random character
