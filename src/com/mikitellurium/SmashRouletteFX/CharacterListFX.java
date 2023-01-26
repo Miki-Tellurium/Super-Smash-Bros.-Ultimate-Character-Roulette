@@ -193,6 +193,9 @@ public class CharacterListFX {
 
     /* Generates a random integer and returns the name of the corresponding character */
     public static String rollRandomCharacter() {
+        if (ChecklistWindow.areAllBoxChecked()) {
+            return "All characters done!";
+        }
         int random;
         do {
             random = new Random().nextInt(86);

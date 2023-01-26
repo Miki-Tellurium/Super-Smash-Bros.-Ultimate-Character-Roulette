@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainWindow {
 
@@ -135,16 +136,16 @@ public class MainWindow {
 
     /* Displays the character name, render and series symbol on the screen */
     private void displayCharacter(String name) {
-        if (!ChecklistWindow.areAllBoxChecked()) {
+        if (Objects.equals(name, "All characters done!")) {
+            characterName.setText(name);
+            characterName.setLayoutX(250 - characterName.getLayoutBounds().getWidth() / 2);
+            rootPane.getChildren().add(characterName);
+        } else {
             characterName.setText(name);
             characterName.setLayoutX(250 - characterName.getLayoutBounds().getCenterX());
             characterRender.setImage(CharacterListFX.getCharacterRender(name));
             seriesSymbol.setImage(CharacterListFX.getSeriesSymbol(name));
             rootPane.getChildren().addAll(characterName, characterRender, seriesSymbol);
-        } else {
-            characterName.setText("All characters done!");
-            characterName.setLayoutX(250 - characterName.getLayoutBounds().getWidth() / 2);
-            rootPane.getChildren().add(characterName);
         }
     }
 
