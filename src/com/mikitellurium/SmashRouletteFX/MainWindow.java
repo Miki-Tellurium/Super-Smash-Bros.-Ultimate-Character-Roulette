@@ -118,18 +118,21 @@ public class MainWindow {
         mainStage.setScene(mainScene);
         mainStage.show();
     }
+
     /* Functionality of the random button */
     private void randomButtonAction() {
         randomButton.setDisable(true);
         refreshButton.setDisable(false);
         displayCharacter(CharacterListFX.rollRandomCharacter());
     }
+
     /* Functionality of the refresh button */
     private void refreshButtonAction() {
         rootPane.getChildren().removeAll(characterName, characterRender, seriesSymbol);
         randomButton.setDisable(false);
         refreshButton.setDisable(true);
     }
+
     /* Displays the character name, render and series symbol on the screen */
     private void displayCharacter(String name) {
         if (!ChecklistWindow.areAllBoxChecked()) {
@@ -144,16 +147,20 @@ public class MainWindow {
             rootPane.getChildren().add(characterName);
         }
     }
+
     //Changes button look when mouse pointer enter/exit buttons
     private void changeButtonColorWhenEnter(Button button) {
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #7DFFFF)");
     }
+
     private void changeButtonColorWhenExit(Button button) {
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
     }
+
     private void changeIconWhenEnter(Button button) {
         button.setBackground(hoverRefreshIcon);
     }
+
     private void changeIconWhenExit(Button button) {
         button.setBackground(baseRefreshIcon);
     }

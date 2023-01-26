@@ -269,6 +269,7 @@ public class ChecklistWindow {
         }
     }
 
+    /* Set all the check-boxes to selected */
     public static void checkAll() {
         for (CheckBox box : boxes) {
             box.setSelected(true);
@@ -283,6 +284,7 @@ public class ChecklistWindow {
         currentStatus.setText(updateCurrentStatusText(getBoxesChecked(boxes)));
     }
 
+    /* Set all the check-boxes to unselected */
     public static void uncheckAll() {
         for (CheckBox box : boxes) {
             box.setSelected(false);
@@ -297,7 +299,7 @@ public class ChecklistWindow {
         currentStatus.setText(updateCurrentStatusText(getBoxesChecked(boxes)));
     }
 
-    /* Updates the checkbox state in the characters.properties file */
+    /* Updates the checkbox state in the SmashRoulette.properties file */
     private void fireCheckbox(ActionEvent e) {
         if (e.getSource() instanceof CheckBox box) {
             try {
