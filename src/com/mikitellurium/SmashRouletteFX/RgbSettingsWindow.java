@@ -1,19 +1,28 @@
 package com.mikitellurium.SmashRouletteFX;
 
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javafx.beans.value.ChangeListener;
 import java.awt.*;
+import java.io.*;
 
 public class RgbSettingsWindow {
 
@@ -33,41 +42,47 @@ public class RgbSettingsWindow {
     Slider greenSlider = new Slider();
     Slider blueSlider = new Slider();
 
-    public RgbSettingsWindow() {
+    Button confirmButton = new Button("Ok");
+    Shape colorSquare = new Rectangle(30, 30);
+    ChangeListener<Number> colorListener = (observableValue, number, t1) -> {
+        colorSquare.setFill(updateSquareColor());
+    };
+
+    public RgbSettingsWindow() throws IOException {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Highlight Color Setting");
         stage.getIcons().add(new Image("/resources/smash logo.png"));
         stage.setResizable(false);
         stage.setWidth(400);
-        stage.setHeight(250);
+        stage.setHeight(210);
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         stage.setX(screenSize.getWidth()/2 - stage.getWidth()/2);
         stage.setY(screenSize.getHeight()/2 - stage.getHeight()/2);
 
         chooseAColor.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 20));
-        chooseAColor.setLayoutX(0);
+        chooseAColor.setLayoutX(10);
         chooseAColor.setLayoutY(15);
 
         red.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
         red.setTextFill(Color.RED);
-        GridPane.setConstraints(red, 0, 1);
+        GridPane.setConstraints(red, 0, 1, 1, 1, HPos.CENTER, VPos.CENTER);
         green.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
         green.setTextFill(Color.GREEN);
-        GridPane.setConstraints(green, 0, 2);
+        GridPane.setConstraints(green, 0, 2, 1, 1, HPos.CENTER, VPos.CENTER);
         blue.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
         blue.setTextFill(Color.BLUE);
-        GridPane.setConstraints(blue, 0, 3);
+        GridPane.setConstraints(blue, 0, 3, 1, 1, HPos.CENTER, VPos.CENTER);
 
         redTextField.setPrefSize(50, 10);
-        //redTextField.setTextFormatter(new TextFormatter<>(new NumberStringConverter(NumberFormat.getCompactNumberInstance())));
+        redTextField.setAlignment(Pos.CENTER);
         redTextField.valueProperty().bindBidirectional(redSlider.valueProperty());
         GridPane.setConstraints(redTextField, 1, 1);
         greenTextField.setPrefSize(50, 10);
-        //greenTextField.setTextFormatter(new TextFormatter<>(new NumberStringConverter(NumberFormat.getCompactNumberInstance())));
+        greenTextField.setAlignment(Pos.CENTER);
         greenTextField.valueProperty().bindBidirectional(greenSlider.valueProperty());
         GridPane.setConstraints(greenTextField, 1, 2);
         blueTextField.setPrefSize(50, 10);
-        ///blueTextField.setTextFormatter(new TextFormatter<>(new NumberStringConverter(NumberFormat.getCompactNumberInstance())));
+        blueTextField.setAlignment(Pos.CENTER);
         blueTextField.valueProperty().bindBidirectional(blueSlider.valueProperty());
         GridPane.setConstraints(blueTextField, 1, 3);
 
@@ -78,7 +93,8 @@ public class RgbSettingsWindow {
         redSlider.setMajorTickUnit(1);
         redSlider.setMinorTickCount(0);
         redSlider.setSnapToTicks(true);
-        redSlider.setValue(50);
+        //redSlider.setValue(getSquareColor("red"));
+        redSlider.valueProperty().addListener(colorListener);
         GridPane.setConstraints(redSlider, 2, 1);
         greenSlider.setPrefWidth(240);
         greenSlider.setMin(0);
@@ -87,7 +103,8 @@ public class RgbSettingsWindow {
         greenSlider.setMajorTickUnit(1);
         greenSlider.setMinorTickCount(0);
         greenSlider.setSnapToTicks(true);
-        greenSlider.setValue(110);
+        //greenSlider.setValue(getSquareColor("green"));
+        greenSlider.valueProperty().addListener(colorListener);
         GridPane.setConstraints(greenSlider, 2, 2);
         blueSlider.setPrefWidth(240);
         blueSlider.setMin(0);
@@ -96,12 +113,23 @@ public class RgbSettingsWindow {
         blueSlider.setMajorTickUnit(1);
         blueSlider.setMinorTickCount(0);
         blueSlider.setSnapToTicks(true);
-        blueSlider.setValue(220);
+        //blueSlider.setValue(getSquareColor("blue"));
+        blueSlider.valueProperty().addListener(colorListener);
         GridPane.setConstraints(blueSlider, 2, 3);
 
-        gridLayout.setHgap(20);
+        confirmButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        confirmButton.setPrefSize(50, 10);
+        confirmButton.setOnAction(e -> stage.close());
+        GridPane.setConstraints(confirmButton, 1, 4);
+        colorSquare.setFill(updateSquareColor());
+        GridPane.setConstraints(colorSquare, 2, 4, 1, 1, HPos.LEFT, VPos.BASELINE);
+
+        gridLayout.setPadding(new Insets(0, 5, 0, 5));
+        gridLayout.setHgap(15);
         gridLayout.setVgap(10);
-        gridLayout.getChildren().addAll(chooseAColor, red, green, blue, redTextField, greenTextField, blueTextField, redSlider, greenSlider, blueSlider);
+        gridLayout.getChildren().addAll(
+                chooseAColor, red, green, blue, redTextField, greenTextField, blueTextField, redSlider, greenSlider,
+                blueSlider, confirmButton, colorSquare);
         gridLayout.setLayoutX(0);
         gridLayout.setLayoutY(20);
 
@@ -112,5 +140,12 @@ public class RgbSettingsWindow {
     /* Shows the window */
     public void show() {
         stage.showAndWait();
+    }
+
+    public Color updateSquareColor() {
+        int red = redTextField.getValue();
+        int green = greenTextField.getValue();
+        int blue = blueTextField.getValue();
+        return Color.rgb(red, green, blue);
     }
 }
