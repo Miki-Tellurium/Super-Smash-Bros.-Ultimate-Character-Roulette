@@ -149,19 +149,22 @@ public class MainWindow {
         }
     }
 
-    //Changes button look when mouse pointer enter/exit buttons
+    /* Changes button look when mouse pointer enter buttons */
     private void changeButtonColorWhenEnter(Button button) {
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #7DFFFF)");
     }
 
+    /* Changes button look when mouse pointer exit buttons */
     private void changeButtonColorWhenExit(Button button) {
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
     }
 
+    /* Changes button look when mouse pointer enter button */
     private void changeIconWhenEnter(Button button) {
         button.setBackground(hoverRefreshIcon);
     }
 
+    /* Changes button look when mouse pointer exit button */
     private void changeIconWhenExit(Button button) {
         button.setBackground(baseRefreshIcon);
     }

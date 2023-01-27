@@ -204,7 +204,7 @@ public class ChecklistWindow {
             properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
         }
         properties.setProperty("highlight-color", defaultColorString);
-        properties.store(outputProperties, "This file register the checkboxes state");
+        properties.store(outputProperties, "This file register the application data");
     }
 
     /* Save the current data to the properties file */
@@ -214,7 +214,7 @@ public class ChecklistWindow {
             properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
         }
         properties.setProperty("highlight-color", ColorConverter.colorToString(highlightColor.getRed()*255, highlightColor.getGreen()*255, highlightColor.getBlue()*255));
-        properties.store(outputProperties, "This file register the checkboxes state");
+        properties.store(outputProperties, "This file register the application data");
     }
 
     /* Returns how many box are checked */
@@ -287,7 +287,7 @@ public class ChecklistWindow {
             try {
                 OutputStream outputProperties = new FileOutputStream(charactersProperties);
                 properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
-                properties.store(outputProperties, "This file register the checkboxes state");
+                properties.store(outputProperties, "This file register the application data");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -302,7 +302,7 @@ public class ChecklistWindow {
             try {
                 OutputStream outputProperties = new FileOutputStream(charactersProperties);
                 properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
-                properties.store(outputProperties, "This file register the checkboxes state");
+                properties.store(outputProperties, "This file register the application data");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -336,7 +336,7 @@ public class ChecklistWindow {
             try {
                 OutputStream outputProperties = new FileOutputStream(charactersProperties);
                 properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
-                properties.store(outputProperties, "This file register the checkboxes state");
+                properties.store(outputProperties, "This file register the application data");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
