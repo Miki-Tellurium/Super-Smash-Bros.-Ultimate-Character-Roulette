@@ -12,6 +12,7 @@ public class SmashRouletteFX extends Application {
     }
 
     @Override
+    @SuppressWarnings("unused")
     public void start(Stage primaryStage) throws IOException {
         MainWindow main = new MainWindow(primaryStage);
     }
