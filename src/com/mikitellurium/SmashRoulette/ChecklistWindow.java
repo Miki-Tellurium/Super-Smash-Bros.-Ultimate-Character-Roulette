@@ -40,6 +40,7 @@ public class ChecklistWindow {
 
     MenuItem checkAllBoxes = new MenuItem("Check All");
     MenuItem uncheckAllBoxes = new MenuItem("Uncheck All");
+    SeparatorMenuItem separator = new SeparatorMenuItem();
     MenuItem higlightColorSetting = new MenuItem("Highlight Color");
     Menu options = new Menu("Options");
     MenuBar menuBar = new MenuBar();
@@ -100,6 +101,7 @@ public class ChecklistWindow {
         higlightColorSetting.setOnAction(e -> new RgbSettingsWindow().show());
 
         options.getItems().addAll(checkAllBoxes, uncheckAllBoxes, higlightColorSetting);
+        options.getItems().add(2, separator);
         menuBar.getMenus().add(options);
         menuBar.setUseSystemMenuBar(true);
         menuBar.setPrefSize(stage.getWidth(), 20);
