@@ -93,7 +93,7 @@ public class RgbSettingsWindow {
         redSlider.setMajorTickUnit(1);
         redSlider.setMinorTickCount(0);
         redSlider.setSnapToTicks(true);
-        //redSlider.setValue(getSquareColor("red"));
+        redSlider.setValue(ChecklistWindow.getHighlightColor().getRed()*255);
         redSlider.valueProperty().addListener(colorListener);
         GridPane.setConstraints(redSlider, 2, 1);
         greenSlider.setPrefWidth(240);
@@ -103,7 +103,7 @@ public class RgbSettingsWindow {
         greenSlider.setMajorTickUnit(1);
         greenSlider.setMinorTickCount(0);
         greenSlider.setSnapToTicks(true);
-        //greenSlider.setValue(getSquareColor("green"));
+        greenSlider.setValue(ChecklistWindow.getHighlightColor().getGreen()*255);
         greenSlider.valueProperty().addListener(colorListener);
         GridPane.setConstraints(greenSlider, 2, 2);
         blueSlider.setPrefWidth(240);
@@ -113,15 +113,15 @@ public class RgbSettingsWindow {
         blueSlider.setMajorTickUnit(1);
         blueSlider.setMinorTickCount(0);
         blueSlider.setSnapToTicks(true);
-        //blueSlider.setValue(getSquareColor("blue"));
+        blueSlider.setValue(ChecklistWindow.getHighlightColor().getBlue()*255);
         blueSlider.valueProperty().addListener(colorListener);
         GridPane.setConstraints(blueSlider, 2, 3);
 
         confirmButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         confirmButton.setPrefSize(50, 10);
-        confirmButton.setOnAction(e -> stage.close());
+        confirmButton.setOnAction(e -> confirmButtonAction());
         GridPane.setConstraints(confirmButton, 1, 4);
-        colorSquare.setFill(updateSquareColor());
+        colorSquare.setFill(ChecklistWindow.getHighlightColor());
         GridPane.setConstraints(colorSquare, 2, 4, 1, 1, HPos.LEFT, VPos.BASELINE);
 
         gridLayout.setPadding(new Insets(0, 5, 0, 5));
@@ -140,6 +140,12 @@ public class RgbSettingsWindow {
     /* Shows the window */
     public void show() {
         stage.showAndWait();
+    }
+
+    /* Confirm button action */
+    private void confirmButtonAction() {
+        ChecklistWindow.setHighlightColor(updateSquareColor());
+        stage.close();
     }
 
     public Color updateSquareColor() {

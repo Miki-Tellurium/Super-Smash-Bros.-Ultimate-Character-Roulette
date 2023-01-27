@@ -45,7 +45,7 @@ public class ChecklistWindow {
     MenuBar menuBar = new MenuBar();
 
     TextField searchField = new TextField();
-    Color highlightColor = Color.rgb(255, 0, 75);
+    static Color highlightColor; //= Color.rgb(255, 0, 75);
     @SuppressWarnings("rawtypes")
     ChangeListener searchFieldListener = (observableValue, o, t1) -> {
         //Highlight the characters corresponding with the typed text
@@ -81,6 +81,7 @@ public class ChecklistWindow {
         searchField.setPrefSize(120, 10);
         searchField.setLayoutX(5);
         searchField.setLayoutY(25);
+        setHighlightColor(Color.rgb(255, 0, 75));
         searchField.textProperty().addListener(searchFieldListener);
 
         hint.setText("?");
@@ -297,6 +298,14 @@ public class ChecklistWindow {
             }
         }
         currentStatus.setText(updateCurrentStatusText(getBoxesChecked(boxes)));
+    }
+
+    public static void setHighlightColor(Color color) {
+        highlightColor = color;
+    }
+
+    public static Color getHighlightColor() {
+        return highlightColor;
     }
 
     /* Updates the checkbox state in the SmashRoulette.properties file */

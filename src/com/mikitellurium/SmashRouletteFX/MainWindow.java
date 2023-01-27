@@ -90,8 +90,8 @@ public class MainWindow {
         characterListButton.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
         characterListButton.setOnMouseEntered(e -> changeButtonColorWhenEnter(characterListButton));
         characterListButton.setOnMouseExited(e -> changeButtonColorWhenExit(characterListButton));
-        ChecklistWindow cheklistWindow = new ChecklistWindow(mainStage);
-        characterListButton.setOnAction(e -> cheklistWindow.show());
+        ChecklistWindow checklistWindow = new ChecklistWindow(mainStage);
+        characterListButton.setOnAction(e -> checklistWindow.show());
 
         credit.setText("by Miki_Tellurium");
         credit.setFont(Font.font("Arial", FontWeight.BOLD, 12));
