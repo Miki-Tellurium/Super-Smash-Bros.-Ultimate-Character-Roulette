@@ -1,4 +1,4 @@
-package com.mikitellurium.SmashRouletteFX;
+package com.mikitellurium.SmashRoulette;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.TextField;

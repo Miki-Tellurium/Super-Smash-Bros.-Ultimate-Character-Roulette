@@ -1,4 +1,4 @@
-package com.mikitellurium.SmashRouletteFX;
+package com.mikitellurium.SmashRoulette;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;

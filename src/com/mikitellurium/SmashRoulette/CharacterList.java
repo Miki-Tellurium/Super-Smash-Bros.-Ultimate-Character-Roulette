@@ -1,4 +1,4 @@
-package com.mikitellurium.SmashRouletteFX;
+package com.mikitellurium.SmashRoulette;
 
 import javafx.scene.image.Image;
 
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class CharacterListFX {
+public class CharacterList {
     private static final String[] characters = {
             "Mario",
             "Donkey Kong",

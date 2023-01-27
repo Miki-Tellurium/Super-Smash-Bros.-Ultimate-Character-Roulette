@@ -2,7 +2,7 @@
  * WIP
  */
 
-package com.mikitellurium.SmashRouletteFX;
+package com.mikitellurium.SmashRoulette;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -124,7 +124,7 @@ public class MainWindow {
     private void randomButtonAction() {
         randomButton.setDisable(true);
         refreshButton.setDisable(false);
-        displayCharacter(CharacterListFX.rollRandomCharacter());
+        displayCharacter(CharacterList.rollRandomCharacter());
     }
 
     /* Functionality of the refresh button */
@@ -143,8 +143,8 @@ public class MainWindow {
         } else {
             characterName.setText(name);
             characterName.setLayoutX(250 - characterName.getLayoutBounds().getCenterX());
-            characterRender.setImage(CharacterListFX.getCharacterRender(name));
-            seriesSymbol.setImage(CharacterListFX.getSeriesSymbol(name));
+            characterRender.setImage(CharacterList.getCharacterRender(name));
+            seriesSymbol.setImage(CharacterList.getSeriesSymbol(name));
             rootPane.getChildren().addAll(characterName, characterRender, seriesSymbol);
         }
     }

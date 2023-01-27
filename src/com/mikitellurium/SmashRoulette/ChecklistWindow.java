@@ -1,4 +1,4 @@
-package com.mikitellurium.SmashRouletteFX;
+package com.mikitellurium.SmashRoulette;
 
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -141,7 +141,7 @@ public class ChecklistWindow {
         int column = 0;
         int row = 0;
         for (int character = 0; character < 86; character++) {
-            CheckBox checkBox = new CheckBox(CharacterListFX.getCharacterName(character));
+            CheckBox checkBox = new CheckBox(CharacterList.getCharacterName(character));
             GridPane.setConstraints(checkBox, column, row);
             checkBox.setFont(Font.font(FontUIResource.DIALOG, FontWeight.EXTRA_BOLD, 12));
             checkBox.setTextFill(Color.BLACK);

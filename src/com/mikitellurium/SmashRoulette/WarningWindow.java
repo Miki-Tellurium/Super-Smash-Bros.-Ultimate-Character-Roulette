@@ -1,4 +1,4 @@
-package com.mikitellurium.SmashRouletteFX;
+package com.mikitellurium.SmashRoulette;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

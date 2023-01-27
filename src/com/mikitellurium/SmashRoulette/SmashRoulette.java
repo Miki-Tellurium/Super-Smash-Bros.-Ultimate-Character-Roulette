@@ -1,11 +1,11 @@
-package com.mikitellurium.SmashRouletteFX;
+package com.mikitellurium.SmashRoulette;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SmashRouletteFX extends Application {
+public class SmashRoulette extends Application {
 
     public static void main(String[] args) {
         launch(args);
