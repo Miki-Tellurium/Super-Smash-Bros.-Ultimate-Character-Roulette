@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 
 import javafx.beans.value.ChangeListener;
 import java.awt.*;
-import java.io.*;
 
 public class RgbSettingsWindow {
 
@@ -44,11 +43,9 @@ public class RgbSettingsWindow {
 
     Button confirmButton = new Button("Ok");
     Shape colorSquare = new Rectangle(30, 30);
-    ChangeListener<Number> colorListener = (observableValue, number, t1) -> {
-        colorSquare.setFill(updateSquareColor());
-    };
+    ChangeListener<Number> colorListener = (observableValue, number, t1) -> colorSquare.setFill(updateSquareColor());
 
-    public RgbSettingsWindow() throws IOException {
+    public RgbSettingsWindow() {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Highlight Color Setting");
         stage.getIcons().add(new Image("/resources/smash logo.png"));
@@ -145,6 +142,7 @@ public class RgbSettingsWindow {
     /* Confirm button action */
     private void confirmButtonAction() {
         ChecklistWindow.setHighlightColor(updateSquareColor());
+        ChecklistWindow.updateCheckboxTextColor();
         stage.close();
     }
 

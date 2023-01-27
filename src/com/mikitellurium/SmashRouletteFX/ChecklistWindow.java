@@ -44,20 +44,10 @@ public class ChecklistWindow {
     Menu options = new Menu("Options");
     MenuBar menuBar = new MenuBar();
 
-    TextField searchField = new TextField();
-    static Color highlightColor; //= Color.rgb(255, 0, 75);
+    static TextField searchField = new TextField();
+    static Color highlightColor; //Default = Color.rgb(255, 0, 75);
     @SuppressWarnings("rawtypes")
-    ChangeListener searchFieldListener = (observableValue, o, t1) -> {
-        //Highlight the characters corresponding with the typed text
-        String name = searchField.getText();
-        for (CheckBox box : boxes) {
-            if (textContains(box.getText(), name)) {
-                box.setTextFill(highlightColor);
-            } else {
-                box.setTextFill(Color.BLACK);
-            }
-        }
-    };
+    ChangeListener searchFieldListener = (observableValue, o, t1) -> {updateCheckboxTextColor();};
     Button hint = new Button();
     Tooltip hintTooltip = new Tooltip();
     static Text currentStatus = new Text();
@@ -105,13 +95,8 @@ public class ChecklistWindow {
 
         checkAllBoxes.setOnAction(e -> showWarningMessage("CheckAll"));
         uncheckAllBoxes.setOnAction(e -> showWarningMessage("UncheckAll"));
-        higlightColorSetting.setOnAction(e -> {
-            try {
-                new RgbSettingsWindow().show();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
+        higlightColorSetting.setOnAction(e -> new RgbSettingsWindow().show());
+
         options.getItems().addAll(checkAllBoxes, uncheckAllBoxes, higlightColorSetting);
         menuBar.getMenus().add(options);
         menuBar.setUseSystemMenuBar(true);
@@ -226,7 +211,7 @@ public class ChecklistWindow {
     }
 
     /* Returns true if substring is contained in string */
-    private boolean textContains(String string, String substring) {
+    private static boolean textContains(String string, String substring) {
         if (string == null) {
             return false;
         }
@@ -306,6 +291,18 @@ public class ChecklistWindow {
 
     public static Color getHighlightColor() {
         return highlightColor;
+    }
+
+    public static void updateCheckboxTextColor() {
+        //Highlight the characters corresponding with the typed text
+        String name = searchField.getText();
+        for (CheckBox box : boxes) {
+            if (textContains(box.getText(), name)) {
+                box.setTextFill(highlightColor);
+            } else {
+                box.setTextFill(Color.BLACK);
+            }
+        }
     }
 
     /* Updates the checkbox state in the SmashRoulette.properties file */
