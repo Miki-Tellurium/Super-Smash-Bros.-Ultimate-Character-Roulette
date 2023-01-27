@@ -44,10 +44,13 @@ public class ChecklistWindow {
     Menu options = new Menu("Options");
     MenuBar menuBar = new MenuBar();
 
+    final Color defaultColor = Color.rgb(255, 0, 75);
+    final String defaultColorString = ColorConverter.colorToString(defaultColor.getRed()*255, defaultColor.getGreen()*255, defaultColor.getBlue()*255);
+
     static TextField searchField = new TextField();
-    static Color highlightColor; //Default = Color.rgb(255, 0, 75);
+    static Color highlightColor;
     @SuppressWarnings("rawtypes")
-    ChangeListener searchFieldListener = (observableValue, o, t1) -> {updateCheckboxTextColor();};
+    ChangeListener searchFieldListener = (observableValue, o, t1) -> {updateCheckboxTextColor(highlightColor);};
     Button hint = new Button();
     Tooltip hintTooltip = new Tooltip();
     static Text currentStatus = new Text();
@@ -71,7 +74,6 @@ public class ChecklistWindow {
         searchField.setPrefSize(120, 10);
         searchField.setLayoutX(5);
         searchField.setLayoutY(25);
-        setHighlightColor(Color.rgb(255, 0, 75));
         searchField.textProperty().addListener(searchFieldListener);
 
         hint.setText("?");
@@ -120,7 +122,20 @@ public class ChecklistWindow {
 
         scene.getStylesheets().add("/resources/style.css");
         stage.setScene(scene);
+        stage.setOnCloseRequest(e -> {
+            try {
+                saveCheckBoxData(boxes);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
     }
+
+    /* Show this window on the screen */
+    public void show() {
+        stage.show();
+    }
+
     /* Make the check-boxes and add them to an array */
     private void makeCheckBoxes() {
         int column = 0;
@@ -142,11 +157,6 @@ public class ChecklistWindow {
         }
     }
 
-    /* Show this window on the screen */
-    public void show() {
-        stage.show();
-    }
-
     /* Returns true if the specified box is checked */
     public static boolean isBoxChecked(int box) {
         return boxes.get(box).isSelected();
@@ -166,29 +176,42 @@ public class ChecklistWindow {
     private void initializeCheckBoxes() throws IOException {
         File file = new File(charactersProperties);
         if (file.exists()) {
-            readCheckBoxState(boxes);
+            readCheckBoxData(boxes);
         } else {
-            saveCheckBoxState(boxes);
+            highlightColor = defaultColor;
+            makeCheckBoxData(boxes);
         }
     }
 
-    /* Reads the properties file to set the state of all checkboxes */
+    /* Reads the properties file */
     @SuppressWarnings("SameParameterValue")
-    private void readCheckBoxState(ArrayList<CheckBox> arrayList) throws IOException {
+    private void readCheckBoxData(ArrayList<CheckBox> arrayList) throws IOException {
         InputStream inputProperties = new FileInputStream(charactersProperties);
         properties.load(inputProperties);
         for (CheckBox box : arrayList) {
             box.setSelected(Boolean.parseBoolean(properties.getProperty(box.getText())));
         }
+        setHighlightColor(ColorConverter.stringToColor(properties.getProperty("highlight-color")));
     }
 
-    /* Generates a new properties file to save character progress */
+    /* Generates a new properties file to program data */
     @SuppressWarnings("SameParameterValue")
-    private void saveCheckBoxState(ArrayList<CheckBox> arrayList) throws IOException {
+    private void makeCheckBoxData(ArrayList<CheckBox> arrayList) throws IOException {
         OutputStream outputProperties = new FileOutputStream(charactersProperties);
         for (CheckBox box : arrayList) {
             properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
         }
+        properties.setProperty("highlight-color", defaultColorString);
+        properties.store(outputProperties, "This file register the checkboxes state");
+    }
+
+    /* Save the current data to the properties file */
+    private void saveCheckBoxData(ArrayList<CheckBox> arrayList) throws IOException {
+        OutputStream outputProperties = new FileOutputStream(charactersProperties);
+        for (CheckBox box : arrayList) {
+            properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
+        }
+        properties.setProperty("highlight-color", ColorConverter.colorToString(highlightColor.getRed()*255, highlightColor.getGreen()*255, highlightColor.getBlue()*255));
         properties.store(outputProperties, "This file register the checkboxes state");
     }
 
@@ -293,12 +316,12 @@ public class ChecklistWindow {
         return highlightColor;
     }
 
-    public static void updateCheckboxTextColor() {
+    public static void updateCheckboxTextColor(Color color) {
         //Highlight the characters corresponding with the typed text
         String name = searchField.getText();
         for (CheckBox box : boxes) {
             if (textContains(box.getText(), name)) {
-                box.setTextFill(highlightColor);
+                box.setTextFill(color);
             } else {
                 box.setTextFill(Color.BLACK);
             }

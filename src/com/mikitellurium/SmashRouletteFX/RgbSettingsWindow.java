@@ -142,7 +142,7 @@ public class RgbSettingsWindow {
     /* Confirm button action */
     private void confirmButtonAction() {
         ChecklistWindow.setHighlightColor(updateSquareColor());
-        ChecklistWindow.updateCheckboxTextColor();
+        ChecklistWindow.updateCheckboxTextColor(updateSquareColor());
         stage.close();
     }
 
