@@ -146,6 +146,7 @@ public class RgbSettingsWindow {
         stage.close();
     }
 
+    /* Update the color indicator */
     public Color updateSquareColor() {
         int red = redTextField.getValue();
         int green = greenTextField.getValue();
