@@ -31,4 +31,5 @@ public class SmashRoulette extends Application {
     public void start(Stage primaryStage) throws IOException {
         MainWindow main = new MainWindow(primaryStage);
     }
+
 }

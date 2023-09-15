@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class CharacterList {
+
     private static final String[] characters = {
             "Mario",
             "Donkey Kong",
@@ -214,4 +215,5 @@ public class CharacterList {
         String symbol = seriesSymbols.get(name);
         return new Image("/resources/symbols/" + symbol + ".png");
     }
+
 }
