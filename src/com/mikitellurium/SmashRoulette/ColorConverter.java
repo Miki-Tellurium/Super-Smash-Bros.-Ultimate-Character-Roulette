@@ -13,7 +13,7 @@ public class ColorConverter {
 
     /* Convert a printable string to a color and return it */
     public static Color stringToColor(String colorString) {
-        var rgb = Arrays.stream(colorString.split(","))
+        int[] rgb = Arrays.stream(colorString.split(","))
                 .map(String::trim)
                 .mapToInt(Integer::parseInt)
                 .toArray();
