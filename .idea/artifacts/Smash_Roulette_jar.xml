@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="Smash Roulette:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/Smash_Roulette_jar</output-path>
-    <root id="archive" name="Smash Roulette.jar">
-      <element id="module-output" name="Smash Roulette" />
-    </root>
-  </artifact>
-</component>
