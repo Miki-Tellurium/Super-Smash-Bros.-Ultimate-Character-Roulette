@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="JavaFX19">
+    <CLASSES>
+      <root url="jar://C:/Program Files/Java/javafx-sdk-19/lib/javafx-swt.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
