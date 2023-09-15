@@ -4,6 +4,7 @@
 
 package com.mikitellurium.SmashRoulette.window;
 
+import com.mikitellurium.SmashRoulette.SmashRoulette;
 import com.mikitellurium.SmashRoulette.util.CharacterList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,6 +37,7 @@ public class MainWindow {
             BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
     final Background mainStageBackground = new Background(backgroundImage);
 
+    final String fontArial = "Arial";
     //This button roll a random character
     Button randomButton = new Button();
     //This button refresh the random button
@@ -44,6 +46,8 @@ public class MainWindow {
     Button characterListButton = new Button();
     //Display the credits
     Text credit = new Text();
+    //Display the version
+    Text version = new Text();
 
     //Display the name of the character
     Text characterName = new Text();
@@ -68,7 +72,7 @@ public class MainWindow {
         randomButton.setPrefSize(100, 30);
         randomButton.setLayoutX(mainStage.getWidth()/2 - randomButton.getPrefWidth()/2);
         randomButton.setLayoutY(40);
-        randomButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        randomButton.setFont(Font.font(fontArial, FontWeight.BOLD, 14));
         randomButton.getStyleClass().add("normal-buttons");
         randomButton.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
         randomButton.setOnMouseEntered(e -> changeButtonColorWhenEnter(randomButton));
@@ -89,7 +93,7 @@ public class MainWindow {
         characterListButton.setPrefSize(80, 40);
         characterListButton.setLayoutX(mainStage.getWidth() - characterListButton.getPrefWidth() - 20);
         characterListButton.setLayoutY(mainStage.getHeight() - characterListButton.getPrefHeight()*2 - 3);
-        characterListButton.setFont(Font.font("Arial", FontWeight.BOLD, 11));
+        characterListButton.setFont(Font.font(fontArial, FontWeight.BOLD, 11));
         characterListButton.setTextAlignment(TextAlignment.JUSTIFY);
         characterListButton.getStyleClass().add("normal-buttons");
         characterListButton.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
@@ -99,11 +103,16 @@ public class MainWindow {
         characterListButton.setOnAction(e -> checklistWindow.show());
 
         credit.setText("by Miki_Tellurium");
-        credit.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-        credit.setLayoutX(mainStage.getWidth() -  credit.getText().length()*7);  //multiplying by 7 moves the text right enough
+        credit.setFont(Font.font(fontArial, FontWeight.BOLD, 12));
+        credit.setLayoutX(mainStage.getWidth() - credit.getText().length()*7);  //multiplying by 7 moves the text right enough
         credit.setLayoutY(12);
 
-        characterName.setFont(Font.font("Arial", FontWeight.BOLD, 32));
+        version.setText("v" + SmashRoulette.VERSION);
+        version.setFont(Font.font(fontArial, FontWeight.BOLD, 12));
+        version.setLayoutX(2);
+        version.setLayoutY(mainStage.getHeight() - 42);
+
+        characterName.setFont(Font.font(fontArial, FontWeight.BOLD, 32));
         characterName.setLayoutY(randomButton.getLayoutY() + randomButton.getPrefHeight()*2.5);
 
         characterRender.setViewOrder(1.0);
@@ -119,7 +128,7 @@ public class MainWindow {
         seriesSymbol.setLayoutY(25);
 
         rootPane.setBackground(mainStageBackground);
-        rootPane.getChildren().addAll(randomButton, refreshButton, characterListButton, credit);
+        rootPane.getChildren().addAll(randomButton, refreshButton, characterListButton, credit, version);
         mainScene.getStylesheets().add("/resources/style.css");
         mainStage.setScene(mainScene);
         mainStage.show();

@@ -22,6 +22,8 @@ import java.io.IOException;
 
 public class SmashRoulette extends Application {
 
+    public static final String VERSION = "2.1.0";
+
     public static void main(String[] args) {
         launch(args);
     }
