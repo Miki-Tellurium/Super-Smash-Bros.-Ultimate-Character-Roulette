@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fbd1bcb2-ba47-4ce1-83c6-d60831d57c3f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SmashRoulette.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Smash_Roulette_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Smash Roulette.iml" beforeDir="false" />
+    <list default="true" id="fbd1bcb2-ba47-4ce1-83c6-d60831d57c3f" name="Changes" comment="Added gitignore">
+      <change beforePath="$PROJECT_DIR$/src/com/mikitellurium/SmashRoulette/ChecklistWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/mikitellurium/SmashRoulette/ChecklistWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/mikitellurium/SmashRoulette/ColorConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/mikitellurium/SmashRoulette/ColorConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/mikitellurium/SmashRoulette/WarningWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/mikitellurium/SmashRoulette/WarningWindow.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,28 +17,28 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 5
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2R7D3H69luuYOcyMcQTuDnBOvcp" />
   <component name="ProjectViewState">
     <option name="autoscrollToSource" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Program Files/Java/javafx-sdk-19/lib/javafx.web.jar&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.appearance&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Program Files/Java/javafx-sdk-19/lib/javafx.web.jar",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "configurable.group.appearance"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration default="true" type="Application" factoryName="Application">
       <option name="VM_PARAMETERS" value="--module-path &quot;C:\Program Files\Java\javafx-sdk-19\lib&quot; --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.web --add-exports javafx.graphics/com.sun.javafx.sg.prism=ALL-UNNAMED" />
@@ -61,6 +56,37 @@
       <option name="presentableId" value="Default" />
       <updated>1686592025811</updated>
     </task>
+    <task id="LOCAL-00001" summary="Changed var to int array">
+      <option name="closed" value="true" />
+      <created>1694764981632</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1694764981632</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Dump">
+      <option name="closed" value="true" />
+      <created>1694764994687</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1694764994687</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added gitignore">
+      <option name="closed" value="true" />
+      <created>1694765171534</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1694765171534</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Changed var to int array" />
+    <MESSAGE value="Dump" />
+    <MESSAGE value="Added gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added gitignore" />
   </component>
 </project>

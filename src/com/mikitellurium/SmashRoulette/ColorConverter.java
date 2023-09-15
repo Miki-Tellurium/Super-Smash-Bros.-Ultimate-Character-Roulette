@@ -19,4 +19,5 @@ public class ColorConverter {
                 .toArray();
         return Color.rgb(rgb[0], rgb[1], rgb[2]);
     }
+
 }

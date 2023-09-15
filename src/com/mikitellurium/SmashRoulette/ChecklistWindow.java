@@ -35,23 +35,26 @@ public class ChecklistWindow {
     Pane mainPane = new Pane();
     Scene scene = new Scene(mainPane);
 
-    final BackgroundImage backgroundImage = new BackgroundImage(new Image("/resources/mural.jpg", 1100, 250, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1100, 250, false, false, false, false));
+    final BackgroundImage backgroundImage = new BackgroundImage(new Image("/resources/mural.jpg",
+            1100, 250, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+            new BackgroundSize(1100, 250, false, false, false, false));
     final Background background = new Background(backgroundImage);
 
     MenuItem checkAllBoxes = new MenuItem("Check All");
     MenuItem uncheckAllBoxes = new MenuItem("Uncheck All");
     SeparatorMenuItem separator = new SeparatorMenuItem();
-    MenuItem higlightColorSetting = new MenuItem("Highlight Color");
+    MenuItem highlightColorSetting = new MenuItem("Highlight Color");
     Menu options = new Menu("Options");
     MenuBar menuBar = new MenuBar();
 
     final Color defaultColor = Color.rgb(255, 0, 75);
-    final String defaultColorString = ColorConverter.colorToString(defaultColor.getRed()*255, defaultColor.getGreen()*255, defaultColor.getBlue()*255);
+    final String defaultColorString = ColorConverter.colorToString(defaultColor.getRed() * 255, defaultColor.getGreen() * 255,
+            defaultColor.getBlue() * 255);
 
     static TextField searchField = new TextField();
     static Color highlightColor;
     @SuppressWarnings("rawtypes")
-    ChangeListener searchFieldListener = (observableValue, o, t1) -> {updateCheckboxTextColor(highlightColor);};
+    ChangeListener searchFieldListener = (observableValue, o, t1) -> updateCheckboxTextColor(highlightColor);
     Button hint = new Button();
     Tooltip hintTooltip = new Tooltip();
     static Text currentStatus = new Text();
@@ -96,11 +99,11 @@ public class ChecklistWindow {
         currentStatus.setLayoutX(245);
         currentStatus.setLayoutY(47);
 
-        checkAllBoxes.setOnAction(e -> showWarningMessage("CheckAll"));
-        uncheckAllBoxes.setOnAction(e -> showWarningMessage("UncheckAll"));
-        higlightColorSetting.setOnAction(e -> new RgbSettingsWindow().show());
+        checkAllBoxes.setOnAction(e -> showWarningMessage(WarningWindow.TEXT_CHECK_ALL));
+        uncheckAllBoxes.setOnAction(e -> showWarningMessage(WarningWindow.TEXT_UNCHECK_ALL));
+        highlightColorSetting.setOnAction(e -> new RgbSettingsWindow().show());
 
-        options.getItems().addAll(checkAllBoxes, uncheckAllBoxes, higlightColorSetting);
+        options.getItems().addAll(checkAllBoxes, uncheckAllBoxes, highlightColorSetting);
         options.getItems().add(2, separator);
         menuBar.getMenus().add(options);
         menuBar.setUseSystemMenuBar(true);
@@ -213,7 +216,8 @@ public class ChecklistWindow {
         for (CheckBox box : arrayList) {
             properties.setProperty(box.getText(), String.valueOf(box.isSelected()));
         }
-        properties.setProperty("highlight-color", ColorConverter.colorToString(highlightColor.getRed()*255, highlightColor.getGreen()*255, highlightColor.getBlue()*255));
+        properties.setProperty("highlight-color", ColorConverter.colorToString(highlightColor.getRed() * 255,
+                highlightColor.getGreen() * 255, highlightColor.getBlue() * 255));
         properties.store(outputProperties, "This file register the application data");
     }
 
