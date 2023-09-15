@@ -115,17 +115,6 @@ public class CharacterList {
         return getCharacter(i);
     }
 
-//    /* Returns an Image object representing the render of the character provided */
-//    public static Image getCharacterRender(String name) {
-//        return new Image("/resources/renders/" + name + ".png");
-//    }
-//
-//    /* Returns an Image object representing the series symbol corresponding the provided character name */
-//    public static Image getSeriesSymbol(String name) {
-//        String symbol = seriesSymbols.get(name);
-//        return new Image("/resources/symbols/" + symbol + ".png");
-//    }
-
     public record Character(String name, String symbol) {
 
         public Image getRender() {
