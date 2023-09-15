@@ -154,4 +154,5 @@ public class RgbSettingsWindow {
         int blue = blueTextField.getValue();
         return Color.rgb(red, green, blue);
     }
+
 }

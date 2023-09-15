@@ -273,17 +273,14 @@ public class ChecklistWindow {
         String text;
         if (numberOfBox == 0) {
             text = "No character selected";
-            return text;
         } else if(numberOfBox == 1) {
-            text = " character selected";
-            return numberOfBox + text;
+            text = numberOfBox + " character selected";
         } else if (numberOfBox == 86) {
             text = "Every character selected";
-            return text;
         } else {
-            text = " characters selected";
-            return numberOfBox + text;
+            text = numberOfBox + " characters selected";
         }
+        return text;
     }
 
     /* Set all the check-boxes to selected */
@@ -350,4 +347,5 @@ public class ChecklistWindow {
         //Updates the current number of characters selected
         currentStatus.setText(updateCurrentStatusText(getBoxesChecked(boxes)));
     }
+
 }
