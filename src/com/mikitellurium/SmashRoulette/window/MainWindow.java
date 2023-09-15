@@ -18,18 +18,22 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.Objects;
 
 public class MainWindow {
 
     Pane rootPane = new Pane();
     Scene mainScene = new Scene(rootPane);
 
-    final BackgroundImage baseRefreshImage = new BackgroundImage(new Image("/resources/base refresh icon.png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(28, 28, false, false, false, false));
+    final BackgroundImage baseRefreshImage = new BackgroundImage(new Image("/resources/base refresh icon.png"),
+            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+            new BackgroundSize(28, 28, false, false, false, false));
     final Background baseRefreshIcon = new Background(baseRefreshImage);
-    final BackgroundImage hoverRefreshImage = new BackgroundImage(new Image("/resources/hover refresh icon.png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(28, 28, false, false, false, false));
+    final BackgroundImage hoverRefreshImage = new BackgroundImage(new Image("/resources/hover refresh icon.png"),
+            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+            new BackgroundSize(28, 28, false, false, false, false));
     final Background hoverRefreshIcon = new Background(hoverRefreshImage);
-    final BackgroundImage backgroundImage = new BackgroundImage(new Image("/resources/background.jpg", 500, 300, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+    final BackgroundImage backgroundImage = new BackgroundImage(new Image("/resources/background.jpg", 500, 300, true, true),
+            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
     final Background mainStageBackground = new Background(backgroundImage);
 
     //This button roll a random character
@@ -136,16 +140,16 @@ public class MainWindow {
     }
 
     /* Displays the character name, render and series symbol on the screen */
-    private void displayCharacter(String name) {
-        if (Objects.equals(name, "All characters done!")) {
-            characterName.setText(name);
+    private void displayCharacter(CharacterList.Character character) {
+        if (character == null) {
+            characterName.setText("All characters done!");
             characterName.setLayoutX(250 - characterName.getLayoutBounds().getWidth() / 2);
             rootPane.getChildren().add(characterName);
         } else {
-            characterName.setText(name);
+            characterName.setText(character.name());
             characterName.setLayoutX(250 - characterName.getLayoutBounds().getCenterX());
-            characterRender.setImage(CharacterList.getCharacterRender(name));
-            seriesSymbol.setImage(CharacterList.getSeriesSymbol(name));
+            characterRender.setImage(character.getRender());
+            seriesSymbol.setImage(character.getSeriesSymbol());
             rootPane.getChildren().addAll(characterName, characterRender, seriesSymbol);
         }
     }
@@ -169,4 +173,5 @@ public class MainWindow {
     private void changeIconWhenExit(Button button) {
         button.setBackground(baseRefreshIcon);
     }
+
 }

@@ -147,8 +147,8 @@ public class ChecklistWindow {
     private void makeCheckBoxes() {
         int column = 0;
         int row = 0;
-        for (int character = 0; character < 86; character++) {
-            CheckBox checkBox = new CheckBox(CharacterList.getCharacterName(character));
+        for (int i = 0; i < 86; i++) {
+            CheckBox checkBox = new CheckBox(CharacterList.getCharacter(i).name());
             GridPane.setConstraints(checkBox, column, row);
             checkBox.setFont(Font.font(FontUIResource.DIALOG, FontWeight.EXTRA_BOLD, 12));
             checkBox.setTextFill(Color.BLACK);

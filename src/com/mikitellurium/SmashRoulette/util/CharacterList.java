@@ -3,217 +3,139 @@ package com.mikitellurium.SmashRoulette.util;
 import com.mikitellurium.SmashRoulette.window.ChecklistWindow;
 import javafx.scene.image.Image;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class CharacterList {
 
-    private static final String[] characters = {
-            "Mario",
-            "Donkey Kong",
-            "Link",
-            "Samus",
-            "Dark Samus",
-            "Yoshi",
-            "Kirby",
-            "Fox",
-            "Pikachu",
-            "Luigi",
-            "Ness",
-            "Captain Falcon",
-            "Jigglypuff",
-            "Peach",
-            "Daisy",
-            "Bowser",
-            "Ice Climbers",
-            "Sheik",
-            "Zelda",
-            "Dr. Mario",
-            "Pichu",
-            "Falco",
-            "Marth",
-            "Lucina",
-            "Young Link",
-            "Ganondorf",
-            "Mewtwo",
-            "Roy",
-            "Chrom",
-            "Mr. Game & Watch",
-            "Meta Knight",
-            "Pit",
-            "Dark Pit",
-            "Zero Suit Samus",
-            "Wario",
-            "Snake",
-            "Ike",
-            "Pokémon Trainer",
-            "Diddy Kong",
-            "Lucas",
-            "Sonic",
-            "King Dedede",
-            "Olimar",
-            "Lucario",
-            "R.O.B.",
-            "Toon Link",
-            "Wolf",
-            "Villager",
-            "Mega Man",
-            "Wii Fit Trainer",
-            "Rosalina & Luma",
-            "Little Mac",
-            "Greninja",
-            "Palutena",
-            "Pac-Man",
-            "Robin",
-            "Shulk",
-            "Bowser Jr.",
-            "Duck Hunt",
-            "Ryu",
-            "Ken",
-            "Cloud",
-            "Corrin",
-            "Bayonetta",
-            "Inkling",
-            "Ridley",
-            "Simon",
-            "Richter",
-            "King K. Rool",
-            "Isabelle",
-            "Incineroar",
-            "Piranha Plant",
-            "Joker",
-            "Hero",
-            "Banjo & Kazooie",
-            "Terry",
-            "Byleth",
-            "Min Min",
-            "Steve",
-            "Sephiroth",
-            "Pyra & Mythra",
-            "Kazuya",
-            "Sora",
-            "Mii Brawler",
-            "Mii Swordfighter",
-            "Mii Gunner"
+    private static final Character[] characters = new Character[]{
+        new Character("Mario", "MarioSymbol"),
+        new Character("Donkey Kong", "DKSymbol"),
+        new Character("Link", "ZeldaSymbol"),
+        new Character("Samus", "MetroidSymbol"),
+        new Character("Dark Samus", "MetroidSymbol"),
+        new Character("Yoshi", "YoshiSymbol"),
+        new Character("Kirby", "KirbySymbol"),
+        new Character("Fox", "StarFoxSymbol"),
+        new Character("Pikachu", "PokemonSymbol"),
+        new Character("Luigi", "MarioSymbol"),
+        new Character("Ness", "EarthboundSymbol"),
+        new Character("Captain Falcon", "FZeroSymbol"),
+        new Character("Jigglypuff", "PokemonSymbol"),
+        new Character("Peach", "MarioSymbol"),
+        new Character("Daisy", "MarioSymbol"),
+        new Character("Bowser", "MarioSymbol"),
+        new Character("Ice Climbers", "IceClimberSymbol"),
+        new Character("Sheik", "ZeldaSymbol"),
+        new Character("Zelda", "ZeldaSymbol"),
+        new Character("Dr. Mario", "MarioSymbol"),
+        new Character("Pichu", "PokemonSymbol"),
+        new Character("Falco", "StarFoxSymbol"),
+        new Character("Marth", "FireEmblemSymbol"),
+        new Character("Lucina", "FireEmblemSymbol"),
+        new Character("Young Link", "ZeldaSymbol"),
+        new Character("Ganondorf", "ZeldaSymbol"),
+        new Character("Mewtwo", "PokemonSymbol"),
+        new Character("Roy", "FireEmblemSymbol"),
+        new Character("Chrom", "FireEmblemSymbol"),
+        new Character("Mr. Game & Watch", "Game&WatchSymbol"),
+        new Character("Meta Knight", "KirbySymbol"),
+        new Character("Pit", "KidIcarusSymbol"),
+        new Character("Dark Pit", "KidIcarusSymbol"),
+        new Character("Zero Suit Samus", "MetroidSymbol"),
+        new Character("Wario", "WarioSymbol"),
+        new Character("Snake", "MetalGearSymbol"),
+        new Character("Ike", "FireEmblemSymbol"),
+        new Character("Pokémon Trainer", "PokemonSymbol"),
+        new Character("Diddy Kong", "DKSymbol"),
+        new Character("Lucas", "EarthboundSymbol"),
+        new Character("Sonic", "SonicSymbol"),
+        new Character("King Dedede", "KirbySymbol"),
+        new Character("Olimar", "PikminSymbol"),
+        new Character("Lucario", "PokemonSymbol"),
+        new Character("R.O.B.", "GyromiteSymbol"),
+        new Character("Toon Link", "ZeldaSymbol"),
+        new Character("Wolf", "StarFoxSymbol"),
+        new Character("Villager", "AnimalCrossingSymbol"),
+        new Character("Mega Man", "MegaManSymbol"),
+        new Character("Wii Fit Trainer", "WiiFitSymbol"),
+        new Character("Rosalina & Luma", "MarioSymbol"),
+        new Character("Little Mac", "PunchOutSymbol"),
+        new Character("Greninja", "PokemonSymbol"),
+        new Character("Palutena", "KidIcarusSymbol"),
+        new Character("Pac-Man", "PacManSymbol"),
+        new Character("Robin", "FireEmblemSymbol"),
+        new Character("Shulk", "XenobladeSymbol"),
+        new Character("Bowser Jr.", "MarioSymbol"),
+        new Character("Duck Hunt", "DuckHuntSymbol"),
+        new Character("Ryu", "StreetFighterSymbol"),
+        new Character("Ken", "StreetFighterSymbol"),
+        new Character("Cloud", "FinalFantasySymbol"),
+        new Character("Corrin", "FireEmblemSymbol"),
+        new Character("Bayonetta", "BayonettaSymbol"),
+        new Character("Inkling", "SplatoonSymbol"),
+        new Character("Ridley", "MetroidSymbol"),
+        new Character("Simon", "CastlevaniaSymbol"),
+        new Character("Richter", "CastlevaniaSymbol"),
+        new Character("King K. Rool", "DKSymbol"),
+        new Character("Isabelle", "AnimalCrossingSymbol"),
+        new Character("Incineroar", "PokemonSymbol"),
+        new Character("Piranha Plant", "MarioSymbol"),
+        new Character("Joker", "PersonaSymbol"),
+        new Character("Hero", "DragonQuestSymbol"),
+        new Character("Banjo & Kazooie", "BanjoKazooieSymbol"),
+        new Character("Terry", "FatalFurySymbol"),
+        new Character("Byleth", "FireEmblemSymbol"),
+        new Character("Min Min", "ARMSSymbol"),
+        new Character("Steve", "MinecraftSymbol"),
+        new Character("Sephiroth", "FinalFantasySymbol"),
+        new Character("Pyra & Mythra", "XenobladeSymbol"),
+        new Character("Kazuya", "TekkenSymbol"),
+        new Character("Sora", "KingdomHeartsSymbol"),
+        new Character("Mii Brawler", "SmashBrosSymbol"),
+        new Character("Mii Swordfighter", "SmashBrosSymbol"),
+        new Character("Mii Gunner", "SmashBrosSymbol")
     };
 
-    private static final Map<String,String> seriesSymbols = new HashMap<>();
-    static {
-        seriesSymbols.put("Mario", "MarioSymbol");
-        seriesSymbols.put("Donkey Kong", "DKSymbol");
-        seriesSymbols.put("Link", "ZeldaSymbol");
-        seriesSymbols.put("Samus", "MetroidSymbol");
-        seriesSymbols.put("Dark Samus", "MetroidSymbol");
-        seriesSymbols.put("Yoshi", "YoshiSymbol");
-        seriesSymbols.put("Kirby", "KirbySymbol");
-        seriesSymbols.put("Fox", "StarFoxSymbol");
-        seriesSymbols.put("Pikachu", "PokemonSymbol");
-        seriesSymbols.put("Luigi", "MarioSymbol");
-        seriesSymbols.put("Ness", "EarthboundSymbol");
-        seriesSymbols.put("Captain Falcon", "FZeroSymbol");
-        seriesSymbols.put("Jigglypuff", "PokemonSymbol");
-        seriesSymbols.put("Peach", "MarioSymbol");
-        seriesSymbols.put("Daisy", "MarioSymbol");
-        seriesSymbols.put("Bowser", "MarioSymbol");
-        seriesSymbols.put("Ice Climbers", "IceClimberSymbol");
-        seriesSymbols.put("Sheik", "ZeldaSymbol");
-        seriesSymbols.put("Zelda", "ZeldaSymbol");
-        seriesSymbols.put("Dr. Mario", "MarioSymbol");
-        seriesSymbols.put("Pichu", "PokemonSymbol");
-        seriesSymbols.put("Falco", "StarFoxSymbol");
-        seriesSymbols.put("Marth", "FireEmblemSymbol");
-        seriesSymbols.put("Lucina", "FireEmblemSymbol");
-        seriesSymbols.put("Young Link", "ZeldaSymbol");
-        seriesSymbols.put("Ganondorf", "ZeldaSymbol");
-        seriesSymbols.put("Mewtwo", "PokemonSymbol");
-        seriesSymbols.put("Roy", "FireEmblemSymbol");
-        seriesSymbols.put("Chrom", "FireEmblemSymbol");
-        seriesSymbols.put("Mr. Game & Watch", "Game&WatchSymbol");
-        seriesSymbols.put("Meta Knight", "KirbySymbol");
-        seriesSymbols.put("Pit", "KidIcarusSymbol");
-        seriesSymbols.put("Dark Pit", "KidIcarusSymbol");
-        seriesSymbols.put("Zero Suit Samus", "MetroidSymbol");
-        seriesSymbols.put("Wario", "WarioSymbol");
-        seriesSymbols.put("Snake", "MetalGearSymbol");
-        seriesSymbols.put("Ike", "FireEmblemSymbol");
-        seriesSymbols.put("Pokémon Trainer", "PokemonSymbol");
-        seriesSymbols.put("Diddy Kong", "DKSymbol");
-        seriesSymbols.put("Lucas", "EarthboundSymbol");
-        seriesSymbols.put("Sonic", "SonicSymbol");
-        seriesSymbols.put("King Dedede", "KirbySymbol");
-        seriesSymbols.put("Olimar", "PikminSymbol");
-        seriesSymbols.put("Lucario", "PokemonSymbol");
-        seriesSymbols.put("R.O.B.", "GyromiteSymbol");
-        seriesSymbols.put("Toon Link", "ZeldaSymbol");
-        seriesSymbols.put("Wolf", "StarFoxSymbol");
-        seriesSymbols.put("Villager", "AnimalCrossingSymbol");
-        seriesSymbols.put("Mega Man", "MegaManSymbol");
-        seriesSymbols.put("Wii Fit Trainer", "WiiFitSymbol");
-        seriesSymbols.put("Rosalina & Luma", "MarioSymbol");
-        seriesSymbols.put("Little Mac", "PunchOutSymbol");
-        seriesSymbols.put("Greninja", "PokemonSymbol");
-        seriesSymbols.put("Palutena", "KidIcarusSymbol");
-        seriesSymbols.put("Pac-Man", "PacManSymbol");
-        seriesSymbols.put("Robin", "FireEmblemSymbol");
-        seriesSymbols.put("Shulk", "XenobladeSymbol");
-        seriesSymbols.put("Bowser Jr.", "MarioSymbol");
-        seriesSymbols.put("Duck Hunt", "DuckHuntSymbol");
-        seriesSymbols.put("Ryu", "StreetFighterSymbol");
-        seriesSymbols.put("Ken", "StreetFighterSymbol");
-        seriesSymbols.put("Cloud", "FinalFantasySymbol");
-        seriesSymbols.put("Corrin", "FireEmblemSymbol");
-        seriesSymbols.put("Bayonetta", "BayonettaSymbol");
-        seriesSymbols.put("Inkling", "SplatoonSymbol");
-        seriesSymbols.put("Ridley", "MetroidSymbol");
-        seriesSymbols.put("Simon", "CastlevaniaSymbol");
-        seriesSymbols.put("Richter", "CastlevaniaSymbol");
-        seriesSymbols.put("King K. Rool", "DKSymbol");
-        seriesSymbols.put("Isabelle", "AnimalCrossingSymbol");
-        seriesSymbols.put("Incineroar", "PokemonSymbol");
-        seriesSymbols.put("Piranha Plant", "MarioSymbol");
-        seriesSymbols.put("Joker", "PersonaSymbol");
-        seriesSymbols.put("Hero", "DragonQuestSymbol");
-        seriesSymbols.put("Banjo & Kazooie", "BanjoKazooieSymbol");
-        seriesSymbols.put("Terry", "FatalFurySymbol");
-        seriesSymbols.put("Byleth", "FireEmblemSymbol");
-        seriesSymbols.put("Min Min", "ARMSSymbol");
-        seriesSymbols.put("Steve", "MinecraftSymbol");
-        seriesSymbols.put("Sephiroth", "FinalFantasySymbol");
-        seriesSymbols.put("Pyra & Mythra", "XenobladeSymbol");
-        seriesSymbols.put("Kazuya", "TekkenSymbol");
-        seriesSymbols.put("Sora", "KingdomHeartsSymbol");
-        seriesSymbols.put("Mii Brawler", "SmashBrosSymbol");
-        seriesSymbols.put("Mii Swordfighter", "SmashBrosSymbol");
-        seriesSymbols.put("Mii Gunner", "SmashBrosSymbol");
-    }
-
     /* Returns the character name corresponding to the provided integer */
-    public static String getCharacterName(int a) {
+    public static Character getCharacter(int a) {
         return characters[a];
     }
 
     /* Generates a random integer and returns the name of the corresponding character */
-    public static String rollRandomCharacter() {
+    public static Character rollRandomCharacter() {
         if (ChecklistWindow.areAllBoxChecked()) {
-            return "All characters done!";
+            return null;
         }
-        int random;
+
+        Random random = new Random();
+        int i;
         do {
-            random = new Random().nextInt(86);
-        } while (ChecklistWindow.isBoxChecked(random));
-        return getCharacterName(random);
+            i = random.nextInt(86);
+        } while (ChecklistWindow.isBoxChecked(i));
+        return getCharacter(i);
     }
 
-    /* Returns an Image object representing the render of the character provided */
-    public static Image getCharacterRender(String name) {
-        return new Image("/resources/renders/" + name + ".png");
-    }
+//    /* Returns an Image object representing the render of the character provided */
+//    public static Image getCharacterRender(String name) {
+//        return new Image("/resources/renders/" + name + ".png");
+//    }
+//
+//    /* Returns an Image object representing the series symbol corresponding the provided character name */
+//    public static Image getSeriesSymbol(String name) {
+//        String symbol = seriesSymbols.get(name);
+//        return new Image("/resources/symbols/" + symbol + ".png");
+//    }
 
-    /* Returns an Image object representing the series symbol corresponding the provided character name */
-    public static Image getSeriesSymbol(String name) {
-        String symbol = seriesSymbols.get(name);
-        return new Image("/resources/symbols/" + symbol + ".png");
+    public record Character(String name, String symbol) {
+
+        public Image getRender() {
+            return new Image("/resources/renders/" + name + ".png");
+        }
+
+        public Image getSeriesSymbol() {
+            return new Image("/resources/symbols/" + symbol + ".png");
+        }
+
     }
 
 }
