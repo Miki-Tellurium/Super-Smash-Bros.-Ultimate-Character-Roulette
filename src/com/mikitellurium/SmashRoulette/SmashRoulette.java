@@ -14,6 +14,7 @@
 
 package com.mikitellurium.SmashRoulette;
 
+import com.mikitellurium.SmashRoulette.window.MainWindow;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

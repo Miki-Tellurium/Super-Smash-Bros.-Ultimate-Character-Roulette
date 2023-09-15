@@ -1,5 +1,6 @@
-package com.mikitellurium.SmashRoulette;
+package com.mikitellurium.SmashRoulette.util;
 
+import com.mikitellurium.SmashRoulette.window.ChecklistWindow;
 import javafx.scene.image.Image;
 
 import java.util.HashMap;

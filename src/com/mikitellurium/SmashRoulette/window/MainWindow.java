@@ -2,8 +2,9 @@
  * WIP
  */
 
-package com.mikitellurium.SmashRoulette;
+package com.mikitellurium.SmashRoulette.window;
 
+import com.mikitellurium.SmashRoulette.util.CharacterList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;

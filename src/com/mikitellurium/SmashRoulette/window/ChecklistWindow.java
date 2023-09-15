@@ -1,5 +1,7 @@
-package com.mikitellurium.SmashRoulette;
+package com.mikitellurium.SmashRoulette.window;
 
+import com.mikitellurium.SmashRoulette.util.CharacterList;
+import com.mikitellurium.SmashRoulette.util.ColorConverter;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;

@@ -1,5 +1,6 @@
-package com.mikitellurium.SmashRoulette;
+package com.mikitellurium.SmashRoulette.window;
 
+import com.mikitellurium.SmashRoulette.util.IntegerField;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

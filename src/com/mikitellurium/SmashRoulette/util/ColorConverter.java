@@ -1,4 +1,4 @@
-package com.mikitellurium.SmashRoulette;
+package com.mikitellurium.SmashRoulette.util;
 
 import javafx.scene.paint.Color;
 
