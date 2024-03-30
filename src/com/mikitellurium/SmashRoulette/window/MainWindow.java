@@ -5,7 +5,7 @@
 package com.mikitellurium.SmashRoulette.window;
 
 import com.mikitellurium.SmashRoulette.SmashRoulette;
-import com.mikitellurium.SmashRoulette.util.CharacterList;
+import com.mikitellurium.SmashRoulette.util.Characters;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -138,7 +138,7 @@ public class MainWindow {
     private void randomButtonAction() {
         randomButton.setDisable(true);
         refreshButton.setDisable(false);
-        displayCharacter(CharacterList.rollRandomCharacter());
+        displayCharacter(Characters.rollRandomCharacter());
     }
 
     /* Functionality of the refresh button */
@@ -149,7 +149,7 @@ public class MainWindow {
     }
 
     /* Displays the character name, render and series symbol on the screen */
-    private void displayCharacter(CharacterList.Character character) {
+    private void displayCharacter(Characters.Character character) {
         if (character == null) {
             characterName.setText("All characters done!");
             characterName.setLayoutX(250 - characterName.getLayoutBounds().getWidth() / 2);

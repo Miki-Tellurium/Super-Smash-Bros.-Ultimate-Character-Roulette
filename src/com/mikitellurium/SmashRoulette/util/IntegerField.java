@@ -10,7 +10,6 @@ public class IntegerField extends TextField {
     private final int minValue;
     private final int maxValue;
 
-    @SuppressWarnings("StatementWithEmptyBody")
     public IntegerField(int minValue, int maxValue) {
 
         if (minValue > maxValue) {
@@ -73,7 +72,6 @@ public class IntegerField extends TextField {
         });
     }
 
-    @SuppressWarnings("unused")
     public IntegerField(int minValue, int maxValue, int initialValue) {
         this(minValue, maxValue);
         value = new SimpleIntegerProperty(initialValue);
@@ -95,9 +93,9 @@ public class IntegerField extends TextField {
         this.value.set(value);
     }
 
-    @SuppressWarnings("unused")
     public int getValue() {
         return value.get();
     }
+
  }
 
