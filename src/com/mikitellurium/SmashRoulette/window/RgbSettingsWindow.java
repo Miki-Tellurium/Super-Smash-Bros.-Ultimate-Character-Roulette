@@ -57,17 +57,17 @@ public class RgbSettingsWindow {
         stage.setX(screenSize.getWidth()/2 - stage.getWidth()/2);
         stage.setY(screenSize.getHeight()/2 - stage.getHeight()/2);
 
-        chooseAColor.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 20));
+        chooseAColor.setFont(Font.font(MainWindow.ARIAL, FontWeight.SEMI_BOLD, 20));
         chooseAColor.setLayoutX(10);
         chooseAColor.setLayoutY(15);
 
-        red.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        red.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 14));
         red.setTextFill(Color.RED);
         GridPane.setConstraints(red, 0, 1, 1, 1, HPos.CENTER, VPos.CENTER);
-        green.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        green.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 14));
         green.setTextFill(Color.GREEN);
         GridPane.setConstraints(green, 0, 2, 1, 1, HPos.CENTER, VPos.CENTER);
-        blue.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        blue.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 14));
         blue.setTextFill(Color.BLUE);
         GridPane.setConstraints(blue, 0, 3, 1, 1, HPos.CENTER, VPos.CENTER);
 
@@ -115,7 +115,7 @@ public class RgbSettingsWindow {
         blueSlider.valueProperty().addListener(colorListener);
         GridPane.setConstraints(blueSlider, 2, 3);
 
-        confirmButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        confirmButton.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 16));
         confirmButton.setPrefSize(50, 10);
         confirmButton.setOnAction(e -> confirmButtonAction());
         GridPane.setConstraints(confirmButton, 1, 4);

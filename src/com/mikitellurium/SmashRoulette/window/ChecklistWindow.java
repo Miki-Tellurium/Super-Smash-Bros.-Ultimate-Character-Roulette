@@ -83,21 +83,21 @@ public class ChecklistWindow {
         searchField.textProperty().addListener(searchFieldListener);
 
         hint.setText("?");
-        hint.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        hint.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 16));
         hint.setPrefSize(10, 10);
         hint.setPadding(new Insets(2, 7, 1, 7));
         hint.setLayoutX(searchField.getLayoutX() + searchField.getPrefWidth() + 5);
         hint.setLayoutY(25);
         hint.getStyleClass().add("hint");
         hintTooltip.setText("Type a character name to highlight it on the list");
-        hintTooltip.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        hintTooltip.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 12));
         hintTooltip.setStyle("-fx-background-color: linear-gradient(to left, #24CFFE, #007BFD); -fx-text-fill: black;");
         hintTooltip.setMaxHeight(10);
         hintTooltip.setShowDelay(Duration.ZERO);
         hintTooltip.setHideDelay(Duration.ZERO);
         hint.setTooltip(hintTooltip);
 
-        currentStatus.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        currentStatus.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 24));
         currentStatus.setLayoutX(245);
         currentStatus.setLayoutY(47);
 

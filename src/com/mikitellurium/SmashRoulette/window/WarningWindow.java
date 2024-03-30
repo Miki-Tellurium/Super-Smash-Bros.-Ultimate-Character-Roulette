@@ -25,7 +25,7 @@ public class WarningWindow {
 
     private final Image icon = new Image("/resources/smash logo.png");
 
-    private final String fontName = "Arial";
+    private final String fontName = MainWindow.ARIAL;
     public static final String TEXT_CHECK_ALL = "CheckAll";
     public static final String TEXT_UNCHECK_ALL = "UncheckAll";
 
