@@ -1,6 +1,6 @@
 package com.mikitellurium.SmashRoulette.window;
 
-import com.mikitellurium.SmashRoulette.util.Characters;
+import com.mikitellurium.SmashRoulette.util.Character;
 import com.mikitellurium.SmashRoulette.util.ColorConverter;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -148,7 +148,7 @@ public class ChecklistWindow {
         int column = 0;
         int row = 0;
         for (int i = 0; i < 86; i++) {
-            CheckBox checkBox = new CheckBox(Characters.getCharacter(i).name());
+            CheckBox checkBox = new CheckBox(Character.getCharacter(i).name());
             GridPane.setConstraints(checkBox, column, row);
             checkBox.setFont(Font.font(FontUIResource.DIALOG, FontWeight.EXTRA_BOLD, 12));
             checkBox.setTextFill(Color.BLACK);
