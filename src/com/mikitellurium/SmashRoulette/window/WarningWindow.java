@@ -1,5 +1,6 @@
 package com.mikitellurium.SmashRoulette.window;
 
+import com.mikitellurium.SmashRoulette.util.Util;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -11,91 +12,102 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.awt.*;
-import java.util.Objects;
 
 public class WarningWindow {
 
-    Stage stage = new Stage();
-    Pane layout = new Pane();
-    Scene scene = new Scene(layout);
+    private final ChecklistWindow parent;
+    private final Action action;
 
-    Text warningText = new Text();
-    Button confirmButton = new Button();
-    Button cancelButton = new Button("Cancel");
+    private final Stage stage = new Stage();
 
-    private final Image icon = new Image("/resources/smash logo.png");
+    public WarningWindow(ChecklistWindow parent, Action action) {
+        this.parent = parent;
+        this.action = action;
 
-    private final String fontName = MainWindow.ARIAL;
-    public static final String TEXT_CHECK_ALL = "CheckAll";
-    public static final String TEXT_UNCHECK_ALL = "UncheckAll";
-
-    public WarningWindow(String warningMessage) {
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle(warningMessage);
+        stage.setTitle(action.getMessage());
+        final Image icon = new Image("/resources/smash logo.png");
         stage.getIcons().add(icon);
         stage.setResizable(false);
         stage.setWidth(300);
         stage.setHeight(150);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        stage.setX(screenSize.getWidth()/2 - stage.getWidth()/2);
-        stage.setY(screenSize.getHeight()/2 - stage.getHeight()/2);
+        stage.setX(screenSize.getWidth() / 2 - stage.getWidth() / 2);
+        stage.setY(screenSize.getHeight() / 2 - stage.getHeight() / 2);
 
+        final Text warningText = Util.make(new Text(), (text) -> {
+            text.setText(this.getWarningText());
+            text.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 20));
+            text.setLayoutX(stage.getWidth() / 2 - text.getLayoutBounds().getCenterX());
+            text.setLayoutY(30);
+        });
+        final Button confirmButton = Util.make(new Button(), (button) -> {
+            button.setText(getWarningButtonText());
+            button.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 16));
+            button.setPrefWidth(90);
+            button.setLayoutX(45);
+            button.setLayoutY(stage.getHeight() - 80);
+            button.setOnAction(e -> this.confirmButtonAction());
+        });
 
-        warningText.setText(getWarningText(warningMessage));
-        warningText.setFont(Font.font(fontName, FontWeight.NORMAL, 20));
-        warningText.setLayoutX(stage.getWidth()/2 - warningText.getLayoutBounds().getCenterX());
-        warningText.setLayoutY(30);
+        final Button cancelButton = Util.make(new Button("Cancel"), (button) -> {
+            button.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 16));
+            button.setLayoutX(170);
+            button.setLayoutY(stage.getHeight() - 80);
+            button.setOnAction(e -> stage.close());
+        });
 
-        confirmButton.setText(getWarningButtonText(warningMessage));
-        confirmButton.setFont(Font.font(fontName, FontWeight.BOLD, 16));
-        confirmButton.setPrefWidth(90);
-        confirmButton.setLayoutX(45);
-        confirmButton.setLayoutY(stage.getHeight() - 80);
-        confirmButton.setOnAction(e -> confirmButtonAction(warningMessage));
-
-        cancelButton.setFont(Font.font(fontName, FontWeight.BOLD, 16));
-        cancelButton.setLayoutX(170);
-        cancelButton.setLayoutY(stage.getHeight() - 80);
-        cancelButton.setOnAction(e -> stage.close());
-
+        final Pane layout = new Pane();
+        final Scene scene = new Scene(layout);
         scene.getStylesheets().add("/resources/style.css");
         layout.getChildren().addAll(warningText, confirmButton, cancelButton);
         stage.setScene(scene);
     }
 
-    /* Shows the window */
     public void show() {
         stage.showAndWait();
     }
 
-    /* Confirm button functionality */
-    public void confirmButtonAction(String warning) {
-        if (Objects.equals(warning, TEXT_CHECK_ALL)) {
-            ChecklistWindow.checkAll();
-        } else if (Objects.equals(warning, TEXT_UNCHECK_ALL)) {
-            ChecklistWindow.uncheckAll();
+    private void confirmButtonAction() {
+        if (action == Action.CHECK_ALL) {
+            this.parent.checkAll();
+        } else if (action == Action.UNCHECK_ALL) {
+            this.parent.uncheckAll();;
         }
         stage.close();
     }
 
-    /* Returns a warning based on the warning message to be displayed */
-    private String getWarningText(String warning) {
-        if (Objects.equals(warning, TEXT_CHECK_ALL)) {
+    private String getWarningText() {
+        if (action == Action.CHECK_ALL) {
             return "Are you sure you want to\n  check all characters?";
-        } else if (Objects.equals(warning, TEXT_UNCHECK_ALL)) {
+        } else if (action == Action.UNCHECK_ALL) {
             return "Are you sure you want to\n uncheck all characters?";
         }
         return "";
     }
 
-    /* Returns the text that should be displayed on the confirm button */
-    private String getWarningButtonText(String warning) {
-        if (Objects.equals(warning, TEXT_CHECK_ALL)) {
+    private String getWarningButtonText() {
+        if (action == Action.CHECK_ALL) {
             return "Check";
-        } else if (Objects.equals(warning, TEXT_UNCHECK_ALL)) {
+        } else if (action == Action.UNCHECK_ALL) {
             return "Uncheck";
         }
         return "";
+    }
+
+    public enum Action {
+        CHECK_ALL("Check All"),
+        UNCHECK_ALL("Uncheck All");
+
+        private final String message;
+
+        Action(String title) {
+            this.message = title;
+        }
+
+        public String getMessage() {
+            return message;
+        }
     }
 
 }

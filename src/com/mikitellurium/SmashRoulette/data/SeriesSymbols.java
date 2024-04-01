@@ -1,4 +1,4 @@
-package com.mikitellurium.SmashRoulette.util;
+package com.mikitellurium.SmashRoulette.data;
 
 public class SeriesSymbols {
 

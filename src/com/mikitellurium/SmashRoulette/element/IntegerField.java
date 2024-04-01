@@ -1,4 +1,4 @@
-package com.mikitellurium.SmashRoulette.util;
+package com.mikitellurium.SmashRoulette.element;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.TextField;
@@ -22,27 +22,25 @@ public class IntegerField extends TextField {
         value = new SimpleIntegerProperty(minValue);
         setText(minValue + "");
 
-        final IntegerField integerField = this;
-
         // Make sure the value stays in the required range
         // and update the field text to match the value
         value.addListener((observableValue, oldValue, newValue) -> {
 
             if (newValue == null) {
-                integerField.setText("");
+                this.setText("");
             } else {
                 if (newValue.intValue() < minValue) {
-                    value.setValue(integerField.maxValue);
+                    value.setValue(this.maxValue);
                     return;
                 }
                 if (newValue.intValue() > maxValue) {
-                    value.setValue(integerField.maxValue);
+                    value.setValue(this.maxValue);
                     return;
                 }
                 if (newValue.intValue() == 0 && (textProperty().get() == null || textProperty().get().equals(""))) {
                     // no action required, text property is already blank, no need to set it to 0
                 } else {
-                    integerField.setText(newValue.toString());
+                    this.setText(newValue.toString());
                 }
             }
         });
@@ -58,13 +56,13 @@ public class IntegerField extends TextField {
 
         this.textProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue == null || newValue.equals("")) {
-                integerField.setValue(0);
+                this.setValue(0);
                 return;
             }
             // Read the value typed by the user
             final int typedValue = Integer.parseInt(newValue);
 
-            if (integerField.minValue > typedValue || typedValue > integerField.maxValue) {
+            if (this.minValue > typedValue || typedValue > this.maxValue) {
                 textProperty().setValue(oldValue);
             }
 

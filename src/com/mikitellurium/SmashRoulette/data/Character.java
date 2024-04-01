@@ -1,8 +1,10 @@
-package com.mikitellurium.SmashRoulette.util;
+package com.mikitellurium.SmashRoulette.data;
 
-import com.mikitellurium.SmashRoulette.window.ChecklistWindow;
+import com.mikitellurium.SmashRoulette.element.CharacterBox;
+import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 
+import java.util.List;
 import java.util.Random;
 
 public enum Character {
@@ -101,6 +103,14 @@ public enum Character {
         this.symbol = symbol;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
     public Image getRender() {
         return new Image("/resources/renders/" + name + ".png");
     }
@@ -108,24 +118,5 @@ public enum Character {
     public Image getSeriesSymbol() {
         return new Image("/resources/symbols/" + symbol + ".png");
     }
-
-    /* Returns the character name corresponding to the provided integer */
-    public static Character getCharacter(int index) {
-        return Character.values()[index];
-    }
-
-//    /* Generates a random integer and returns the name of the corresponding character */
-//    public static Character getRandom() {
-//        if (ChecklistWindow.areAllBoxChecked()) {
-//            return null;
-//        }
-//
-//        Random random = new Random();
-//        int i;
-//        do {
-//            i = random.nextInt(86);
-//        } while (ChecklistWindow.isBoxChecked(i));
-//        return getCharacter(i);
-//    }
 
 }

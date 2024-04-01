@@ -5,7 +5,9 @@
 package com.mikitellurium.SmashRoulette.window;
 
 import com.mikitellurium.SmashRoulette.SmashRoulette;
-import com.mikitellurium.SmashRoulette.util.Character;
+import com.mikitellurium.SmashRoulette.data.Character;
+import com.mikitellurium.SmashRoulette.element.CharacterBox;
+import com.mikitellurium.SmashRoulette.util.Util;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -18,118 +20,120 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.awt.*;
-import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 
 public class MainWindow {
 
     public static final String ARIAL = "Arial";
 
-    Pane rootPane = new Pane();
-    Scene mainScene = new Scene(rootPane);
+    private final Pane rootPane = new Pane();
 
-    final BackgroundImage baseRefreshImage = new BackgroundImage(new Image("/resources/base refresh icon.png"),
-            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-            new BackgroundSize(28, 28, false, false, false, false));
-    final Background baseRefreshIcon = new Background(baseRefreshImage);
-    final BackgroundImage hoverRefreshImage = new BackgroundImage(new Image("/resources/hover refresh icon.png"),
-            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-            new BackgroundSize(28, 28, false, false, false, false));
-    final Background hoverRefreshIcon = new Background(hoverRefreshImage);
-    final BackgroundImage backgroundImage = new BackgroundImage(new Image("/resources/background.jpg", 500, 300, true, true),
+    private final ChecklistWindow checklistWindow;
+
+    private static final BackgroundImage BACKGROUND_IMAGE = new BackgroundImage(new Image("/resources/background.jpg", 500, 300, true, true),
             BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-    final Background mainStageBackground = new Background(backgroundImage);
 
-    //This button roll a random character
-    Button randomButton = new Button();
-    //This button refresh the random button
-    Button refreshButton = new Button();
-    //This button open the second window
-    Button characterListButton = new Button();
-    //Display the credits
-    Text credit = new Text();
-    //Display the version
-    Text version = new Text();
+    private static final BackgroundImage BASE_REFRESH_IMAGE = new BackgroundImage(new Image("/resources/base refresh icon.png"),
+            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+            new BackgroundSize(28, 28, false, false, false, false));
+    private static final BackgroundImage HOVER_REFRESH_IMAGE = new BackgroundImage(new Image("/resources/hover refresh icon.png"),
+            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+            new BackgroundSize(28, 28, false, false, false, false));
 
-    //Display the name of the character
-    Text characterName = new Text();
-    //Display the render of the character
-    ImageView characterRender = new ImageView();
-    //Display the series symbol
-    ImageView seriesSymbol = new ImageView();
+    private final Background baseRefreshIcon = new Background(BASE_REFRESH_IMAGE);
+    private final Background hoverRefreshIcon = new Background(HOVER_REFRESH_IMAGE);
 
-    public MainWindow(Stage mainStage) throws IOException {
-        //Main window
+    private final Button rollButton = Util.make(new Button(), (button) -> {
+        button.setText("Random");
+        button.setPrefSize(100, 30);
+        button.setFont(Font.font(ARIAL, FontWeight.BOLD, 14));
+        button.getStyleClass().add("normal-buttons");
+        button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
+    });
+    private final Button refreshButton = Util.make(new Button(), (button) -> {
+        button.setPrefSize(30, 30);
+        button.setBackground(baseRefreshIcon);
+        button.getStyleClass().add("refresh-button");
+        button.setDisable(true);
+    });
+    private final Button characterListButton = Util.make(new Button(), (button) -> {
+        button.setText("Characters\n  checklist");
+        button.setPrefSize(80, 40);
+        button.setFont(Font.font(ARIAL, FontWeight.BOLD, 11));
+        button.setTextAlignment(TextAlignment.JUSTIFY);
+        button.getStyleClass().add("normal-buttons");
+        button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
+    });
+
+    private final Text characterName = Util.make(new Text(), (text) -> {
+        text.setFont(Font.font(ARIAL, FontWeight.BOLD, 32));
+    });
+    private final ImageView characterRender = Util.make(new ImageView(), (imageView) -> {
+        imageView.setViewOrder(1.0);
+        imageView.setFitWidth(300);
+        imageView.setFitHeight(300);
+        imageView.setLayoutX(-30);
+        imageView.setLayoutY(-5);
+    });
+    private final ImageView seriesSymbol = Util.make(new ImageView(), (imageView) -> {
+        imageView.setViewOrder(1.0);
+        imageView.setFitWidth(170);
+        imageView.setFitHeight(170);
+    });
+
+    public MainWindow(Stage mainStage) {
         mainStage.setTitle("Super Smash Bros. Ultimate Characters Roulette");
         mainStage.getIcons().add(new Image("/resources/smash logo.png"));
         mainStage.setResizable(false);
         mainStage.setWidth(500);
         mainStage.setHeight(300);
-        //The window always appear at the center of the screen
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         mainStage.setX(screenSize.getWidth()/2 - mainStage.getWidth()/2);
         mainStage.setY(screenSize.getHeight()/2 - mainStage.getHeight()/2);
 
-        randomButton.setText("Random");
-        randomButton.setPrefSize(100, 30);
-        randomButton.setLayoutX(mainStage.getWidth()/2 - randomButton.getPrefWidth()/2);
-        randomButton.setLayoutY(40);
-        randomButton.setFont(Font.font(ARIAL, FontWeight.BOLD, 14));
-        randomButton.getStyleClass().add("normal-buttons");
-        randomButton.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
-        randomButton.setOnMouseEntered(e -> changeButtonColorWhenEnter(randomButton));
-        randomButton.setOnMouseExited(e -> changeButtonColorWhenExit(randomButton));
-        randomButton.setOnAction(e -> randomButtonAction());
+        rollButton.setLayoutX(mainStage.getWidth() / 2 - rollButton.getPrefWidth() / 2);
+        rollButton.setLayoutY(40);
+        rollButton.setOnMouseEntered(e -> changeButtonColorWhenEnter(rollButton));
+        rollButton.setOnMouseExited(e -> changeButtonColorWhenExit(rollButton));
+        rollButton.setOnAction(e -> randomButtonAction());
 
-        refreshButton.setPrefSize(30, 30);
-        refreshButton.setLayoutX(randomButton.getLayoutX() + randomButton.getPrefWidth() + 5);
-        refreshButton.setLayoutY(randomButton.getLayoutY());
-        refreshButton.setBackground(baseRefreshIcon);
-        refreshButton.getStyleClass().add("refresh-button");
-        refreshButton.setDisable(true);
-        refreshButton.setOnMouseEntered(e -> changeIconWhenEnter(refreshButton));
-        refreshButton.setOnMouseExited(e -> changeIconWhenExit(refreshButton));
+        refreshButton.setLayoutX(rollButton.getLayoutX() + rollButton.getPrefWidth() + 5);
+        refreshButton.setLayoutY(rollButton.getLayoutY());
+        refreshButton.setOnMouseEntered(e -> refreshButton.setBackground(hoverRefreshIcon));
+        refreshButton.setOnMouseExited(e -> refreshButton.setBackground(baseRefreshIcon));
         refreshButton.setOnAction(e -> refreshButtonAction());
 
-        characterListButton.setText("Characters\n  checklist");
-        characterListButton.setPrefSize(80, 40);
         characterListButton.setLayoutX(mainStage.getWidth() - characterListButton.getPrefWidth() - 20);
         characterListButton.setLayoutY(mainStage.getHeight() - characterListButton.getPrefHeight()*2 - 3);
-        characterListButton.setFont(Font.font(ARIAL, FontWeight.BOLD, 11));
-        characterListButton.setTextAlignment(TextAlignment.JUSTIFY);
-        characterListButton.getStyleClass().add("normal-buttons");
-        characterListButton.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
         characterListButton.setOnMouseEntered(e -> changeButtonColorWhenEnter(characterListButton));
         characterListButton.setOnMouseExited(e -> changeButtonColorWhenExit(characterListButton));
-        ChecklistWindow checklistWindow = new ChecklistWindow(mainStage);
-        characterListButton.setOnAction(e -> checklistWindow.show());
 
-        credit.setText("by Miki_Tellurium");
-        credit.setFont(Font.font(ARIAL, FontWeight.BOLD, 12));
-        credit.setLayoutX(mainStage.getWidth() - credit.getText().length()*7);  //multiplying by 7 moves the text right enough
-        credit.setLayoutY(12);
+        final Text credits = Util.make(new Text(), (text) -> {
+            text.setText("by Miki_Tellurium");
+            text.setFont(Font.font(ARIAL, FontWeight.BOLD, 12));
+            text.setLayoutX(mainStage.getWidth() - text.getText().length() * 7);  // Multiplying by 7 moves the text right enough
+            text.setLayoutY(12);
+        });
+        final Text version = Util.make(new Text(), (text) -> {
+            text.setText("v" + SmashRoulette.VERSION);
+            text.setFont(Font.font(ARIAL, FontWeight.BOLD, 12));
+            text.setLayoutX(2);
+            text.setLayoutY(mainStage.getHeight() - 42);
+        });
 
-        version.setText("v" + SmashRoulette.VERSION);
-        version.setFont(Font.font(ARIAL, FontWeight.BOLD, 12));
-        version.setLayoutX(2);
-        version.setLayoutY(mainStage.getHeight() - 42);
+        characterName.setLayoutY(rollButton.getLayoutY() + rollButton.getPrefHeight() * 2.5);
 
-        characterName.setFont(Font.font(ARIAL, FontWeight.BOLD, 32));
-        characterName.setLayoutY(randomButton.getLayoutY() + randomButton.getPrefHeight()*2.5);
-
-        characterRender.setViewOrder(1.0);
-        characterRender.setFitWidth(300);
-        characterRender.setFitHeight(300);
-        characterRender.setLayoutX(-30);
-        characterRender.setLayoutY(-5);
-
-        seriesSymbol.setViewOrder(1.0);
-        seriesSymbol.setFitWidth(170);
-        seriesSymbol.setFitHeight(170);
-        seriesSymbol.setLayoutX(randomButton.getLayoutX() + randomButton.getPrefWidth() + 20);
+        seriesSymbol.setLayoutX(rollButton.getLayoutX() + rollButton.getPrefWidth() + 20);
         seriesSymbol.setLayoutY(25);
 
-        rootPane.setBackground(mainStageBackground);
-        rootPane.getChildren().addAll(randomButton, refreshButton, characterListButton, credit, version);
+        this.checklistWindow = new ChecklistWindow(mainStage);
+        characterListButton.setOnAction(e -> checklistWindow.show());
+
+        rootPane.setBackground(new Background(BACKGROUND_IMAGE));
+        rootPane.getChildren().addAll(rollButton, refreshButton, characterListButton, credits, version);
+        Scene mainScene = new Scene(rootPane);
         mainScene.getStylesheets().add("/resources/style.css");
         mainStage.setScene(mainScene);
         mainStage.show();
@@ -137,51 +141,44 @@ public class MainWindow {
 
     /* Functionality of the random button */
     private void randomButtonAction() {
-        randomButton.setDisable(true);
+        rollButton.setDisable(true);
         refreshButton.setDisable(false);
-        displayCharacter(Character.getRandom());
-    }
-
-    /* Functionality of the refresh button */
-    private void refreshButtonAction() {
-        rootPane.getChildren().removeAll(characterName, characterRender, seriesSymbol);
-        randomButton.setDisable(false);
-        refreshButton.setDisable(true);
-    }
-
-    /* Displays the character name, render and series symbol on the screen */
-    private void displayCharacter(Character character) {
-        if (character == null) {
-            characterName.setText("All characters done!");
-            characterName.setLayoutX(250 - characterName.getLayoutBounds().getWidth() / 2);
-            rootPane.getChildren().add(characterName);
+        List<CharacterBox> checkBoxes = this.checklistWindow.getBoxManager().getUncheckedBoxes();
+        if (checkBoxes.isEmpty()) {
+            this.displayAllDone();
         } else {
-            characterName.setText(character.name());
-            characterName.setLayoutX(250 - characterName.getLayoutBounds().getCenterX());
-            characterRender.setImage(character.getRender());
-            seriesSymbol.setImage(character.getSeriesSymbol());
-            rootPane.getChildren().addAll(characterName, characterRender, seriesSymbol);
+            Random random = new Random();
+            Character character = checkBoxes.get(random.nextInt(checkBoxes.size())).getCharacter();
+            this.displayCharacter(character);
         }
     }
 
-    /* Changes button look when mouse pointer enter buttons */
+    private void refreshButtonAction() {
+        rootPane.getChildren().removeAll(characterName, characterRender, seriesSymbol);
+        rollButton.setDisable(false);
+        refreshButton.setDisable(true);
+    }
+
+    private void displayCharacter(Character character) {
+        characterName.setText(character.name());
+        characterName.setLayoutX(250 - characterName.getLayoutBounds().getCenterX());
+        characterRender.setImage(character.getRender());
+        seriesSymbol.setImage(character.getSeriesSymbol());
+        rootPane.getChildren().addAll(characterName, characterRender, seriesSymbol);
+    }
+
+    private void displayAllDone() {
+        characterName.setText("All characters done!");
+        characterName.setLayoutX(250 - characterName.getLayoutBounds().getWidth() / 2);
+        rootPane.getChildren().add(characterName);
+    }
+
     private void changeButtonColorWhenEnter(Button button) {
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #7DFFFF)");
     }
 
-    /* Changes button look when mouse pointer exit buttons */
     private void changeButtonColorWhenExit(Button button) {
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
-    }
-
-    /* Changes button look when mouse pointer enter button */
-    private void changeIconWhenEnter(Button button) {
-        button.setBackground(hoverRefreshIcon);
-    }
-
-    /* Changes button look when mouse pointer exit button */
-    private void changeIconWhenExit(Button button) {
-        button.setBackground(baseRefreshIcon);
     }
 
 }

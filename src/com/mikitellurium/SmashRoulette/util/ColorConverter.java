@@ -6,14 +6,23 @@ import java.util.Arrays;
 
 public class ColorConverter {
 
-    /* Convert rgb color value to a printable string */
-    public static String colorToString(double red, double green, double blue) {
-        return (int)red + "," + (int)green + "," + (int)blue;
+    /* Convert color value to a printable string */
+    public static String colorToString(Color color) {
+        return colorToString(color.getRed(), color.getGreen(), color.getBlue());
     }
 
-    /* Convert a printable string to a color and return it */
+    /* Convert rgb color value to a printable string */
+    public static String colorToString(double red, double green, double blue) {
+        return (int)red * 255 + "/" + (int)green * 255 + "/" + (int)blue * 255;
+    }
+
+    /* Convert a printable string to a color */
     public static Color stringToColor(String colorString) {
-        int[] rgb = Arrays.stream(colorString.split(","))
+        if (colorString.contains(",")) { // Handle old color property
+            colorString = colorString.replace(',', '/');
+        }
+
+        int[] rgb = Arrays.stream(colorString.split("/"))
                 .map(String::trim)
                 .mapToInt(Integer::parseInt)
                 .toArray();

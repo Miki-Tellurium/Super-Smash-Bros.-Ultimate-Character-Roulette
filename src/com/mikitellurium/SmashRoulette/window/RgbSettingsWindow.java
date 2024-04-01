@@ -1,6 +1,7 @@
 package com.mikitellurium.SmashRoulette.window;
 
-import com.mikitellurium.SmashRoulette.util.IntegerField;
+import com.mikitellurium.SmashRoulette.element.IntegerField;
+import com.mikitellurium.SmashRoulette.util.Util;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,27 +27,34 @@ import java.awt.*;
 
 public class RgbSettingsWindow {
 
-    Stage stage = new Stage();
-    Pane mainPane = new Pane();
-    GridPane gridLayout = new GridPane();
-    Scene scene = new Scene(mainPane);
+    private final ChecklistWindow parent;
 
-    Text chooseAColor = new Text("Choose a color:");
-    Label red = new Label("Red");
-    Label green = new Label("Green");
-    Label blue = new Label("Blue");
-    IntegerField redTextField = new IntegerField(0, 255);
-    IntegerField greenTextField = new IntegerField(0, 255);
-    IntegerField blueTextField = new IntegerField(0, 255);
-    Slider redSlider = new Slider();
-    Slider greenSlider = new Slider();
-    Slider blueSlider = new Slider();
+    private final Stage stage = new Stage();
 
-    Button confirmButton = new Button("Ok");
-    Shape colorSquare = new Rectangle(30, 30);
-    ChangeListener<Number> colorListener = (observableValue, number, t1) -> colorSquare.setFill(updateSquareColor());
+    private final IntegerField redTextField = Util.make(new IntegerField(0, 255), (intField) -> {
+        intField.setPrefSize(50, 10);
+        intField.setAlignment(Pos.CENTER);
+        GridPane.setConstraints(intField, 1, 1);
+    });
+    private final IntegerField greenTextField = Util.make(new IntegerField(0, 255), (intField) -> {
+        intField.setPrefSize(50, 10);
+        intField.setAlignment(Pos.CENTER);
+        GridPane.setConstraints(intField, 1, 2);
+    });
+    private final IntegerField blueTextField = Util.make(new IntegerField(0, 255), (intField) -> {
+        intField.setPrefSize(50, 10);
+        intField.setAlignment(Pos.CENTER);
+        GridPane.setConstraints(intField, 1, 3);
+    });
 
-    public RgbSettingsWindow() {
+    private final Shape colorSquare = Util.make(new Rectangle(30, 30), (shape) -> {
+        GridPane.setConstraints(shape, 2, 4, 1, 1, HPos.LEFT, VPos.BASELINE);
+    });
+    private final ChangeListener<Number> colorListener = (observableValue, oldValue, newValue) -> colorSquare.setFill(this.getCompoundColor());
+
+    public RgbSettingsWindow(ChecklistWindow parent) {
+        this.parent = parent;
+
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Highlight Color Setting");
         stage.getIcons().add(new Image("/resources/smash logo.png"));
@@ -54,101 +62,107 @@ public class RgbSettingsWindow {
         stage.setWidth(400);
         stage.setHeight(210);
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        stage.setX(screenSize.getWidth()/2 - stage.getWidth()/2);
-        stage.setY(screenSize.getHeight()/2 - stage.getHeight()/2);
+        stage.setX(screenSize.getWidth() / 2 - stage.getWidth() / 2);
+        stage.setY(screenSize.getHeight() / 2 - stage.getHeight() / 2);
 
-        chooseAColor.setFont(Font.font(MainWindow.ARIAL, FontWeight.SEMI_BOLD, 20));
-        chooseAColor.setLayoutX(10);
-        chooseAColor.setLayoutY(15);
+        final Text header = Util.make(new Text("Choose a color:"), (text) -> {
+            text.setFont(Font.font(MainWindow.ARIAL, FontWeight.SEMI_BOLD, 20));
+            text.setLayoutX(10);
+            text.setLayoutY(15);
+        });
 
-        red.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 14));
-        red.setTextFill(Color.RED);
-        GridPane.setConstraints(red, 0, 1, 1, 1, HPos.CENTER, VPos.CENTER);
-        green.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 14));
-        green.setTextFill(Color.GREEN);
-        GridPane.setConstraints(green, 0, 2, 1, 1, HPos.CENTER, VPos.CENTER);
-        blue.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 14));
-        blue.setTextFill(Color.BLUE);
-        GridPane.setConstraints(blue, 0, 3, 1, 1, HPos.CENTER, VPos.CENTER);
+        final Label red = Util.make(new Label("Red"), (label) -> {
+            label.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 14));
+            label.setTextFill(Color.RED);
+            GridPane.setConstraints(label, 0, 1, 1, 1, HPos.CENTER, VPos.CENTER);
+        });
+        final Label green = Util.make(new Label("Green"), (label) -> {
+            label.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 14));
+            label.setTextFill(Color.GREEN);
+            GridPane.setConstraints(label, 0, 2, 1, 1, HPos.CENTER, VPos.CENTER);
+        });
+        final Label blue = Util.make(new Label("Blue"), (label) -> {
+            label.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 14));
+            label.setTextFill(Color.BLUE);
+            GridPane.setConstraints(label, 0, 3, 1, 1, HPos.CENTER, VPos.CENTER);
+        });
 
-        redTextField.setPrefSize(50, 10);
-        redTextField.setAlignment(Pos.CENTER);
+        final Slider redSlider = Util.make(new Slider(), (slider) -> {
+            slider.setPrefWidth(240);
+            slider.setMin(0);
+            slider.setMax(255);
+            slider.setBlockIncrement(1);
+            slider.setMajorTickUnit(1);
+            slider.setMinorTickCount(0);
+            slider.setSnapToTicks(true);
+            slider.setValue(parent.getHighlightColor().getRed() * 255);
+            slider.valueProperty().addListener(colorListener);
+            GridPane.setConstraints(slider, 2, 1);
+        });
+        final Slider greenSlider = Util.make(new Slider(), (slider) -> {
+            slider.setPrefWidth(240);
+            slider.setMin(0);
+            slider.setMax(255);
+            slider.setBlockIncrement(1);
+            slider.setMajorTickUnit(1);
+            slider.setMinorTickCount(0);
+            slider.setSnapToTicks(true);
+            slider.setValue(parent.getHighlightColor().getGreen() * 255);
+            slider.valueProperty().addListener(colorListener);
+            GridPane.setConstraints(slider, 2, 2);
+        });
+        final Slider blueSlider = Util.make(new Slider(), (slider) -> {
+            slider.setPrefWidth(240);
+            slider.setMin(0);
+            slider.setMax(255);
+            slider.setBlockIncrement(1);
+            slider.setMajorTickUnit(1);
+            slider.setMinorTickCount(0);
+            slider.setSnapToTicks(true);
+            slider.setValue(parent.getHighlightColor().getBlue() * 255);
+            slider.valueProperty().addListener(colorListener);
+            GridPane.setConstraints(slider, 2, 3);
+        });
         redTextField.valueProperty().bindBidirectional(redSlider.valueProperty());
-        GridPane.setConstraints(redTextField, 1, 1);
-        greenTextField.setPrefSize(50, 10);
-        greenTextField.setAlignment(Pos.CENTER);
         greenTextField.valueProperty().bindBidirectional(greenSlider.valueProperty());
-        GridPane.setConstraints(greenTextField, 1, 2);
-        blueTextField.setPrefSize(50, 10);
-        blueTextField.setAlignment(Pos.CENTER);
         blueTextField.valueProperty().bindBidirectional(blueSlider.valueProperty());
-        GridPane.setConstraints(blueTextField, 1, 3);
 
-        redSlider.setPrefWidth(240);
-        redSlider.setMin(0);
-        redSlider.setMax(255);
-        redSlider.setBlockIncrement(1);
-        redSlider.setMajorTickUnit(1);
-        redSlider.setMinorTickCount(0);
-        redSlider.setSnapToTicks(true);
-        redSlider.setValue(ChecklistWindow.getHighlightColor().getRed()*255);
-        redSlider.valueProperty().addListener(colorListener);
-        GridPane.setConstraints(redSlider, 2, 1);
-        greenSlider.setPrefWidth(240);
-        greenSlider.setMin(0);
-        greenSlider.setMax(255);
-        greenSlider.setBlockIncrement(1);
-        greenSlider.setMajorTickUnit(1);
-        greenSlider.setMinorTickCount(0);
-        greenSlider.setSnapToTicks(true);
-        greenSlider.setValue(ChecklistWindow.getHighlightColor().getGreen()*255);
-        greenSlider.valueProperty().addListener(colorListener);
-        GridPane.setConstraints(greenSlider, 2, 2);
-        blueSlider.setPrefWidth(240);
-        blueSlider.setMin(0);
-        blueSlider.setMax(255);
-        blueSlider.setBlockIncrement(1);
-        blueSlider.setMajorTickUnit(1);
-        blueSlider.setMinorTickCount(0);
-        blueSlider.setSnapToTicks(true);
-        blueSlider.setValue(ChecklistWindow.getHighlightColor().getBlue()*255);
-        blueSlider.valueProperty().addListener(colorListener);
-        GridPane.setConstraints(blueSlider, 2, 3);
+        colorSquare.setFill(parent.getHighlightColor());
 
-        confirmButton.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 16));
-        confirmButton.setPrefSize(50, 10);
-        confirmButton.setOnAction(e -> confirmButtonAction());
-        GridPane.setConstraints(confirmButton, 1, 4);
-        colorSquare.setFill(ChecklistWindow.getHighlightColor());
-        GridPane.setConstraints(colorSquare, 2, 4, 1, 1, HPos.LEFT, VPos.BASELINE);
+        final Button confirmButton = Util.make(new Button("Ok"), (button) -> {
+            button.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 16));
+            button.setPrefSize(50, 10);
+            button.setOnAction(e -> this.confirmButtonAction());
+            GridPane.setConstraints(button, 1, 4);
+        });
 
-        gridLayout.setPadding(new Insets(0, 5, 0, 5));
-        gridLayout.setHgap(15);
-        gridLayout.setVgap(10);
-        gridLayout.getChildren().addAll(
-                chooseAColor, red, green, blue, redTextField, greenTextField, blueTextField, redSlider, greenSlider,
-                blueSlider, confirmButton, colorSquare);
-        gridLayout.setLayoutX(0);
-        gridLayout.setLayoutY(20);
+        final GridPane gridPane = Util.make(new GridPane(), (pane) -> {
+            pane.setPadding(new Insets(0, 5, 0, 5));
+            pane.setHgap(15);
+            pane.setVgap(10);
+            pane.setLayoutX(0);
+            pane.setLayoutY(20);
+        });
+        gridPane.getChildren().addAll(header, red, green, blue, redTextField, greenTextField, blueTextField, redSlider,
+                greenSlider, blueSlider, confirmButton, colorSquare);
 
-        mainPane.getChildren().addAll(chooseAColor, gridLayout);
+        final Pane mainPane = new Pane();
+        mainPane.getChildren().addAll(header, gridPane);
+        final Scene scene = new Scene(mainPane);
         stage.setScene(scene);
     }
 
-    /* Shows the window */
     public void show() {
         stage.showAndWait();
     }
 
-    /* Confirm button action */
     private void confirmButtonAction() {
-        ChecklistWindow.setHighlightColor(updateSquareColor());
-        ChecklistWindow.updateCheckboxTextColor(updateSquareColor());
+        parent.setHighlightColor(this.getCompoundColor());
+        parent.highlightCharacters();
         stage.close();
     }
 
-    /* Update the color indicator */
-    public Color updateSquareColor() {
+    private Color getCompoundColor() {
         int red = redTextField.getValue();
         int green = greenTextField.getValue();
         int blue = blueTextField.getValue();
