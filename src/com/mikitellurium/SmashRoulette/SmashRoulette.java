@@ -30,7 +30,7 @@ public class SmashRoulette extends Application {
 
     @Override
     @SuppressWarnings("unused")
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
         MainWindow main = new MainWindow(primaryStage);
     }
 

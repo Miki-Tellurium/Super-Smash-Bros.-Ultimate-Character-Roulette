@@ -1,12 +1,8 @@
 package com.mikitellurium.SmashRoulette.element;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Properties;
 import java.util.function.Consumer;
 
 public class CharacterBoxManager {
