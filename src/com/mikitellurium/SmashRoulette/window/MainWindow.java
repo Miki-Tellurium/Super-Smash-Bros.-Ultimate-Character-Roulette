@@ -160,7 +160,7 @@ public class MainWindow {
     }
 
     private void displayCharacter(Character character) {
-        characterName.setText(character.name());
+        characterName.setText(character.getName());
         characterName.setLayoutX(250 - characterName.getLayoutBounds().getCenterX());
         characterRender.setImage(character.getRender());
         seriesSymbol.setImage(character.getSeriesSymbol());
