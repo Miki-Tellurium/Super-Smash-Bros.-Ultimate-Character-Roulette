@@ -123,7 +123,7 @@ public class ChecklistWindow {
 
         checkBoxesPane.setPrefSize(stage.getWidth(), stage.getHeight() - 25);
 
-        manager.addAll(this.buildCheckBoxes());
+        this.buildCheckBoxes();
 
         currentStatus.setText(this.updateCurrentStatusText());
         final Pane mainPane = new Pane();
@@ -141,8 +141,7 @@ public class ChecklistWindow {
         stage.show();
     }
 
-    private List<CharacterBox> buildCheckBoxes() {
-        List<CharacterBox> boxes = new ArrayList<>();
+    private void buildCheckBoxes() {
         int column = 0;
         int row = 0;
         for (Character character : Character.values()) {
@@ -152,7 +151,7 @@ public class ChecklistWindow {
             box.setTextFill(Color.BLACK);
             box.setOnAction(this::updateBoxSavedProperty);
             checkBoxesPane.getChildren().add(box);
-            boxes.add(box);
+            this.manager.add(box);
             if (column < 7) {
                 column++;
             } else {
@@ -161,7 +160,6 @@ public class ChecklistWindow {
             }
         }
         this.initCheckBoxes();
-        return boxes;
     }
 
     public CharacterBoxManager getBoxManager() {
