@@ -13,7 +13,7 @@ public class ColorConverter {
 
     /* Convert rgb color value to a printable string */
     public static String colorToString(double red, double green, double blue) {
-        return (int)red * 255 + "/" + (int)green * 255 + "/" + (int)blue * 255;
+        return (int)(red * 255) + "/" + (int)(green * 255) + "/" + (int)(blue * 255);
     }
 
     /* Convert a printable string to a color */
