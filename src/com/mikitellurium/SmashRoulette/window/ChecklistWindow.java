@@ -186,7 +186,7 @@ public class ChecklistWindow {
                 this.highlightColor = ColorConverter.stringToColor(PROPERTIES.getProperty("highlight-color"));
                 PROPERTIES.remove("highlight-color");
             } else {
-                this.highlightColor = ColorConverter.stringToColor(PROPERTIES.getProperty(HIGHLIGHT_COLOR_KEY));
+                this.highlightColor = ColorConverter.stringToColor((String) PROPERTIES.getOrDefault(HIGHLIGHT_COLOR_KEY, DEFAULT_COLOR_STRING));
             }
         } catch (IOException e) {
             System.out.println("Exception thrown while loading saved properties.");
