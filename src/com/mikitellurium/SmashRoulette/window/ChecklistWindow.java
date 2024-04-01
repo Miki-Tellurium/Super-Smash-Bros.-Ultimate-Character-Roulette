@@ -52,7 +52,7 @@ public class ChecklistWindow {
             1100, 250, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
             new BackgroundSize(1100, 250, false, false, false, false));
 
-    private static final Color DEFAULT_COLOR = Color.rgb(255, 0, 75);
+    public static final Color DEFAULT_COLOR = Color.rgb(255, 0, 75);
     private static final String DEFAULT_COLOR_STRING = ColorConverter.colorToString(DEFAULT_COLOR);
     private static final String HIGHLIGHT_COLOR_KEY = "highlight_color";
     private Color highlightColor;

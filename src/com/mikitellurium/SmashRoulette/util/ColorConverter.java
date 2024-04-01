@@ -1,5 +1,6 @@
 package com.mikitellurium.SmashRoulette.util;
 
+import com.mikitellurium.SmashRoulette.window.ChecklistWindow;
 import javafx.scene.paint.Color;
 
 import java.util.Arrays;
@@ -22,11 +23,15 @@ public class ColorConverter {
             colorString = colorString.replace(',', '/');
         }
 
-        int[] rgb = Arrays.stream(colorString.split("/"))
-                .map(String::trim)
-                .mapToInt(Integer::parseInt)
-                .toArray();
-        return Color.rgb(rgb[0], rgb[1], rgb[2]);
+        try {
+            int[] rgb = Arrays.stream(colorString.split("/"))
+                    .map(String::trim)
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+            return Color.rgb(rgb[0], rgb[1], rgb[2]);
+        } catch (NumberFormatException e) {
+            return ChecklistWindow.DEFAULT_COLOR;
+        }
     }
 
 }
