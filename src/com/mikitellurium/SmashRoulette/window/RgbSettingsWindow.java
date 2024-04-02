@@ -1,5 +1,6 @@
 package com.mikitellurium.SmashRoulette.window;
 
+import com.mikitellurium.SmashRoulette.data.Constants;
 import com.mikitellurium.SmashRoulette.element.IntegerField;
 import com.mikitellurium.SmashRoulette.util.Util;
 import javafx.geometry.HPos;
@@ -57,7 +58,7 @@ public class RgbSettingsWindow {
 
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Highlight Color Setting");
-        stage.getIcons().add(new Image("/resources/smash logo.png"));
+        stage.getIcons().add(Constants.WINDOW_ICON);
         stage.setResizable(false);
         stage.setWidth(400);
         stage.setHeight(210);
@@ -66,23 +67,23 @@ public class RgbSettingsWindow {
         stage.setY(screenSize.getHeight() / 2 - stage.getHeight() / 2);
 
         final Text header = Util.make(new Text("Choose a color:"), (text) -> {
-            text.setFont(Font.font(MainWindow.ARIAL, FontWeight.SEMI_BOLD, 20));
+            text.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.SEMI_BOLD, 20));
             text.setLayoutX(10);
             text.setLayoutY(15);
         });
 
         final Label red = Util.make(new Label("Red"), (label) -> {
-            label.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 14));
+            label.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.NORMAL, 14));
             label.setTextFill(Color.RED);
             GridPane.setConstraints(label, 0, 1, 1, 1, HPos.CENTER, VPos.CENTER);
         });
         final Label green = Util.make(new Label("Green"), (label) -> {
-            label.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 14));
+            label.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.NORMAL, 14));
             label.setTextFill(Color.GREEN);
             GridPane.setConstraints(label, 0, 2, 1, 1, HPos.CENTER, VPos.CENTER);
         });
         final Label blue = Util.make(new Label("Blue"), (label) -> {
-            label.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 14));
+            label.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.NORMAL, 14));
             label.setTextFill(Color.BLUE);
             GridPane.setConstraints(label, 0, 3, 1, 1, HPos.CENTER, VPos.CENTER);
         });
@@ -130,7 +131,7 @@ public class RgbSettingsWindow {
         colorSquare.setFill(parent.getHighlightColor());
 
         final Button confirmButton = Util.make(new Button("Ok"), (button) -> {
-            button.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 16));
+            button.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.BOLD, 16));
             button.setPrefSize(50, 10);
             button.setOnAction(e -> this.confirmButtonAction());
             GridPane.setConstraints(button, 1, 4);

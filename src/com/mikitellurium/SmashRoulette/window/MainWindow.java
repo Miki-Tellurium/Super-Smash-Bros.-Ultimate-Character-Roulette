@@ -6,13 +6,15 @@ package com.mikitellurium.SmashRoulette.window;
 
 import com.mikitellurium.SmashRoulette.SmashRoulette;
 import com.mikitellurium.SmashRoulette.data.Character;
+import com.mikitellurium.SmashRoulette.data.Constants;
 import com.mikitellurium.SmashRoulette.element.CharacterBox;
 import com.mikitellurium.SmashRoulette.util.Util;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -25,29 +27,17 @@ import java.util.Random;
 
 public class MainWindow {
 
-    public static final String ARIAL = "Arial";
-
     private final Pane rootPane = new Pane();
 
     private final ChecklistWindow checklistWindow;
 
-    private static final BackgroundImage BACKGROUND_IMAGE = new BackgroundImage(new Image("/resources/background.jpg", 500, 300, true, true),
-            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-
-    private static final BackgroundImage BASE_REFRESH_IMAGE = new BackgroundImage(new Image("/resources/base refresh icon.png"),
-            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-            new BackgroundSize(28, 28, false, false, false, false));
-    private static final BackgroundImage HOVER_REFRESH_IMAGE = new BackgroundImage(new Image("/resources/hover refresh icon.png"),
-            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-            new BackgroundSize(28, 28, false, false, false, false));
-
-    private final Background baseRefreshIcon = new Background(BASE_REFRESH_IMAGE);
-    private final Background hoverRefreshIcon = new Background(HOVER_REFRESH_IMAGE);
+    private final Background baseRefreshIcon = new Background(Constants.BASE_REFRESH_BUTTON_IMAGE);
+    private final Background hoverRefreshIcon = new Background(Constants.HOVER_REFRESH_BUTTON_IMAGE);
 
     private final Button rollButton = Util.make(new Button(), (button) -> {
         button.setText("Random");
         button.setPrefSize(100, 30);
-        button.setFont(Font.font(ARIAL, FontWeight.BOLD, 14));
+        button.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.BOLD, 14));
         button.getStyleClass().add("normal-buttons");
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
     });
@@ -60,14 +50,14 @@ public class MainWindow {
     private final Button characterListButton = Util.make(new Button(), (button) -> {
         button.setText("Characters\n  checklist");
         button.setPrefSize(80, 40);
-        button.setFont(Font.font(ARIAL, FontWeight.BOLD, 11));
+        button.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.BOLD, 11));
         button.setTextAlignment(TextAlignment.JUSTIFY);
         button.getStyleClass().add("normal-buttons");
         button.setStyle("-fx-background-color: linear-gradient(#FFFFFF, #C8FFFF)");
     });
 
     private final Text characterName = Util.make(new Text(), (text) -> {
-        text.setFont(Font.font(ARIAL, FontWeight.BOLD, 32));
+        text.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.BOLD, 32));
     });
     private final ImageView characterRender = Util.make(new ImageView(), (imageView) -> {
         imageView.setViewOrder(1.0);
@@ -84,7 +74,7 @@ public class MainWindow {
 
     public MainWindow(Stage mainStage) {
         mainStage.setTitle("Super Smash Bros. Ultimate Characters Roulette");
-        mainStage.getIcons().add(new Image("/resources/smash logo.png"));
+        mainStage.getIcons().add(Constants.WINDOW_ICON);
         mainStage.setResizable(false);
         mainStage.setWidth(500);
         mainStage.setHeight(300);
@@ -112,13 +102,13 @@ public class MainWindow {
 
         final Text credits = Util.make(new Text(), (text) -> {
             text.setText("by Miki_Tellurium");
-            text.setFont(Font.font(ARIAL, FontWeight.BOLD, 12));
+            text.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.BOLD, 12));
             text.setLayoutX(mainStage.getWidth() - text.getText().length() * 7);  // Multiplying by 7 moves the text right enough
             text.setLayoutY(12);
         });
         final Text version = Util.make(new Text(), (text) -> {
-            text.setText("v" + SmashRoulette.VERSION);
-            text.setFont(Font.font(ARIAL, FontWeight.BOLD, 12));
+            text.setText("v" + Constants.VERSION);
+            text.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.BOLD, 12));
             text.setLayoutX(2);
             text.setLayoutY(mainStage.getHeight() - 42);
         });
@@ -131,10 +121,10 @@ public class MainWindow {
         this.checklistWindow = new ChecklistWindow(mainStage);
         characterListButton.setOnAction(e -> checklistWindow.show());
 
-        rootPane.setBackground(new Background(BACKGROUND_IMAGE));
+        rootPane.setBackground(new Background(Constants.MAIN_WINDOW_BACKGROUND_IMAGE));
         rootPane.getChildren().addAll(rollButton, refreshButton, characterListButton, credits, version);
         Scene mainScene = new Scene(rootPane);
-        mainScene.getStylesheets().add("/resources/style.css");
+        mainScene.getStylesheets().add(Constants.CSS_STYLE);
         mainStage.setScene(mainScene);
         mainStage.show();
     }

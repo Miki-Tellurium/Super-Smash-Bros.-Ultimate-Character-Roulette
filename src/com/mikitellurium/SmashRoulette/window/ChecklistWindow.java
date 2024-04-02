@@ -1,6 +1,7 @@
 package com.mikitellurium.SmashRoulette.window;
 
 import com.mikitellurium.SmashRoulette.data.Character;
+import com.mikitellurium.SmashRoulette.data.Constants;
 import com.mikitellurium.SmashRoulette.element.CharacterBox;
 import com.mikitellurium.SmashRoulette.element.CharacterBoxManager;
 import com.mikitellurium.SmashRoulette.util.ColorConverter;
@@ -15,7 +16,10 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -26,8 +30,6 @@ import javafx.util.Duration;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -43,18 +45,9 @@ public class ChecklistWindow {
         pane.setHgap(15);
     });
 
-    private static final String PROPERTIES_FILE = "SmashRoulette.properties";
-    private static final Properties PROPERTIES = new Properties();
-    private static final String PROPERTIES_COMMENTS = "Smash Roulette settings\nThis file contains the application saved data.";
     private final CharacterBoxManager manager = new CharacterBoxManager();
 
-    private static final BackgroundImage BACKGROUND_IMAGE = new BackgroundImage(new Image("/resources/mural.jpg",
-            1100, 250, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-            new BackgroundSize(1100, 250, false, false, false, false));
-
-    public static final Color DEFAULT_COLOR = Color.rgb(255, 0, 75);
-    private static final String DEFAULT_COLOR_STRING = ColorConverter.colorToString(DEFAULT_COLOR);
-    private static final String HIGHLIGHT_COLOR_KEY = "highlight_color";
+    private final Properties PROPERTIES = new Properties();
     private Color highlightColor;
 
     private final TextField searchField = Util.make(new TextField(), (textField) -> {
@@ -64,7 +57,7 @@ public class ChecklistWindow {
         textField.setLayoutY(25);
     });
     private final Text currentStatus = Util.make(new Text(), (text) -> {
-        text.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 24));
+        text.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.BOLD, 24));
         text.setLayoutX(245);
         text.setLayoutY(47);
     });
@@ -72,7 +65,7 @@ public class ChecklistWindow {
     public ChecklistWindow(Stage parentStage) {
         stage.initOwner(parentStage);
         stage.setTitle("Characters Checklist");
-        stage.getIcons().add(new Image("/resources/smash logo.png"));
+        stage.getIcons().add(Constants.WINDOW_ICON);
         stage.setResizable(false);
         stage.setWidth(1000);
         stage.setHeight(280);
@@ -84,7 +77,7 @@ public class ChecklistWindow {
 
         final Button hint = Util.make(new Button(), (button) -> {
             button.setText("?");
-            button.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 16));
+            button.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.BOLD, 16));
             button.setPrefSize(10, 10);
             button.setPadding(new Insets(2, 7, 1, 7));
             button.getStyleClass().add("hint");
@@ -93,7 +86,7 @@ public class ChecklistWindow {
         });
         final Tooltip hintTooltip = Util.make(new Tooltip(), (tooltip) -> {
             tooltip.setText("Type a character name to highlight it on the list");
-            tooltip.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 12));
+            tooltip.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.BOLD, 12));
             tooltip.setStyle("-fx-background-color: linear-gradient(to left, #24CFFE, #007BFD); -fx-text-fill: black;");
             tooltip.setMaxHeight(10);
             tooltip.setShowDelay(Duration.ZERO);
@@ -129,10 +122,10 @@ public class ChecklistWindow {
         final Pane mainPane = new Pane();
         mainPane.getChildren().add(checkBoxesPane);
         mainPane.getChildren().addAll(menuBar, searchField, hint, currentStatus);
-        mainPane.setBackground(new Background(BACKGROUND_IMAGE));
+        mainPane.setBackground(new Background(Constants.CHECKLIST_WINDOW_BACKGROUND_IMAGE));
 
         final Scene scene = new Scene(mainPane);
-        scene.getStylesheets().add("/resources/style.css");
+        scene.getStylesheets().add(Constants.CSS_STYLE);
         stage.setScene(scene);
         stage.setOnCloseRequest(e -> this.saveProperties());
     }
@@ -167,18 +160,18 @@ public class ChecklistWindow {
     }
 
     private void initCheckBoxes() {
-        File file = new File(PROPERTIES_FILE);
+        File file = new File(Constants.PROPERTIES_FILE);
         if (file.exists()) {
             this.loadSavedProperties();
         } else {
-            highlightColor = DEFAULT_COLOR;
+            highlightColor = Constants.DEFAULT_HIGHLIGHT_COLOR;
             this.buildSavedProperties();
         }
     }
 
     private void loadSavedProperties() {
         try {
-            InputStream inputProperties = new FileInputStream(PROPERTIES_FILE);
+            InputStream inputProperties = new FileInputStream(Constants.PROPERTIES_FILE);
             PROPERTIES.load(inputProperties);
             this.manager.forEachBox((box) -> box.setSelected(Boolean.parseBoolean(PROPERTIES.getProperty(box.getText()))));
 
@@ -186,7 +179,8 @@ public class ChecklistWindow {
                 this.highlightColor = ColorConverter.stringToColor(PROPERTIES.getProperty("highlight-color"));
                 PROPERTIES.remove("highlight-color");
             } else {
-                this.highlightColor = ColorConverter.stringToColor((String) PROPERTIES.getOrDefault(HIGHLIGHT_COLOR_KEY, DEFAULT_COLOR_STRING));
+                this.highlightColor = ColorConverter.stringToColor(
+                        (String) PROPERTIES.getOrDefault(Constants.HIGHLIGHT_COLOR_KEY, Constants.DEFAULT_HIGHLIGHT_COLOR_STRING));
             }
         } catch (IOException e) {
             System.out.println("Exception thrown while loading saved properties.");
@@ -196,10 +190,10 @@ public class ChecklistWindow {
 
     private void buildSavedProperties() {
         try {
-            OutputStream outputProperties = new FileOutputStream(PROPERTIES_FILE);
+            OutputStream outputProperties = new FileOutputStream(Constants.PROPERTIES_FILE);
             this.manager.forEachBox((box) -> PROPERTIES.setProperty(box.getText(), String.valueOf(box.isSelected())));
-            PROPERTIES.setProperty(HIGHLIGHT_COLOR_KEY, DEFAULT_COLOR_STRING);
-            PROPERTIES.store(outputProperties, PROPERTIES_COMMENTS);
+            PROPERTIES.setProperty(Constants.HIGHLIGHT_COLOR_KEY, Constants.DEFAULT_HIGHLIGHT_COLOR_STRING);
+            PROPERTIES.store(outputProperties, Constants.PROPERTIES_COMMENTS);
         } catch (IOException e) {
             System.out.println("Exception thrown while building new saved properties.");
             e.printStackTrace();
@@ -208,10 +202,10 @@ public class ChecklistWindow {
 
     private void saveProperties() {
         try {
-            OutputStream outputProperties = new FileOutputStream(PROPERTIES_FILE);
+            OutputStream outputProperties = new FileOutputStream(Constants.PROPERTIES_FILE);
             this.manager.forEachBox((box) -> PROPERTIES.setProperty(box.getText(), String.valueOf(box.isSelected())));
-            PROPERTIES.setProperty(HIGHLIGHT_COLOR_KEY, ColorConverter.colorToString(highlightColor));
-            PROPERTIES.store(outputProperties, PROPERTIES_COMMENTS);
+            PROPERTIES.setProperty(Constants.HIGHLIGHT_COLOR_KEY, ColorConverter.colorToString(highlightColor));
+            PROPERTIES.store(outputProperties, Constants.PROPERTIES_COMMENTS);
         } catch (IOException e) {
             System.out.println("Exception thrown while saving properties.");
             e.printStackTrace();
@@ -283,9 +277,9 @@ public class ChecklistWindow {
         this.manager.forEachBox((box) -> {
             box.setSelected(true);
             try {
-                OutputStream outputProperties = new FileOutputStream(PROPERTIES_FILE);
+                OutputStream outputProperties = new FileOutputStream(Constants.PROPERTIES_FILE);
                 PROPERTIES.setProperty(box.getText(), String.valueOf(box.isSelected()));
-                PROPERTIES.store(outputProperties, PROPERTIES_COMMENTS);
+                PROPERTIES.store(outputProperties, Constants.PROPERTIES_COMMENTS);
             } catch (IOException e) {
                 System.out.println("Exception thrown while checking box: " + box.getText());
                 e.printStackTrace();
@@ -298,9 +292,9 @@ public class ChecklistWindow {
         this.manager.forEachBox((box) -> {
             box.setSelected(false);
             try {
-                OutputStream outputProperties = new FileOutputStream(PROPERTIES_FILE);
+                OutputStream outputProperties = new FileOutputStream(Constants.PROPERTIES_FILE);
                 PROPERTIES.setProperty(box.getText(), String.valueOf(box.isSelected()));
-                PROPERTIES.store(outputProperties, PROPERTIES_COMMENTS);
+                PROPERTIES.store(outputProperties, Constants.PROPERTIES_COMMENTS);
             } catch (IOException e) {
                 System.out.println("Exception thrown while unchecking box: " + box.getText());
                 e.printStackTrace();
@@ -312,9 +306,9 @@ public class ChecklistWindow {
     private void updateBoxSavedProperty(ActionEvent event) {
         if (event.getSource() instanceof CharacterBox box) {
             try {
-                OutputStream outputProperties = new FileOutputStream(PROPERTIES_FILE);
+                OutputStream outputProperties = new FileOutputStream(Constants.PROPERTIES_FILE);
                 PROPERTIES.setProperty(box.getText(), String.valueOf(box.isSelected()));
-                PROPERTIES.store(outputProperties, PROPERTIES_COMMENTS);
+                PROPERTIES.store(outputProperties, Constants.PROPERTIES_COMMENTS);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

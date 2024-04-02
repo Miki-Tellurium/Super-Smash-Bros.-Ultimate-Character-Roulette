@@ -1,5 +1,6 @@
 package com.mikitellurium.SmashRoulette.util;
 
+import com.mikitellurium.SmashRoulette.data.Constants;
 import com.mikitellurium.SmashRoulette.window.ChecklistWindow;
 import javafx.scene.paint.Color;
 
@@ -30,7 +31,7 @@ public class ColorConverter {
                     .toArray();
             return Color.rgb(rgb[0], rgb[1], rgb[2]);
         } catch (NumberFormatException e) {
-            return ChecklistWindow.DEFAULT_COLOR;
+            return Constants.DEFAULT_HIGHLIGHT_COLOR;
         }
     }
 

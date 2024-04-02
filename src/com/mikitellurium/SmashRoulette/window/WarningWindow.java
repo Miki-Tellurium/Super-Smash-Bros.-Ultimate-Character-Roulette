@@ -1,5 +1,6 @@
 package com.mikitellurium.SmashRoulette.window;
 
+import com.mikitellurium.SmashRoulette.data.Constants;
 import com.mikitellurium.SmashRoulette.util.Util;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,8 +27,7 @@ public class WarningWindow {
 
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle(action.getMessage());
-        final Image icon = new Image("/resources/smash logo.png");
-        stage.getIcons().add(icon);
+        stage.getIcons().add(Constants.WINDOW_ICON);
         stage.setResizable(false);
         stage.setWidth(300);
         stage.setHeight(150);
@@ -37,13 +37,13 @@ public class WarningWindow {
 
         final Text warningText = Util.make(new Text(), (text) -> {
             text.setText(this.getWarningText());
-            text.setFont(Font.font(MainWindow.ARIAL, FontWeight.NORMAL, 20));
+            text.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.NORMAL, 20));
             text.setLayoutX(stage.getWidth() / 2 - text.getLayoutBounds().getCenterX());
             text.setLayoutY(30);
         });
         final Button confirmButton = Util.make(new Button(), (button) -> {
             button.setText(getWarningButtonText());
-            button.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 16));
+            button.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.BOLD, 16));
             button.setPrefWidth(90);
             button.setLayoutX(45);
             button.setLayoutY(stage.getHeight() - 80);
@@ -51,7 +51,7 @@ public class WarningWindow {
         });
 
         final Button cancelButton = Util.make(new Button("Cancel"), (button) -> {
-            button.setFont(Font.font(MainWindow.ARIAL, FontWeight.BOLD, 16));
+            button.setFont(Font.font(Constants.FONT_ARIAL, FontWeight.BOLD, 16));
             button.setLayoutX(170);
             button.setLayoutY(stage.getHeight() - 80);
             button.setOnAction(e -> stage.close());
@@ -59,7 +59,7 @@ public class WarningWindow {
 
         final Pane layout = new Pane();
         final Scene scene = new Scene(layout);
-        scene.getStylesheets().add("/resources/style.css");
+        scene.getStylesheets().add(Constants.CSS_STYLE);
         layout.getChildren().addAll(warningText, confirmButton, cancelButton);
         stage.setScene(scene);
     }
